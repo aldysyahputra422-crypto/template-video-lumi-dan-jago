@@ -261,7 +261,7 @@ const SISIPAN = {
     for (const [x1, y1, x2, y2, a] of segmen) { const g = cl((p - a) / .35); if (g <= 0) continue; const w = y2 > 300 ? 7 : 11;
       s += `<path d="M${x1},${y1} L${x1 + (x2 - x1) * g},${y1 + (y2 - y1) * g}" ${ST(w, '#C9A877')}/>`; }
     if (p >= .95) s += `<circle cx="-5" cy="430" r="${26 + 6 * Math.sin(t * 8)}" fill="${C.cahaya}" opacity=".9"/>${sorot(-5, 430, 120, .6)}`;
-    return `<g transform="translate(0 -170)">${s}</g>`;
+    return `<g transform="translate(0 -100)">${s}</g>`;
   },
 };
 function gambarSisipan(k, t) {
