@@ -10,6 +10,12 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+# Perintah format di AWAL dan AKHIR prompt: ChatGPT pernah menjawab teks ucapan saja (2026-11-05).
+FORMAT_WAJIB = """## FORMAT JAWABAN (WAJIB, dibaca program)
+Jawab HANYA dengan naskah format blok: baris pertama `##VIDEO <id> | <judul>`, lalu `##SUMBER <id kartu riset>`, lalu setiap
+`##KETUKAN` berisi `UCAP:` dan isyarat visualnya (`LATAR:`, `AKTOR:`, `AKSI:`, `EKSPRESI:`, `PROPS:`, `SISIPAN:`, `KAMERA:` dst),
+dan baris terakhir `##AKHIR`. JANGAN menjawab dengan teks ucapan saja, lembar suara, tabel, atau JSON: jawaban tanpa baris
+`LATAR:` dan `AKTOR:` dianggap salah dan ditolak program."""
 CONTOH = ROOT / "contoh/kedai-5whys/tempelan.txt"
 
 
@@ -27,6 +33,8 @@ def buat(folder: Path, topik: str = "") -> str:
     daftar = lambda d: "\n".join(f"- `{n}`: {v}" for n, v in d.items())
     tags = "\n".join(f"- [{n}] ({'emosi ' + v['emosi'] if v['jenis'] == 'suara' else 'pengubah'}){' (teruji pemilik)' if v['terverifikasi'] == 'pemilik' else '' if v['terverifikasi'] == 'dokumentasi' else ' belum terverifikasi'}" for n, v in tag["tag"].items())
     return f"""# Tugas: tulis naskah video pendek "{folder.name}" untuk maskot Ata
+
+{FORMAT_WAJIB}
 
 Kamu penulis naskah video vertikal 40 sampai 55 detik untuk akun personal branding maskot. Penontonnya pelajar dan mahasiswa Indonesia.
 Tujuan: video yang DISIMPAN penonton karena berguna, tapi tidak membosankan. Bahasa sehari-hari, kalimat pendek.
@@ -70,6 +78,7 @@ JANGAN memperagakan teorinya terang-terangan sebelum putaran (mis. bertanya "ken
 11. Nama konsep tidak boleh disebut sebelum 40% naskah; 4 ketukan berturut dengan kata pembuka sama ditolak (pola mudah ditebak).
 12. Pakai SUASANA untuk membangun rasa: misterius saat penonton dibuat curiga, tegang menjelang putaran, ceria sesudah trik, horor hanya bila ceritanya menakutkan. Ganti paling banyak tiap 2 ketukan. SFX dipasang otomatis oleh mesin dari isyarat visual, jangan ditulis.
 13. Cutaway tangan (`SISIPAN: tangan_ambil <props>`, `tangan_beri <props>`, `tangan_tulis`) untuk aksi tangan yang diucapkan; tokoh yang mewakili penonton ("kamu") memakai peran `kamu`.
+Jangan menyebut nama peneliti di UCAP (cukup "peneliti", "penelitian tahun 2001", atau "63 penelitian"); nama masuk caption otomatis.
 UCAP adalah teks yang langsung dibacakan suara: tulis seperti diucapkan ("Larsen dan rekan-rekannya, tahun 2009", "39 persen"), tanpa kurung, singkatan (dkk., et al.), garis miring, atau garis bawah.
 Tanpa tanda pisah panjang. Tanpa kata kasar. Tanpa politik, agama, tuduhan, atau orang sungguhan. Tanpa ajakan daftar, harga, atau "follow".
 
@@ -127,8 +136,10 @@ TAG SUARA (WAJIB satu di depan SETIAP kalimat UCAP, boleh lebih dari satu: [tens
 
 ## 6. Sebelum mengirim, periksa sendiri
 Hook maksimal 10 kata dan tidak diam; tiap 2 ketukan komposisi berganti; minimal 2 SISIPAN; setiap @kata ada di UCAP-nya; setiap ketukan punya minimal satu isyarat visual; angka riset sama dengan kartu;
-satu KARTU maksimal 3 langkah; penutup callback; semua nama dari kosakata. Kirim hanya blok dari ##VIDEO sampai ##AKHIR.
+satu KARTU maksimal 3 langkah; penutup callback; semua nama dari kosakata.
 Bila nanti kuberi daftar galat, perbaiki hanya baris yang disebut dan kirim ulang seluruh naskah.
+
+{FORMAT_WAJIB}
 """
 
 

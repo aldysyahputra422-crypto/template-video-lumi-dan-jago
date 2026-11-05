@@ -11,7 +11,7 @@ from pathlib import Path
 
 import yaml
 
-from scripts import campur, caption, lembar, lint_naskah, linimasa, naskah_format, qa, render, selaras
+from scripts import campur, caption, lembar, lint_naskah, linimasa, naskah_format, prompt_visual, qa, render, selaras
 
 
 def _baru(a: Path, b: Path) -> bool:
@@ -39,6 +39,13 @@ def maju(folder: Path, transkrip_fn=None, fps: int = 30) -> dict:
         if not n.get("disetujui"):
             naskah.unlink()   # naskah yang gagal standar tidak boleh menunggu persetujuan
         return {"kode": 6, "berhenti_di": "koreksi", "galat": [str(g) for g in gal], "instruksi": f"Naskah melanggar standar. Tempel isi {f}/koreksi-chatgpt.md ke ChatGPT, simpan jawabannya sebagai tempelan.txt, lalu /olah lagi."}
+    if (f / "rekaman-pemilik.txt").exists():   # suara sudah direkam: UCAP wajib sama persis dengan rekaman
+        beda = prompt_visual.bandingkan(f, [k["ucap_el"] for k in n["ketukan"]])
+        if beda:
+            (f / "koreksi-chatgpt.md").write_text(naskah_format.pesan_koreksi([naskah_format.Galat(None, b) for b in beda]), encoding="utf-8")
+            if not n.get("disetujui"):
+                naskah.unlink()
+            return {"kode": 6, "berhenti_di": "koreksi", "galat": beda[:12], "instruksi": f"UCAP berbeda dari rekaman pemilik. Tempel isi {f}/koreksi-chatgpt.md ke ChatGPT, simpan jawabannya sebagai tempelan.txt, lalu /olah lagi."}
     lembar.tulis(f)
     if not n.get("disetujui"):
         return {"kode": 4, "berhenti_di": "approval_1", "perkiraan_durasi": lint["perkiraan_durasi"], "peringatan": [p["pesan"] for p in lint["peringatan"]],

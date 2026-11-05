@@ -14,4 +14,6 @@ Jalankan `.venv/bin/python -m scripts.olah video/$ARGUMENTS` (Bash `run_in_backg
 
 Saat kode 4 (Approval 1), sebelum menyampaikan ke pemilik: nilai naskah dengan bagian "Cara bercerita" di skill `standar-naskah`, teori skill `screenwriting-lint` (putaran, petunjuk yang ditanam, eskalasi; abaikan bagian vault Obsidian), dan skill `humanizer` untuk kalimat UCAP. Tulis maksimal 5 temuan konkret ke `video/<nama>/ulasan-naskah.md` dalam bentuk permintaan koreksi yang bisa ditempel ke ChatGPT, lalu sebutkan jumlah temuannya ke pemilik. Tidak ada temuan = tulis "tidak ada".
 
+Bila pemilik sudah merekam suara dari teks ucapan saja (ChatGPT tidak memberi format blok): simpan teks rekamannya sebagai `video/<nama>/rekaman-pemilik.txt` (tag di baris sendiri, lalu kalimat), jalankan `.venv/bin/python -m scripts.prompt_visual video/<nama>`, dan minta pemilik menempel `prompt-visual.md` ke ChatGPT. `/olah` lalu memastikan setiap UCAP sama persis dengan rekaman.
+
 Aturan: jangan memanggil API ElevenLabs; jangan mengubah naskah secara kreatif (perbaikan naskah lewat ChatGPT memakai `koreksi-chatgpt.md`); jangan menandai `disetujui` atas nama pemilik.
