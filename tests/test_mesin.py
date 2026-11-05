@@ -111,3 +111,13 @@ def test_aset_per_video_dan_kerumunan_dirender_tanpa_galat(tmp_path):
     r = subprocess.run(["node", str(ROOT / "render/render.js"), str(tmp_path), str(tmp_path / "f"), "30", "1.0,4.0"], capture_output=True, text=True, timeout=180)
     assert r.returncode == 0, r.stderr[-800:]
     assert (tmp_path / "f/cek_00.png").exists()
+
+
+def test_tanpa_getar_cepat_pada_tokoh():
+    """Masukan pemilik: tokoh referensi bergerak pelan dan menahan pose, tidak 'kesetrum'. Osilasi > 12 rad/dtk (±2 Hz) hanya boleh
+    untuk siklus langkah lari dan kedip lampu horor, bukan untuk tokoh, kamera, atau sisipan."""
+    import re
+    teks = (ROOT / "render/mesin.html").read_text(encoding="utf-8").splitlines()
+    cepat = [(i + 1, b.strip()[:80]) for i, b in enumerate(teks)
+             for m in re.finditer(r"Math\.(?:sin|cos)\(([tu]) \* ([0-9.]+)", b) if float(m.group(2)) > 12 and not re.search(r"\blari\b|kedip", b)]
+    assert not cepat, cepat
