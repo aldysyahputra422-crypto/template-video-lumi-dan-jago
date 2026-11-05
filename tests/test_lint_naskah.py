@@ -149,3 +149,24 @@ def test_saran_keluar_menyebut_aktor_yang_bukan_tokoh_ketukan():
     sebelum["aktor"] = sebelum["aktor"] + [{"id": "x", "peran": "guru", "posisi": "kanan", "ekspresi": "datar"}]
     g = [x["pesan"] for x in ln.periksa(n, KARTU)["galat"] if "Ata dipaksa" in x["pesan"]]
     assert g and "KELUAR: x" in g[0]
+
+
+def test_profil_filosofi_tanpa_kartu_dan_tanpa_ata(monkeypatch):
+    """Profil 'filosofi' (formula mindwander): tidak wajib KARTU trik dan tidak meminta Ata."""
+    t = re.sub(r"^KARTU:.*\n", "", TEKS, flags=re.M)
+    t = re.sub(r"^ATA:.*\n", "", t, flags=re.M)
+    assert any("KARTU" in g["pesan"] for g in _lint(t)["galat"])                    # profil ata (bawaan)
+    monkeypatch.setattr(ln, "_profil", lambda: {"wajib_kartu": False, "maskot": None})
+    r = _lint(t)
+    assert not any("KARTU" in g["pesan"] for g in r["galat"]) and not any("Ata" in p["pesan"] for p in r["peringatan"])
+
+
+def test_sisipan_dihitung_sebagai_visual():
+    n = nf.urai(TEKS).naskah
+    k = n["ketukan"][4]
+    for f in ("aksi", "ekspresi", "props", "teks", "data"):
+        k[f] = []
+    k["kartu"] = k["ata"] = k["kamera"] = None
+    k["aktor"] = []
+    k["sisipan"] = {"nama": "jam_cepat", "isi": None, "kata": None}
+    assert not any(f"ketukan {k['no']} tanpa isyarat visual" in g["pesan"] for g in ln.periksa(n, KARTU)["galat"])

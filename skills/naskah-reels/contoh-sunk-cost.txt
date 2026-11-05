@@ -1,0 +1,109 @@
+##VIDEO jembatan-raja | Jembatan ke pulau kosong
+##SUMBER arkes1985
+##ASET
+LATAR istana_pantai: istana batu di tepi laut malam, mercusuar kecil, pulau gelap di kejauhan
+AKTOR raja: raja bermahkota emas, jubah merah, kumis, tubuh pendek
+AKTOR pekerja: pekerja bertopi caping, kemeja abu, membawa balok kayu
+PROPS jembatan: jembatan kayu panjang dari tiang-tiang, setengah jadi
+PROPS emas: tumpukan koin emas di peti
+SISIPAN timbangan: timbangan besar, satu sisi peti emas, sisi lain jam pasir yang terus berkurang
+##KETUKAN 01
+UCAP: [curious] Seorang raja membangun jembatan ke pulau kosong.
+SUASANA: misterius
+LATAR: istana_pantai
+AKTOR: r=raja jauh_kiri bangga
+AKSI: r jalan ke kiri @raja; r menunjuk @pulau
+PROPS: jembatan kanan muncul @jembatan
+KAMERA: dorong
+##KETUKAN 02
+UCAP: [serious] Dan semakin jelas jembatan itu sia-sia, semakin cepat ia membangunnya.
+AKTOR: p=pekerja tengah capek x12
+AKSI: p jalan ke kanan @cepat
+KAMERA: lebar
+##KETUKAN 03
+UCAP: [serious] Tahun pertama, ratusan pekerja menancapkan tiang.
+TEKS: TAHUN 1 @pertama
+KAMERA: geser
+##KETUKAN 04
+UCAP: [sad] Tahun kedua, ombak merobohkan separuhnya.
+SUASANA: tegang
+PROPS: jembatan kanan hilang @merobohkan
+KAMERA: goyang
+##KETUKAN 05
+UCAP: [whispers] Seorang penasihat berbisik, pulau itu tidak berpenghuni, Paduka.
+KELUAR: p
+AKTOR: n=guru kanan takut
+EKSPRESI: n takut @berbisik
+KAMERA: dekat n
+##KETUKAN 06
+UCAP: [serious] Raja menjawab, kita sudah menghabiskan tiga gudang emas.
+PROPS: emas tengah muncul @emas
+EKSPRESI: r marah @menjawab
+KAMERA: dekat r
+##KETUKAN 07
+UCAP: [serious] Berhenti sekarang berarti emas itu terbuang.
+SISIPAN: timbangan @terbuang
+##KETUKAN 08
+UCAP: [tense] Maka pajak dinaikkan. Pekerja ditambah. Ladang ditinggalkan.
+AKTOR: p=pekerja jauh_kiri capek x20
+AKSI: p jalan ke kanan @ditambah
+KAMERA: lebar
+##KETUKAN 09
+UCAP: [serious] Tahun kelima, jembatan itu akhirnya selesai.
+PROPS: jembatan kanan membesar @selesai
+TEKS: TAHUN 5 @kelima
+KAMERA: dorong
+##KETUKAN 10
+UCAP: [surprised] Dan bagian paling ngeri?
+SUASANA: misterius
+KELUAR: p; n
+EKSPRESI: r bingung @ngeri
+KAMERA: dekat r
+##KETUKAN 11
+UCAP: [serious] Di hari peresmian, tidak ada satu orang pun yang menyeberang ke pulau itu.
+PROPS: jembatan kanan melayang @menyeberang
+KAMERA: geser
+##KETUKAN 12
+UCAP: [serious] Yang menyeberang justru rakyatnya, pergi meninggalkan kerajaan yang bangkrut.
+AKTOR: w=warga kanan sedih x15
+AKSI: w jalan ke jauh_kanan @pergi
+KAMERA: lebar
+##KETUKAN 13
+UCAP: [whispers] Raja tidak sedang menyelamatkan emasnya. Ia hanya terus membayar agar tidak perlu mengaku salah.
+KELUAR: w
+EKSPRESI: r malu @mengaku
+KAMERA: dekat r
+##KETUKAN 14
+UCAP: [curious] Dalam psikologi, ini dikenal sebagai sunk cost fallacy, jebakan biaya hangus.
+SUASANA: normal
+LATAR: kosong
+TEKS: SUNK COST FALLACY @sunk
+##KETUKAN 15
+UCAP: [serious] Kita bertahan pada keputusan buruk hanya karena sudah terlanjur berkorban banyak.
+SISIPAN: timbangan @berkorban
+##KETUKAN 16
+UCAP: [serious] Dan manusia juga begitu.
+LATAR: kota
+AKTOR: k=kamu tengah bingung
+KAMERA: dorong
+##KETUKAN 17
+UCAP: [annoyed] Kita bertahan di jurusan yang kita benci, karena sudah tiga semester.
+PROPS: buku tangan:k muncul @jurusan
+EKSPRESI: k capek @benci
+KAMERA: dekat k
+##KETUKAN 18
+UCAP: [sad] Kita bertahan di hubungan yang menyakitkan, karena sudah lima tahun.
+SUASANA: sedih
+PROPS: hati kepala:k muncul @hubungan
+EKSPRESI: k sedih @menyakitkan
+KAMERA: geser
+##KETUKAN 19
+UCAP: [serious] Jadi ingat ini, jembatan yang salah tidak menjadi benar karena terus dibangun.
+SUASANA: normal
+LATAR: istana_pantai
+AKTOR: r=raja tengah sedih
+KAMERA: lebar
+##KETUKAN 20
+UCAP: [serious] Yang masih bisa kamu selamatkan hanyalah waktu yang tersisa.
+SISIPAN: jam_cepat @waktu
+##AKHIR

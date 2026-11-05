@@ -56,6 +56,12 @@ def _kata_ke_angka(kata: list[str]) -> float:
     return total + grup + kini
 
 
+def _profil() -> dict:
+    """Profil naskah aktif (config/gaya.yaml → naskah): 'ata' (trik di KARTU, maskot Ata) atau 'filosofi' (formula mindwander)."""
+    n = _gaya().get("naskah", {})
+    return n.get("profil_isi", {}).get(n.get("profil", "ata"), {"wajib_kartu": True, "maskot": "Ata"})
+
+
 def _gaya() -> dict:
     return yaml.safe_load((Path(__file__).resolve().parents[1] / "config/gaya.yaml").read_text(encoding="utf-8"))
 
@@ -108,7 +114,7 @@ def periksa(n: dict, kartu: dict | None) -> dict:
     # 1 hook
     if kata[0] > HOOK_MAKS_KATA:
         G(ks[0], f"hook {kata[0]} kata (±{kata[0] / KATA_PER_DETIK:.1f} dtk); maksimal {HOOK_MAKS_KATA} kata supaya selesai dalam 3 detik")
-    if not (SAPAAN.search(ks[0]["ucap"]) or KONTRADIKSI.search(ks[0]["ucap"])):
+    if _profil().get("maskot") and not (SAPAAN.search(ks[0]["ucap"]) or KONTRADIKSI.search(ks[0]["ucap"])):
         P(ks[0], "hook tidak menyapa penonton (kamu/-mu) dan tidak membalik dugaan")
     # 2 durasi
     D = _gaya()["durasi"]
@@ -118,7 +124,7 @@ def periksa(n: dict, kartu: dict | None) -> dict:
         P(None, f"perkiraan durasi {durasi} dtk; sasaran {D['sasaran_min']} sampai {D['sasaran_maks']} dtk (video referensi)")
     # 3 visual tiap ketukan, panjang ketukan
     for k, nk in zip(ks, kata):
-        if not any(k[f] for f in ("aksi", "ekspresi", "props", "teks", "data", "kartu", "ata", "kamera", "aktor")):
+        if not any(k.get(f) for f in ("aksi", "ekspresi", "props", "teks", "data", "kartu", "ata", "kamera", "aktor", "sisipan")):
             G(k, f"ketukan {k['no']} tanpa isyarat visual (AKSI/EKSPRESI/PROPS/TEKS/DATA/KARTU/ATA/KAMERA)")
         if nk > 16:
             P(k, f"ketukan {k['no']} {nk} kata; pecah supaya visual berganti tiap 2 sampai 5 detik")
@@ -148,7 +154,7 @@ def periksa(n: dict, kartu: dict | None) -> dict:
     if tanpa_tag:
         P(None, f"ketukan {tanpa_tag} tanpa tag ekspresi suara; tag terbukti sangat berpengaruh di ElevenLabs (uji pemilik), beri satu per kalimat")
     # 4 alat yang disimpan
-    if not any(k["kartu"] for k in ks):
+    if _profil().get("wajib_kartu", True) and not any(k["kartu"] for k in ks):
         G(None, "tidak ada KARTU (alat maksimal 3 langkah yang membuat penonton menyimpan video)")
     # 5 fakta dan sumber
     fakta = [k for k in ks if k["fakta"]]
@@ -171,7 +177,8 @@ def periksa(n: dict, kartu: dict | None) -> dict:
     if klise > 1:
         P(None, f"pola 'bukan X, tapi Y' muncul {klise} kali; maksimal sekali")
     isi = lambda k: {t for t in token(k["ucap"]) if len(t) >= 4 and t not in HENTI}
-    if not isi(ks[-1]) & set().union(*(isi(k) for k in ks[: max(3, len(ks) // 2)])):
+    penutup = isi(ks[-1]) | (isi(ks[-2]) if len(ks) > 1 and not _profil().get("maskot") else set())   # profil filosofi: penutup paralel 2 ketukan
+    if not penutup & set().union(*(isi(k) for k in ks[: max(3, len(ks) // 2)])):
         P(ks[-1], "penutup tidak melakukan callback ke hook atau cerita awal (tidak ada kata kunci yang sama dengan separuh pertama)")
     # 7 Ata hanya di adegan lapang: tidak dipaksa tampil di atas adegan yang sudah ramai
     aktif: set[str] = set()
@@ -185,7 +192,7 @@ def periksa(n: dict, kartu: dict | None) -> dict:
             saran = f" atau tambahkan 'KELUAR: {'; '.join(sorted(aktif - tetap))}' di ketukan ini" if len(aktif) >= 2 else ""
             G(k, f"Ata dipaksa tampil di adegan ramai (ketukan {k['no']}: {len(aktif)} aktor di panggung: {', '.join(sorted(aktif)) or '-'}{', SISIPAN' if k.get('sisipan') else ''}{', KARTU' if k['kartu'] else ''}{', DATA' if k['data'] else ''}). Pindahkan ATA ke ketukan lapang (maksimal 1 aktor, tanpa SISIPAN/KARTU/DATA){saran}")
     ata = sum(1 for k in ks if k["ata"])
-    if ata == 0:
+    if ata == 0 and _profil().get("maskot"):
         P(None, "Ata tidak muncul sama sekali; beri satu atau dua momen lapang (penamaan atau penutup)")
     elif ata > 3:
         G(None, f"Ata muncul {ata} kali; maksimal 3, cerita yang jadi bintang")

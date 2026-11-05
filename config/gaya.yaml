@@ -38,3 +38,10 @@ palet:
   terang: ["#DFCEAD", "#E6E5E5", "#F0EBE1", "#CEC8BA", "#B6AFAD"]
   aksen_tetap: ["#D09C27", "#F2B80E", "#A58859"]       # emas: aksen tetap semua video
   aksen_contoh: ["#C1571C", "#8F4017", "#0F335B", "#426486"]   # oranye senja (pesawat), biru (merak): aksen khusus per video, maks 3
+# Profil naskah (scripts/lint_naskah.py). ata: video Ata dengan KARTU trik. filosofi: formula mindwander (alegori atau kisah nyata →
+# putaran → nama konsep → pemetaan → penutup paralel), tanpa KARTU dan tanpa maskot. Skill olah-reels memakai profil filosofi.
+naskah:
+  profil: ata
+  profil_isi:
+    ata: {wajib_kartu: true, maskot: Ata}
+    filosofi: {wajib_kartu: false, maskot: null}
