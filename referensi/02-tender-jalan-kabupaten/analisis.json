@@ -1,0 +1,69 @@
+{
+ "berkas": "5061ebce-Lu_menang_tender_benerin_jalan_kabupaten._Terus_apa",
+ "teknis": {
+  "durasi": 43.6,
+  "lebar": 720,
+  "tinggi": 1280,
+  "fps": 30.0,
+  "ukuran_mb": 3.56,
+  "ada_audio": true,
+  "audio_hz": 48000
+ },
+ "loudness": {
+  "lufs": -14.1,
+  "rentang_lu": 3.3,
+  "puncak_dbfs": -1.0
+ },
+ "potongan_keras": {
+  "jumlah": 6,
+  "waktu": [
+   8.57,
+   24.0,
+   26.9,
+   29.67,
+   33.6,
+   39.7
+  ],
+  "per_menit": 8.3
+ },
+ "suara": {
+  "jumlah_kata": 101,
+  "kata_per_detik": 2.33,
+  "rata2_durasi_kata": 0.36,
+  "jeda_terpanjang": 0.54,
+  "jeda_di_atas_0_45": 5
+ },
+ "hook": "Lu menang tender benerin jalan kabupaten, terus cairin",
+ "kalimat": [
+  {
+   "mulai": 0.0,
+   "selesai": 3.86,
+   "jumlah_kata": 10
+  },
+  {
+   "mulai": 4.32,
+   "selesai": 18.46,
+   "jumlah_kata": 33
+  },
+  {
+   "mulai": 19.0,
+   "selesai": 21.94,
+   "jumlah_kata": 8
+  },
+  {
+   "mulai": 22.4,
+   "selesai": 23.52,
+   "jumlah_kata": 3
+  },
+  {
+   "mulai": 24.0,
+   "selesai": 40.2,
+   "jumlah_kata": 39
+  },
+  {
+   "mulai": 40.66,
+   "selesai": 43.32,
+   "jumlah_kata": 8
+  }
+ ]
+}

@@ -1,0 +1,47 @@
+{
+ "berkas": "46a70d62-Penyebab_cerai_nomor_1_di_Indonesia_ternyata_BUKAN_",
+ "teknis": {
+  "durasi": 47.53,
+  "lebar": 720,
+  "tinggi": 1280,
+  "fps": 30.0,
+  "ukuran_mb": 2.14,
+  "ada_audio": true,
+  "audio_hz": 44100
+ },
+ "loudness": {
+  "lufs": -14.2,
+  "rentang_lu": 3.0,
+  "puncak_dbfs": -0.2
+ },
+ "potongan_keras": {
+  "jumlah": 0,
+  "waktu": [],
+  "per_menit": 0.0
+ },
+ "suara": {
+  "jumlah_kata": 95,
+  "kata_per_detik": 2.06,
+  "rata2_durasi_kata": 0.43,
+  "jeda_terpanjang": 0.58,
+  "jeda_di_atas_0_45": 2
+ },
+ "hook": "Penyebab perceraian nomor 1 di Indonesia ternyata",
+ "kalimat": [
+  {
+   "mulai": 0.0,
+   "selesai": 21.12,
+   "jumlah_kata": 42
+  },
+  {
+   "mulai": 21.7,
+   "selesai": 37.6,
+   "jumlah_kata": 33
+  },
+  {
+   "mulai": 38.06,
+   "selesai": 46.12,
+   "jumlah_kata": 20
+  }
+ ]
+}

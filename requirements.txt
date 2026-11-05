@@ -1,0 +1,6 @@
+pytest
+PyYAML
+jsonschema
+numpy
+soundfile
+faster-whisper

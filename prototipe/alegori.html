@@ -1,0 +1,117 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Uji alegori Ata</title>
+<style>
+@font-face{font-family:'Baloo';src:url('node_modules/@fontsource/baloo-2/files/baloo-2-latin-800-normal.woff2') format('woff2');font-weight:800}
+html,body{margin:0;background:#000}
+#stage{position:relative;width:720px;height:1280px;overflow:hidden;font-family:'Baloo',sans-serif;background:#F6E9D8}
+#kertas{position:absolute;inset:0}
+#dunia{position:absolute;inset:0;transform-origin:50% 45%}
+.ov{position:absolute;pointer-events:none}
+#chip{left:50%;top:70px;transform:translateX(-50%);background:#2D303D;color:#F6E9D8;padding:8px 26px;border-radius:40px;font-weight:800;font-size:30px;letter-spacing:1px;white-space:nowrap}
+#def{left:60px;right:60px;top:150px;text-align:center;color:#2D303D;font-weight:800;font-size:30px;line-height:1.15}
+#cap{left:0;right:0;top:990px;text-align:center;font-weight:800;font-size:60px;line-height:1;color:#2D303D;-webkit-text-stroke:10px #FDF5D6;paint-order:stroke fill}
+#src{left:30px;right:30px;bottom:30px;text-align:center;color:#2D303D;font-weight:800;font-size:17px;line-height:1.2;opacity:.8}
+.ata{position:absolute;transform-origin:50% 100%;will-change:transform}
+#garis{left:0;top:0;width:720px;height:1280px}
+</style></head><body>
+<div id="stage">
+ <canvas id="kertas" width="720" height="1280"></canvas>
+ <div id="dunia"></div>
+ <svg class="ov" id="garis" viewBox="0 0 720 1280"></svg>
+ <img class="ata" id="ata">
+ <div class="ov" id="chip"></div><div class="ov" id="def"></div>
+ <div class="ov" id="cap"></div><div class="ov" id="src"></div>
+</div>
+<script type="module">
+const TL = await (await fetch(new URLSearchParams(location.search).get('tl') || 'timeline-alegori.json')).json();
+const $=id=>document.getElementById(id);
+const C={kar:'#C3562A',krem:'#F6E9D8',kremT:'#FDF5D6',wajah:'#F8DBB8',navy:'#2D303D',api:'#FAB756',air:'#7E9FB6',batu:'#8C8F9E',kayu:'#8A5A3B',peach:'#EFCBA7'};
+// kertas bertekstur (sekali)
+{const c=$('kertas').getContext('2d');c.fillStyle=C.krem;c.fillRect(0,0,720,1280);let s=7;const r=()=>(s=(s*16807)%2147483647)/2147483647;
+ for(let i=0;i<9000;i++){c.fillStyle=`rgba(120,80,40,${r()*0.05})`;c.fillRect(r()*720,r()*1280,1+r()*2,1+r()*2)}
+ const g=c.createRadialGradient(360,560,200,360,640,900);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(90,50,20,.18)');c.fillStyle=g;c.fillRect(0,0,720,1280)}
+// pose Ata dimuat lebih dulu
+const POSE=['bicara','kaget','sombong','menatap','tertawa','berpikir','mengintip'];
+await Promise.all(POSE.map(p=>new Promise(r=>{const i=new Image();i.onload=r;i.src=`../aset/maskot/panda/pose/${p}.svg`})));
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)), ez=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2, pop=k=>k<=0?0:k>=1?1:1+Math.sin(k*Math.PI)*0.18*(1-k)+(1-Math.pow(1-k,3))-1+ (1-Math.pow(1-k,3))*0;
+const G=TL.garis, gid=Object.fromEntries(G.map(g=>[g.id,g]));
+const kata=(id,awal)=>{const g=gid[id];const k=g.kata.find(k=>k.w.toLowerCase().replace(/[.,]/g,'').startsWith(awal));return k?k.a:g.mulai};
+const muncul=(t,t0,d=.28)=>{const k=cl((t-t0)/d);return k<=0?0:1-Math.pow(1-k,3)+Math.sin(k*Math.PI)*.12};
+// ---------- perangkat gambar (tinta navy, warna rata) ----------
+const ST=`stroke="${C.navy}" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"`;
+function orang(x,y,s=1,baju=C.kar,topi=null,ang=0){
+ const tp=topi==='caping'?`<path d="M${-34},-58 L0,-92 L34,-58 Z" fill="${C.api}" ${ST}/>`:topi==='peci'?`<rect x="-20" y="-86" width="40" height="22" rx="4" fill="${C.navy}"/>`:'';
+ return `<g transform="translate(${x} ${y}) scale(${s}) rotate(${ang})"><path d="M-18,0 L-14,40 M18,0 L14,40" ${ST} fill="none"/><path d="M-26,-38 Q0,-50 26,-38 L22,6 L-22,6 Z" fill="${baju}" ${ST}/><path d="M-26,-30 L-38,0 M26,-30 L38,0" ${ST} fill="none"/><circle cx="0" cy="-64" r="22" fill="${C.wajah}" ${ST}/><circle cx="-7" cy="-66" r="2.6" fill="${C.navy}"/><circle cx="7" cy="-66" r="2.6" fill="${C.navy}"/>${tp}</g>`}
+const awan=(x,y,s=1,w=C.krem)=>`<g transform="translate(${x} ${y}) scale(${s})"><path d="M-70,20 Q-80,-10 -45,-15 Q-35,-45 0,-40 Q30,-55 50,-25 Q85,-20 75,20 Z" fill="${w}" ${ST}/></g>`;
+const batu=(x,y,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})"><path d="M-30,0 Q-34,-26 -8,-30 Q20,-36 30,-12 Q36,4 20,6 L-24,6 Z" fill="${C.batu}" ${ST}/></g>`;
+const kayu=(x,y,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})"><rect x="-60" y="-14" width="120" height="28" rx="14" fill="${C.kayu}" ${ST}/><circle cx="60" cy="0" r="14" fill="${C.peach}" ${ST}/></g>`;
+function sungai(t,hujan=0,jembatanJadi=0,senja=0){
+ const langit=senja?`<rect width="720" height="900" fill="#F2B98A"/>`:''; const gelap=hujan?`<rect width="720" height="1280" fill="${C.navy}" opacity="${.32*hujan}"/>`:'';
+ const ombak=[0,1,2].map(i=>`<path d="M-40,${700+i*28} q40,${-14} 80,0 t80,0 t80,0 t80,0 t80,0 t80,0 t80,0 t80,0 t80,0 t80,0" fill="none" stroke="#5E7F96" stroke-width="5" transform="translate(${(t*30+i*40)%80-80} 0)"/>`).join('');
+ const dek=jembatanJadi?`<rect x="150" y="610" width="420" height="26" fill="${C.kayu}" ${ST}/>`:`<rect x="150" y="610" width="120" height="26" fill="${C.kayu}" ${ST}/><rect x="450" y="610" width="120" height="26" fill="${C.kayu}" ${ST}/>`;
+ const hj=hujan?Array.from({length:60},(_,i)=>{const x=(i*53+t*260)%760-20,y=(i*97+t*900)%900;return `<path d="M${x},${y} l-10,30" stroke="#5E7F96" stroke-width="4" opacity="${hujan}"/>`}).join(''):'';
+ const matahari=hujan<1?`<circle cx="560" cy="250" r="${60}" fill="${C.api}" ${ST} opacity="${1-hujan}"/>`:'';
+ return `${langit}${matahari}${awan(170,230,1)}${awan(470,180,.8)}
+ <path d="M0,560 L250,600 L250,1280 L0,1280 Z" fill="${C.peach}" ${ST}/><path d="M720,560 L470,600 L470,1280 L720,1280 Z" fill="${C.peach}" ${ST}/>
+ <path d="M250,600 L470,600 L470,1280 L250,1280 Z" fill="${C.air}"/>${ombak}
+ <rect x="268" y="600" width="40" height="190" fill="${C.batu}" ${ST}/><rect x="412" y="600" width="40" height="190" fill="${C.batu}" ${ST}/>${dek}${gelap}${hj}`}
+// ---------- adegan per kalimat ----------
+function adegan(t){
+ const g=[...G].reverse().find(g=>t>=g.mulai-0.15)||G[0], A=g.adegan; let s='';
+ if(A==='sungai') s=sungai(t)+orang(90,600,1.1,C.kar,'caping')+orang(160,610,1,C.navy,'peci')+orang(620,600,1,C.kar,null);
+ if(A==='sungai_hujan'){const k=cl((t-g.mulai)/.6);const rx=280+((t-g.mulai)/3.4)*80;
+  s=sungai(t,k)+`<g transform="translate(${rx} ${760+Math.sin(t*3)*6})"><rect x="-70" y="-14" width="140" height="28" rx="6" fill="${C.kayu}" ${ST}/></g>`+orang(rx-25,746,.9,C.kar,'caping')+orang(rx+30,746,.9,C.navy,null)}
+ if(A==='kalender'){const k=muncul(t,kata('s03','30'));
+  s=`<rect x="0" y="820" width="720" height="460" fill="${C.peach}"/>`+orang(170,820,2.1,C.navy,'peci')+
+   `<g transform="translate(470 560) rotate(4)"><rect x="-150" y="-190" width="300" height="340" rx="16" fill="#FFFDF7" ${ST}/><rect x="-150" y="-190" width="300" height="70" rx="16" fill="${C.kar}" ${ST}/><text x="0" y="-140" text-anchor="middle" font-size="34" fill="${C.krem}" font-family="Baloo">RENCANA</text>
+   <text x="0" y="40" text-anchor="middle" font-size="150" fill="${C.navy}" font-family="Baloo">30</text><text x="0" y="110" text-anchor="middle" font-size="40" fill="${C.navy}" font-family="Baloo">HARI</text>
+   <ellipse cx="0" cy="0" rx="${120*k}" ry="${90*k}" fill="none" stroke="${C.kar}" stroke-width="10" opacity="${k?1:0}"/></g>`}
+ if(A==='bahan'){const kb=muncul(t,kata('s04','batu')),kk=muncul(t,kata('s04','kayu'));
+  s=`<rect x="0" y="760" width="720" height="520" fill="${C.peach}"/>`+`<g transform="translate(220 760) scale(${kb})">${batu(-60,0,1.6)}${batu(40,0,1.4)}${batu(-10,-50,1.3)}</g>`+`<g transform="translate(500 760) scale(${kk})">${kayu(0,0,1.2)}${kayu(10,-40,1.2)}${kayu(-5,-80,1.2)}</g>`}
+ if(A==='masalah'){const t1=kata('s05','tukang'),t2=kata('s05','batunya'),t3=kata('s05','hujan');
+  if(t<t2) s=`<rect x="0" y="760" width="720" height="520" fill="${C.peach}"/><rect x="170" y="640" width="380" height="120" rx="20" fill="#FFFDF7" ${ST}/>`+orang(360,700,1.5,C.kar,'caping',-90)+`<text x="520" y="560" font-size="80" font-family="Baloo" fill="${C.kar}" opacity="${cl((t-t1)/.2)}">!</text>`;
+  else if(t<t3){const k=muncul(t,t2);s=`<rect x="0" y="760" width="720" height="520" fill="${C.peach}"/>${batu(300,760,1.6)}${batu(400,760,1.3)}<g transform="translate(520 560) scale(${k})"><rect x="-80" y="-44" width="160" height="88" rx="18" fill="${C.kar}" ${ST}/><text x="0" y="22" text-anchor="middle" font-size="58" font-family="Baloo" fill="${C.krem}">-10</text></g>`}
+  else s=sungai(t,cl((t-t3)/.5))+awan(360-200*(1-cl((t-t3)/.6)),330,1.8,'#9AA6B8')}
+ if(A==='buku'){const rows=[['Tahun 1',30,57],['Tahun 2',30,61],['Tahun 3',30,55]];let isi='';
+  rows.forEach((r,i)=>{const t0=g.id==='s06'?1e9:kata('s07','rencananya')+i*.5,t1=g.id==='s06'?1e9:kata('s07','jembatannya')+i*.4;const a=cl((t-t0)/.35),b=cl((t-t1)/.6);
+   isi+=`<g transform="translate(0 ${-150+i*110})" opacity="${a}"><text x="-250" y="10" font-size="30" font-family="Baloo" fill="${C.navy}">${r[0]}</text><rect x="-120" y="-30" width="${r[1]*4}" height="22" rx="6" fill="${C.batu}" ${ST}/><rect x="-120" y="2" width="${r[2]*4*b}" height="22" rx="6" fill="${C.kar}" ${ST}/><text x="${-110+r[2]*4*b}" y="22" font-size="24" font-family="Baloo" fill="${C.kar}" opacity="${b}">${r[2]}</text></g>`});
+  s=`<g transform="translate(360 560)"><path d="M-300,-260 Q0,-220 0,-240 Q0,-220 300,-260 L300,260 Q0,290 0,270 Q0,290 -300,260 Z" fill="#FFFDF7" ${ST}/><path d="M0,-240 L0,270" ${ST}/>${isi}
+   <g transform="translate(-170 -215)"><rect x="0" y="0" width="22" height="22" fill="${C.batu}"/><text x="30" y="20" font-size="22" font-family="Baloo" fill="${C.navy}">rencana</text><rect x="150" y="0" width="22" height="22" fill="${C.kar}"/><text x="180" y="20" font-size="22" font-family="Baloo" fill="${C.navy}">kenyataan (hari)</text></g></g>`+orang(130,1060,1.3,C.navy,null)}
+ if(A==='konsep') s=`<circle cx="360" cy="700" r="${300+Math.sin(t*2)*6}" fill="${C.peach}"/>`+Array.from({length:24},(_,i)=>{const a=i/24*Math.PI*2;return `<path d="M${360+Math.cos(a)*320},${700+Math.sin(a)*320} L${360+Math.cos(a)*380},${700+Math.sin(a)*380}" stroke="${C.api}" stroke-width="8" stroke-linecap="round"/>`}).join('');
+ if(A==='data'){const bars=[['Tebakan rata-rata',33.9,kata('s11','34'),C.batu],['Tebakan terburuk',48.6,kata('s13','terburuk'),C.peach],['Kenyataan',55.5,kata('s12','55,5'),C.kar]];
+  const hd=cl((t-kata('s10','1994'))/.3);let b='';
+  bars.forEach(([lab,v,t0,col],i)=>{const k=ez(cl((t-t0)/.7));b+=`<g transform="translate(70 ${470+i*150})" opacity="${t<t0?0:1}"><text x="0" y="-12" font-size="30" font-family="Baloo" fill="${C.navy}">${lab}</text><rect x="0" y="0" width="${v*8*k}" height="64" rx="12" fill="${col}" ${ST}/><text x="${v*8*k+14}" y="46" font-size="40" font-family="Baloo" fill="${C.navy}">${String(Math.round(v*10*k)/10).replace('.',',')} hari</text></g>`});
+  s=`<g opacity="${hd}"><text x="360" y="360" text-anchor="middle" font-size="52" font-family="Baloo" fill="${C.kar}">1994 · 37 mahasiswa</text><text x="360" y="405" text-anchor="middle" font-size="30" font-family="Baloo" fill="${C.navy}">menebak kapan skripsinya selesai</text></g>${b}`}
+ if(A==='trik'){const a1=muncul(t,kata('s14','jangan')),a2=muncul(t,kata('s15','tanya')),cor=cl((t-kata('s15','tanya'))/.3);
+  s=`<g transform="translate(360 470)"><g transform="scale(${a1})"><rect x="-300" y="-110" width="600" height="150" rx="22" fill="#FFFDF7" ${ST}/><text x="0" y="-55" text-anchor="middle" font-size="30" font-family="Baloo" fill="${C.navy}">JANGAN TANYA</text><text x="0" y="0" text-anchor="middle" font-size="36" font-family="Baloo" fill="${C.navy}">"Aku butuh berapa lama?"</text><path d="M-240,-10 L${-240+480*cor},-10" stroke="${C.kar}" stroke-width="9"/></g>
+   <g transform="translate(0 200) scale(${a2})"><rect x="-300" y="-110" width="600" height="190" rx="22" fill="${C.navy}" ${ST}/><text x="0" y="-55" text-anchor="middle" font-size="30" font-family="Baloo" fill="${C.api}">TANYA</text><text x="0" y="0" text-anchor="middle" font-size="34" font-family="Baloo" fill="${C.krem}">"Tugas serupa dulu</text><text x="0" y="44" text-anchor="middle" font-size="34" font-family="Baloo" fill="${C.krem}">selesai berapa lama?"</text></g></g>`}
+ if(A==='penutup') s=sungai(t,0,1,1)+orang(300,600,.9,C.kar,'caping')+orang(360,600,.9,C.navy,'peci')+orang(420,600,.9,C.kar,null);
+ return {s,g,A};
+}
+// ---------- Ata: muncul hanya di momen tertentu (gerak dari referensi 06) ----------
+function ata(t){
+ const e=$('ata');let pose=null,x=0,y=0,w=330,rot=0,sc=1,op=1;
+ const tk=gid.s08.mulai-0.45;
+ if(t<2.7){pose='mengintip';w=260;const k=ez(cl((t-0.25)/.35))-ez(cl((t-2.3)/.35));x=720-w*0.62*k;y=470}
+ else if(t>=tk&&t<tk+0.45){pose='berpikir';const k=ez(cl((t-tk)/.45));w=330;x=-200+360*k;y=-300+700*k;rot=-140+140*k;sc=.6+3.2*Math.sin(k*Math.PI)}          // sapuan jadi transisi
+ else if(t>=tk+0.45&&t<gid.s10.mulai-0.1){pose='berpikir';w=360;x=180;y=560+Math.sin(t*2.4)*6;sc=muncul(t,tk+0.45,.2)||1}
+ else if(t>=gid.s10.mulai-0.1&&t<gid.s14.mulai-0.1){const tk2=kata('s12','55,5'),tm=gid.s13.mulai;pose=t>=tm?'menatap':t>=tk2?'kaget':'bicara';w=t>=tk2&&t<tm?270:230;x=470;y=1080-w;sc=t>=tk2&&t<tk2+.3?muncul(t,tk2,.25):1}
+ else if(t>=gid.s14.mulai-0.1&&t<gid.s16.mulai-0.1){pose='sombong';w=320;x=380;y=860-w*.55+Math.abs(Math.sin(t*3))*-6;sc=muncul(t,gid.s14.mulai-0.1,.25)||1}
+ else if(t>=gid.s16.mulai+0.6){pose='tertawa';w=280;x=420;y=1000-w;sc=muncul(t,gid.s16.mulai+0.6,.3)||1}
+ if(!pose){e.style.opacity=0;return pose}
+ const src=`../aset/maskot/panda/pose/${pose}.svg`;if(!e.src.endsWith(src.slice(2)))e.src=src;
+ e.style.opacity=op;e.style.width=w+'px';e.style.left=x+'px';e.style.top=y+'px';e.style.transform=`rotate(${rot}deg) scale(${sc})`;return pose}
+window.render=function(t){
+ const {s,g,A}=adegan(t);
+ const lokal=t-g.mulai, z=1+Math.min(lokal,6)*0.01, mu=cl((t-g.mulai+0.15)/.25);
+ $('dunia').innerHTML=`<svg viewBox="0 0 720 1280" width="720" height="1280">${s}</svg>`;
+ $('dunia').style.transform=`scale(${z}) translateX(${(1-ez(mu))*24}px)`;$('dunia').style.opacity=.35+.65*mu;
+ // garis kecepatan saat Ata kaget
+ const tk2=kata('s12','55,5');$('garis').innerHTML=t>=tk2&&t<tk2+1.2?Array.from({length:28},(_,i)=>{const a=i/28*Math.PI*2;return `<path d="M${605+Math.cos(a)*170},${945+Math.sin(a)*170} L${605+Math.cos(a)*330},${945+Math.sin(a)*330}" stroke="${C.navy}" stroke-width="5" opacity=".45"/>`}).join(''):'';
+ ata(t);
+ const chip={konsep:'PLANNING FALLACY',data:'DATA ASLI',trik:'TRIK LEGAL'}[A]||'';$('chip').textContent=chip;$('chip').style.opacity=chip?1:0;
+ $('def').textContent=A==='konsep'?'Menebak waktu dari rencana yang lancar, bukan dari pengalaman.':'';
+ let w='';for(const x of G){if(t<x.mulai-0.02||t>x.selesai+0.2)continue;for(const k of x.kata)if(t>=k.a-0.03)w=k.w.replace(/[.,]$/,'')}$('cap').textContent=w;
+ $('src').innerHTML=A==='data'?'Buehler, Griffin &amp; Ross (1994). Exploring the "planning fallacy". <i>Journal of Personality and Social Psychology</i>, 67(3), 366–381.':(A==='buku'||A==='masalah'||A==='kalender'?'Ilustrasi alegori; angka tahun di buku adalah cerita.':'');
+};
+window.render(0);window.READY=true;
+</script></body></html>

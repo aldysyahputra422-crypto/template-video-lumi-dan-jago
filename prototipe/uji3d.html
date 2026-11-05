@@ -1,0 +1,129 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Uji 3D Lumi dan Jago</title>
+<style>
+@font-face{font-family:'Baloo';src:url('node_modules/@fontsource/baloo-2/files/baloo-2-latin-800-normal.woff2') format('woff2');font-weight:800}
+:root{--krem:#F6E9D8;--peach:#EFCBA7;--bata:#C8562B;--bara:#D8622B;--navy:#2B3245;--abu:#6B7391}
+html,body{margin:0;background:#000}
+#stage{position:relative;width:720px;height:1280px;overflow:hidden;font-family:'Baloo',sans-serif}
+canvas{position:absolute;inset:0}
+.ov{position:absolute;pointer-events:none}
+#chip{left:50%;top:64px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:var(--navy);color:var(--krem);padding:8px 24px 8px 10px;border-radius:40px;font-weight:800;font-size:28px;letter-spacing:1px;white-space:nowrap;box-shadow:0 5px 0 rgba(0,0,0,.18)}
+#chip i{font-style:normal;background:var(--bara);color:var(--krem);width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:24px}
+#cap{left:0;right:0;top:470px;text-align:center;font-weight:800;font-size:84px;line-height:1;color:#fff;-webkit-text-stroke:12px var(--navy);paint-order:stroke fill;text-shadow:0 7px 0 rgba(43,50,69,.35)}
+#tag{left:50%;top:400px;transform:translateX(-50%);padding:4px 16px;border-radius:12px;font-weight:800;font-size:24px;letter-spacing:3px;color:var(--krem)}
+.lab{transform:translate(-50%,-100%);text-align:center;color:var(--navy);font-weight:800;white-space:nowrap}
+.lab b{display:block;font-size:46px;line-height:1}.lab span{display:block;font-size:20px;line-height:1.05}
+#card{left:50%;top:150px;width:520px;margin-left:-260px;background:#fffaf3;border-radius:22px;overflow:hidden;box-shadow:0 14px 30px rgba(43,50,69,.28);transform-origin:50% 0}
+#card .hd{background:var(--navy);color:var(--krem);font-weight:800;font-size:26px;padding:14px 22px}
+#card .it{display:flex;align-items:center;gap:14px;padding:12px 22px;font-weight:800;font-size:28px;color:var(--navy);border-top:2px solid #f0e2cf}
+#card .ck{width:38px;height:38px;border-radius:10px;border:4px solid var(--navy);display:grid;place-items:center;color:#fff;font-size:26px;flex:none}
+#stamp{right:70px;top:300px;padding:6px 18px;border:6px solid var(--bata);color:var(--bata);border-radius:12px;font-weight:800;font-size:40px;transform:rotate(-10deg);background:rgba(255,250,243,.9)}
+#akhir{left:0;right:0;top:250px;text-align:center;color:var(--navy);font-weight:800;font-size:40px}
+#src{left:0;right:0;bottom:26px;text-align:center;color:var(--navy);font-weight:800;font-size:18px;opacity:.75}
+</style></head><body>
+<div id="stage">
+ <div class="ov" id="chip"><i>1</i><span id="chipT"></span></div>
+ <div class="ov" id="tag"></div>
+ <div class="ov lab" id="lb0"><b></b><span>Kurang pintar</span></div>
+ <div class="ov lab" id="lb1"><b></b><span>Telat kumpul</span></div>
+ <div class="ov lab" id="lb2"><b></b><span>Salah baca aturan</span></div>
+ <div class="ov" id="card"><div class="hd">Aturan lomba · cek dulu</div>
+  <div class="it"><div class="ck" id="ck0"></div>Baca aturan 2 kali</div>
+  <div class="it"><div class="ck" id="ck1"></div>Stabilo semua kata WAJIB</div>
+  <div class="it"><div class="ck" id="ck2"></div>Cek format dan tenggat</div></div>
+ <div class="ov" id="stamp">LEGAL ✓</div>
+ <div class="ov" id="cap"></div>
+ <div class="ov" id="akhir">Sampai jumpa di gapura</div>
+ <div class="ov" id="src">Contoh. Data fiktif, bukan data asli.</div>
+</div>
+<script type="module">
+import * as THREE from './node_modules/three/build/three.module.js';
+const TL = await (await fetch('timeline.json')).json(); const E = TL.event;
+const W=720,H=1280, $=id=>document.getElementById(id);
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+r.setPixelRatio(1);r.setSize(W,H);r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;r.outputColorSpace=THREE.SRGBColorSpace;
+$('stage').prepend(r.domElement);
+const scene=new THREE.Scene();
+{const c=document.createElement('canvas');c.width=2;c.height=256;const g=c.getContext('2d'),gr=g.createLinearGradient(0,0,0,256);gr.addColorStop(0,'#FBF1E4');gr.addColorStop(.7,'#F3D6B6');gr.addColorStop(1,'#EFC9A2');g.fillStyle=gr;g.fillRect(0,0,2,256);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;scene.background=t;}
+scene.fog=new THREE.Fog(0xF3D6B6,20,55);
+const cam=new THREE.PerspectiveCamera(50,W/H,0.1,300);
+scene.add(new THREE.HemisphereLight(0xFFF4E6,0xC9A27E,1.5));
+const sun=new THREE.DirectionalLight(0xFFE4C4,2.4);sun.position.set(-9,15,9);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+Object.assign(sun.shadow.camera,{left:-16,right:16,top:16,bottom:-16,near:1,far:70});sun.shadow.bias=-0.0006;scene.add(sun);
+const M=c=>new THREE.MeshStandardMaterial({color:c,flatShading:true,roughness:.95,metalness:0});
+const tepi=(m,c=0x2B3245)=>{m.add(new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry,25),new THREE.LineBasicMaterial({color:c})));return m};
+const add=(m,x,y,z,cast=true)=>{m.position.set(x,y,z);m.castShadow=cast;m.receiveShadow=true;scene.add(m);return m};
+// tanah, jalan, bukit, pohon, batu
+{const g=new THREE.Mesh(new THREE.PlaneGeometry(300,300),M(0xEFCBA7));g.rotation.x=-Math.PI/2;g.receiveShadow=true;scene.add(g);
+ const p=new THREE.Mesh(new THREE.PlaneGeometry(3.4,70),M(0xF7EBDB));p.rotation.x=-Math.PI/2;p.position.set(0.6,0.012,-25);p.receiveShadow=true;scene.add(p);
+ [[-22,-46,14,0xE4C9A8],[16,-52,16,0xDDBE98],[34,-34,11,0xE4C9A8],[-34,-24,10,0xD8B896],[4,-70,22,0xE7CFB0]].forEach(([x,z,s,c])=>{const h=new THREE.Mesh(new THREE.IcosahedronGeometry(s,0),M(c));h.scale.y=.32;add(h,x,0,z,false)});
+ const pohon=(x,z,s)=>{const t=new THREE.Mesh(new THREE.CylinderGeometry(.14*s,.2*s,.9*s,6),M(0x7A5230));add(t,x,.45*s,z);const k=new THREE.Mesh(new THREE.ConeGeometry(.95*s,2.3*s,7),M(0x8AA07A));add(k,x,1.9*s,z);const k2=new THREE.Mesh(new THREE.ConeGeometry(.7*s,1.6*s,7),M(0x9BB088));add(k2,x,2.8*s,z)};
+ [[-4.6,-7,1],[-6,-13,1.2],[5.8,-9,1.1],[6.6,-16,1.3],[-7,-21,1.2],[5,-24,1],[-5.4,-1.5,.9],[6.4,-3,.9],[-9,-9,1.4],[9,-12,1.3]].forEach(a=>pohon(...a));
+ [[-2.8,1.6,.35],[3.9,1.9,.3],[-3.6,-11,.45],[3.4,-14,.4]].forEach(([x,z,s])=>add(new THREE.Mesh(new THREE.DodecahedronGeometry(s,0),M(0xD9B892)),x,s*.6,z));}
+// gapura
+{const gz=-31,gx=0.6;[-2.4,2.4].forEach(d=>add(tepi(new THREE.Mesh(new THREE.BoxGeometry(1,4.4,1),M(0xC8562B))),gx+d,2.2,gz));
+ add(tepi(new THREE.Mesh(new THREE.BoxGeometry(6.6,.7,1.3),M(0xEFCBA7))),gx,4.6,gz);
+ const atap=new THREE.Mesh(new THREE.ConeGeometry(3.9,2,4),M(0x7A5230));atap.rotation.y=Math.PI/4;add(tepi(atap),gx,5.95,gz);
+ const bola=new THREE.Mesh(new THREE.IcosahedronGeometry(.35,1),new THREE.MeshStandardMaterial({color:0xF2B84B,emissive:0xF2B84B,emissiveIntensity:.8}));add(bola,gx,7.2,gz);}
+// pilar data
+const PIL=[{x:-2.9,h:.47,c:0x6B7391},{x:-1.5,h:1.41,c:0xF6E9D8},{x:-.1,h:3.3,c:0xD8622B}].map(p=>{const m=tepi(new THREE.Mesh(new THREE.BoxGeometry(1,1,1),M(p.c)));add(m,p.x,0,-3.6);m.scale.y=.001;return {...p,m}});
+// tokoh sebagai sprite datar di dunia 3D
+async function tekstur(url){const im=new Image();im.src=url;await im.decode();const c=document.createElement('canvas');c.width=c.height=1024;c.getContext('2d').drawImage(im,0,0,1024,1024);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return t}
+function cahaya(){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),gr=g.createRadialGradient(64,64,0,64,64,64);gr.addColorStop(0,'rgba(255,214,140,1)');gr.addColorStop(.35,'rgba(255,170,70,.55)');gr.addColorStop(1,'rgba(255,140,40,0)');g.fillStyle=gr;g.fillRect(0,0,128,128);return new THREE.CanvasTexture(c)}
+const TG=cahaya();
+async function tokoh(url,S,api){const root=new THREE.Group(),pivot=new THREE.Group();root.add(pivot);
+ const pl=new THREE.Mesh(new THREE.PlaneGeometry(S,S),new THREE.MeshBasicMaterial({map:await tekstur(url),transparent:true,alphaTest:.04}));pl.position.y=.41*S;pivot.add(pl);
+ const sh=new THREE.Mesh(new THREE.CircleGeometry(S*.27,32),new THREE.MeshBasicMaterial({color:0x2B3245,transparent:true,opacity:.22,depthWrite:false}));sh.rotation.x=-Math.PI/2;sh.position.y=.02;sh.scale.x=1.5;root.add(sh);
+ const gl=new THREE.Sprite(new THREE.SpriteMaterial({map:TG,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true}));gl.position.set((api[0]-.5)*S,.41*S+(.5-api[1])*S,.05);gl.scale.set(S*.5,S*.5,1);pivot.add(gl);
+ scene.add(root);return {root,pivot,sh,gl,S}}
+const LUMI=await tokoh('../aset/maskot/lumi.svg',2.7,[.814,.6]), JAGO=await tokoh('../aset/maskot/jago.svg',2.95,[.817,.517]);
+// ---------- linimasa ----------
+const ez=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2, cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+function kf(t,K){if(t<=K[0][0])return K[0][1];for(let i=1;i<K.length;i++){if(t<=K[i][0]){const[a,va]=K[i-1],[b,vb]=K[i];const k=ez((t-a)/(b-a));return va.map((v,j)=>v+(vb[j]-v)*k)}}return K[K.length-1][1]}
+const G=Object.fromEntries(TL.garis.map(g=>[g.id,g]));
+const KAM=[[0,[0.3,5.0,15,0,1.2,-4]],[0.7,[-0.4,3.4,11,-0.8,1.3,-1]],[3.9,[-0.9,2.6,8.6,-1.2,1.3,0]],[4.7,[0.2,2.9,10.0,0.2,1.4,0]],[8.1,[0.3,2.8,9.4,0.2,1.4,0]],
+ [9.0,[-0.4,3.4,9.4,-0.5,1.7,-3.4]],[13.1,[-0.3,3.9,8.4,-0.5,2.1,-3.4]],[13.9,[2.0,2.6,6.8,2.6,1.5,-1.3]],[16.9,[2.2,2.5,6.2,2.7,1.5,-1.3]],[17.6,[0.8,3.6,9.0,0.6,2.2,-12]],[TL.durasi,[0.7,4.4,8.0,0.6,2.8,-31]]];
+const LP=[[0,[-1.5,0.7]],[8.6,[-1.5,0.7]],[10.0,[1.3,-2.7]],[17.3,[1.3,-2.7]],[TL.durasi,[0.0,-9.5]]];
+const JP=[[0,[1.8,0.9]],[8.5,[1.8,0.9]],[9.2,[3.4,-1.3]],[17.3,[3.4,-1.3]],[TL.durasi,[1.4,-8.8]]];
+function bicara(id,t){const g=TL.garis.find(g=>g.tokoh===id&&t>=g.mulai&&t<=g.selesai);return g?1:0}
+function kataSaatIni(t){for(const g of TL.garis){if(t<g.mulai-0.02||t>g.selesai+0.25)continue;let w=null;for(const k of g.kata)if(t>=k.a-0.03)w=k;return w?{w:w.w.replace(/[.,]/g,''),g}:null}return null}
+function proyek(v){const p=v.clone().project(cam);return[(p.x*.5+.5)*W,(-p.y*.5+.5)*H,p.z]}
+const loncat=(t,t0,d,h)=>{const k=(t-t0)/d;return k>0&&k<1?4*h*k*(1-k):0};
+window.render=function(t){
+ const c=kf(t,KAM);const dr=Math.sin(t*.9)*.05;cam.position.set(c[0]+dr,c[1]+Math.sin(t*.7)*.03,c[2]);cam.lookAt(c[3],c[4],c[5]);
+ // Lumi
+ const lp=kf(t,LP);let ly=loncat(t,E.jago_jatuh+0.42,0.35,0.35)+loncat(t,E.stempel,0.4,0.45);
+ if(bicara('lumi',t))ly+=Math.abs(Math.sin(t*9))*0.07; const jalanL=(t>8.6&&t<10)||t>17.3?Math.abs(Math.sin(t*11))*0.12:0;
+ LUMI.root.position.set(lp[0],ly+jalanL,lp[1]);
+ // Jago: jatuh dari langit, mendarat dengan peras-regang
+ const jp=kf(t,JP);let jy=0;const tj=E.jago_jatuh;
+ if(t<tj)jy=60;else if(t<tj+.42){const k=(t-tj)/.42;jy=9*(1-k*k)}
+ jy+=loncat(t,8.5,0.7,0.9)+loncat(t,E.kartu-0.1,0.4,0.4);if(bicara('jago',t))jy+=Math.abs(Math.sin(t*10))*0.08;
+ const jalanJ=t>17.3?Math.abs(Math.sin(t*11))*0.12:0;JAGO.root.position.set(jp[0],jy+jalanJ,jp[1]);
+ const sq=t>tj+.42&&t<tj+.62?Math.sin((t-tj-.42)/.2*Math.PI):0;JAGO.pivot.scale.set(1+.16*sq,1-.2*sq,1);
+ for(const T of [LUMI,JAGO]){T.root.rotation.y=Math.atan2(cam.position.x-T.root.position.x,cam.position.z-T.root.position.z);
+  const h=T.root.position.y;T.sh.position.y=.02-h;T.sh.material.opacity=.22*Math.max(.25,1-h/3);const s=Math.max(.4,1-h/4);T.sh.scale.set(1.5*s,s,1)}
+ // api: Lumi = meter paham
+ const paham=cl((t-E.pilar[2])/2.2)*(t<17.6?1:0.7);LUMI.gl.material.opacity=.3+.7*paham+Math.sin(t*23)*.06;const gs=LUMI.S*(.42+.45*paham);LUMI.gl.scale.set(gs,gs,1);
+ JAGO.gl.material.opacity=.35+Math.sin(t*19)*.08;
+ // pilar data tumbuh
+ PIL.forEach((p,i)=>{const t0=E.pilar[i],d=i==2?.9:.55;let k=cl((t-t0)/d);k=k<1?1-Math.pow(1-k,3)*(1-0)+Math.sin(k*Math.PI)*.08:1;const turun=1-ez(cl((t-17.3)/.6));const h=Math.max(.001,p.h*k*turun);p.m.scale.y=h;p.m.position.y=h/2;
+  const lb=$('lb'+i);if(t<t0){lb.style.opacity=0}else{const[x,y]=proyek(new THREE.Vector3(p.x,h+.15,-3.6));lb.style.left=x+'px';lb.style.top=y+'px';lb.style.opacity=t>17.4?cl(1-(t-17.4)/.4):1;
+   lb.querySelector('b').textContent=Math.round([6,18,42][i]*cl((t-t0)/d))+'%';const pu=i==2?1+.25*Math.max(0,Math.sin(cl((t-E.angka42)/.35)*Math.PI)):1;lb.style.transform=`translate(-50%,-100%) scale(${pu})`}});
+ // chip per bagian
+ const chip=$('chip');let ct='',ci='1';if(t<G.b3.mulai-0.1){ct='MITOS: KURANG PINTAR'}else if(t<G.b4.mulai-0.1){ct='FAKTA: SALAH BACA ATURAN';ci='2'}else if(t<E.penutup){ct='TRIK LEGAL';ci='3'}
+ const ub=[0,G.b3.mulai-0.1,G.b4.mulai-0.1].reduce((a,x)=>t>=x?x:a,0);const pk=cl((t-ub-0.15)/.22);
+ chip.style.opacity=ct?(t<0.25?cl((t-0.05)/.2):1):0;chip.style.transform=`translateX(-50%) scale(${.88+.12*ez(pk)})`;$('chipT').textContent=ct;chip.querySelector('i').textContent=ci;
+ // caption satu kata (hasil ukur referensi 01: ganti langsung, tanpa animasi)
+ const kw=kataSaatIni(t),cap=$('cap');cap.textContent=kw?kw.w:'';cap.style.webkitTextStroke=`12px ${kw&&kw.g.tokoh==='lumi'?'#C8562B':'#2B3245'}`;
+ const tag=$('tag');const pert=TL.garis.find(g=>t>=g.mulai-0.05&&t<g.mulai+0.9&&(g.id==='b1'||g.id==='b2'));tag.style.opacity=pert?1:0;
+ if(pert){tag.textContent=pert.tokoh.toUpperCase();tag.style.background=pert.tokoh==='lumi'?'#C8562B':'#2B3245'}
+ // kartu UI (pop 0,33 dtk seperti referensi) + centang
+ const kd=$('card'),pk2=cl((t-E.kartu)/.33),out=cl((t-E.penutup)/.3);kd.style.opacity=t<E.kartu?0:ez(pk2)*(1-out);
+ kd.style.transform=`translateY(${24*(1-ez(pk2))-40*out}px) scale(${.9+.1*ez(pk2)})`;
+ [E.cek[0],E.cek[1],E.stempel-0.2].forEach((tc,i)=>{const ck=$('ck'+i),on=t>=tc;ck.textContent=on?'✓':'';ck.style.background=on?'#D8622B':'transparent';ck.style.borderColor=on?'#D8622B':'#2B3245'});
+ const st=$('stamp'),ks=cl((t-E.stempel)/.18);st.style.opacity=t<E.stempel?0:(1-out);st.style.transform=`rotate(-10deg) scale(${2.2-1.2*ks})`;
+ $('akhir').style.opacity=cl((t-(G.b5.selesai+0.2))/.4);
+ r.render(scene,cam);
+};
+window.render(0);window.READY=true;
+</script></body></html>

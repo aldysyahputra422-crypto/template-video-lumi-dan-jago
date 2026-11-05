@@ -1,0 +1,41 @@
+{
+ "berkas": "f4ba60b4-Kos-kosan_rumahan_juga_butuh_sistem__Besok_ya_Pak__",
+ "teknis": {
+  "durasi": 82.75,
+  "lebar": 720,
+  "tinggi": 1280,
+  "fps": 24.0,
+  "ukuran_mb": 10.36,
+  "ada_audio": true,
+  "audio_hz": 44100
+ },
+ "loudness": {
+  "lufs": -14.1,
+  "rentang_lu": 2.5,
+  "puncak_dbfs": -0.6
+ },
+ "potongan_keras": {
+  "jumlah": 3,
+  "waktu": [
+   39.62,
+   39.67,
+   61.92
+  ],
+  "per_menit": 2.2
+ },
+ "suara": {
+  "jumlah_kata": 200,
+  "kata_per_detik": 2.5,
+  "rata2_durasi_kata": 0.35,
+  "jeda_terpanjang": 0.44,
+  "jeda_di_atas_0_45": 0
+ },
+ "hook": "Kalau kamar kosong di rumahmu kamu sewain ke Mahasiswa,",
+ "kalimat": [
+  {
+   "mulai": 0.0,
+   "selesai": 80.04,
+   "jumlah_kata": 200
+  }
+ ]
+}

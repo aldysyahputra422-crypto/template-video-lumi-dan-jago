@@ -1,0 +1,110 @@
+# Kosakata visual mesin stickman. SATU sumber: prompt ChatGPT, parser/lint, dan mesin render (render/mesin.html)
+# memakai nama yang sama. Nama di luar daftar DITOLAK parser (tidak ditebak). Test menjaga mesin punya semua nama ini.
+latar:            # semua gelap, sesuai tempat cerita
+  kamar: kamar malam, kasur, jendela berbulan, lampu meja
+  kelas: ruang kelas, papan tulis, bangku
+  perpustakaan: rak buku tinggi, lampu gantung
+  kampus: gedung kampus, pohon, lampu jalan
+  kota: siluet gedung berjendela menyala
+  pasar: lapak beratap kain, lampion
+  desa: rumah panggung, pohon kelapa, bulan
+  istana: pilar, panji, singgasana
+  jalan: jalan malam, tiang lampu
+  panggung: panggung lomba, lampu sorot, meja juri
+  kantor: meja kerja, monitor, jendela kota
+  kosong: hitam dengan cahaya lembut di tengah
+peran:            # aktor stickman; aksesori membedakan peran
+  siswa: siswa SMA laki-laki, kemeja putih, celana abu, rambut pendek
+  siswi: siswi SMA perempuan, kemeja putih, rok abu panjang, rambut hitam panjang
+  siswi_kerudung: siswi SMA perempuan berkerudung putih, kemeja putih, rok abu
+  mahasiswi: mahasiswi, rambut panjang, atasan kasual, jeans
+  dokter: dokter, jas putih panjang dan stetoskop
+  petani: petani, caping, handuk di leher
+  pengusaha: pengusaha atau bos, jas hitam dan dasi merah
+  kamu: tokoh kuning polos yang mewakili penonton (dipakai saat narasi menyapa kamu)
+  pelajar: tas punggung
+  mahasiswa: kacamata
+  guru: kacamata dan buku
+  raja: mahkota
+  warga: caping
+  pedagang: topi kain
+  juri: dasi
+  ibu: sanggul
+  ayah: kumis
+  anak: badan kecil
+  teman: topi terbalik
+  petugas: topi petugas
+ekspresi: [datar, senang, sedih, kaget, marah, bingung, takut, bangga, malu, capek, licik]
+aksi:             # gerak stickman; durasi bawaan 0,8 dtk kecuali berulang
+  diam: berdiri bernapas
+  jalan: berjalan ke posisi lain (pakai "ke <posisi>")
+  lari: berlari ke posisi lain (pakai "ke <posisi>")
+  menunjuk: menunjuk ke depan
+  melambai: melambai
+  sorak: kedua tangan ke atas
+  garuk_kepala: menggaruk kepala
+  berpikir: tangan di dagu
+  panik: kedua tangan di kepala, gemetar
+  lompat: melompat
+  terduduk: jatuh terduduk
+  membaca: memegang dan membaca
+  mengetik: mengetik
+  memberi: menyodorkan benda
+  mengambil: meraih benda
+  menangis: menutup wajah
+  tertawa: tertawa terguncang
+  menggeleng: menggelengkan kepala
+  mengangguk: mengangguk
+posisi: [jauh_kiri, kiri, tengah, kanan, jauh_kanan]
+props:            # ikon benda
+  buku: buku
+  laptop: laptop
+  hp: ponsel
+  kalender: kalender
+  jam: jam dinding
+  karung: karung
+  beras: segenggam beras
+  koin: koin
+  uang: lembar uang
+  dokumen: berkas atau file
+  piala: piala
+  bendera: bendera
+  papan: papan tulis kecil
+  meja: meja
+  lilin: lilin menyala
+  lampu: bohlam
+  bintang: bintang
+  hati: hati
+  tanda_tanya: tanda tanya
+  tanda_seru: tanda seru
+  centang: centang
+  silang: silang
+  kucing: kucing
+  grafik_naik: grafik naik
+  grafik_turun: grafik turun
+  panah: panah
+gerak_props: [muncul, jatuh, membesar, berputar, melayang, hilang]
+tempat_props: "kiri | tengah | kanan | atas | tangan:<id> | kepala:<id>"
+kamera: [lebar, dekat, dorong, goyang, geser]
+# SUASANA: berlaku sampai diganti. Mengatur warna, cahaya, kamera, gerak tokoh, dan musik latar sekaligus.
+suasana:
+  normal: {arti: biasa, musik: musik_tegang}
+  tegang: {arti: "vinyet merah berdenyut, musik tegang", musik: musik_tegang}
+  horor: {arti: "warna dingin, lampu berkedip, kabut, kamera bergetar halus, tokoh menggigil, dengung dan detak jantung", musik: musik_horor}
+  ceria: {arti: "cahaya hangat, kilau, tokoh memantul, musik ceria", musik: musik_ceria}
+  sedih: {arti: "warna pudar kebiruan, tokoh menunduk dan melambat, pad minor", musik: musik_sedih}
+  misterius: {arti: "rona ungu, kabut, denting misterius", musik: musik_misterius}
+# SISIPAN: potongan layar penuh yang memvisualkan kata secara harfiah (benda besar, bergerak), dari @kata sampai akhir ketukan.
+sisipan:
+  hp_scroll: {arti: "HP muncul dari bawah, jempol menggulir feed ke atas", isi: [kucing, video, belanja]}
+  chat: {arti: "layar chat, gelembung pesan muncul bergantian", isi: [tanya, biasa]}
+  jam_cepat: {arti: "jam besar, jarum berputar kencang (waktu lewat)", isi: []}
+  kalender_sobek: {arti: "kalender, lembar hari tersobek satu per satu", isi: []}
+  layar_laptop: {arti: "layar laptop dekat: kursor berkedip atau baris terketik", isi: [kosong, ketik]}
+  tagihan: {arti: "struk tagihan keluar memanjang, angka total naik", isi: []}
+  akar: {arti: "tanaman kecil, akarnya tumbuh ke bawah sampai titik terdalam menyala", isi: []}
+  tangan_ambil: {arti: "tangan bersarung putih masuk, menjumput benda, menariknya keluar (berulang)", isi: props}
+  tangan_beri: {arti: "tangan bersarung putih menyodorkan benda ke tengah lalu melepaskannya", isi: props}
+  tangan_tulis: {arti: "tangan memegang pensil menulis di kertas besar, baris demi baris", isi: []}
+ata_masuk: [intip, pop, sapuan]
+ata_tempat: [kiri, tengah, kanan]

@@ -1,0 +1,58 @@
+# Profil maskot Sobat Ambis versi 2 (5 November 2026): satu maskot, Ata si panda merah.
+# Sumber naratif: docs/profil-maskot.md. Versi naga (Lumi dan Jago) diarsipkan: docs/arsip/profil-maskot-v1-naga.md.
+# Jangan memberi gender pada Ata kecuali pemilik menetapkannya.
+merek:
+  nama: Sobat Ambis
+  jenis: mentoring lomba dan les privat (mentor mahasiswa PTN)
+  situs: https://sobatambis.netlify.app/
+akun:
+  # Akun IG baru: murni personal branding maskot. TIDAK ADA CTA, harga, klaim, atau ajakan daftar.
+  # Satu-satunya jembatan ke merek: post Collab dengan akun resmi (tampil juga di profil resmi,
+  # jadi topik harus aman untuk merek: tanpa politik, agama, tuduhan, atau orang sungguhan).
+  cta: false
+  kolaborasi: "@mentoringsobatambis"
+  usulan_nama_akun: [ata.ngulik, si.ata, ata.pandamerah]   # ketersediaan dicek pemilik
+lore:
+  gapura: gerbang prestasi di ujung perjalanan belajar (lomba, SNBT, ujian, mimpi masing-masing)
+  pelintas: para murid yang sedang berjalan menuju gapura
+  ata: panda merah yang baru saja melewati gapura dan kembali menemani pelintas; hobinya mengulik data dan jurnal sampai ketemu fakta yang mengejutkan
+  api_ekor: pelita saat ada yang paham, bara saat semangat; menyala lebih terang di momen "ternyata..."
+  plester_hidung: bekas jatuh bangun mengejar gapura; pernah jatuh, tetap jalan
+tokoh:
+  ata:
+    nama: Ata
+    arti_nama: tersembunyi di kata "data"; si pengulik yang selalu cek datanya dulu
+    spesies: panda merah
+    peran: pemandu cerita tunggal; tenang dan runtut, sesekali julid tapi peduli
+    kepribadian: [penasaran, teliti, menjelaskan runtut tanpa menggurui, cerdik dan sedikit usil, diam-diam peduli]
+    kelemahan_lucu: [gampang kaget saat menemukan data aneh, kadang sok tahu lalu ketahuan, lupa waktu kalau sudah mengulik]
+    gaya_bicara: aku-kamu, kalimat pendek dan runtut, sesekali gaul ringan (lho, dong), tidak berteriak
+    kalimat_khas: ["Bentar, aku cek datanya dulu.", "Jalan pintas boleh, jalan curang nggak."]
+    ciri_wajib: [api kecil di ujung ekor, plester di hidung, topeng wajah krem dengan tanda air mata, ekor bercincin karat dan krem]
+    pose: [bicara, kaget, sombong, menatap, duduk-samping, marah, tertawa, berpikir, mengintip]
+    pemetaan_momen:
+      hook: mengintip
+      reaksi_data: kaget
+      penamaan_konsep: berpikir
+      penjelasan: bicara
+      trik_legal: sombong
+      ketidakadilan_atau_ironi: marah
+      penutup: tertawa
+      jeda_atau_sindiran: menatap
+    palet: {karat: "#C3562A", krem_stiker: "#FDF5D6", krem_wajah: "#F8DBB8", navy_kaki: "#2D303D", api: "#FAB756", garis: "#180803"}
+    aturan_keras:
+      - Hanya meledek SITUASI, tidak pernah meledek nilai, kecerdasan, fisik, atau kegagalan penonton.
+      - Kalau topiknya menyangkut orang yang sedang down, berhenti bercanda dan ganti nada hangat.
+      - Trik hanya yang legal. Tidak pernah menyontek, joki, atau curang.
+      - Setiap klaim riset wajib punya sumber (penulis, tahun, jurnal) yang sudah dicek; angka nyata tidak boleh didramatisasi.
+      - Tidak ada ikon atau istilah iblis atau setan di komunikasi publik.
+    muncul_di: [hook, reaksi pada angka atau putaran, momen penamaan konsep, trik legal, penutup]
+    suara_elevenlabs: "(voice id diisi pemilik setelah audisi)"
+struktur_naskah:   # pola referensi 03, sudah disepakati pemilik
+  - hook paradoks dalam kalimat pertama
+  - alegori (dunia fiktif sederhana, tindakan kecil berulang)
+  - putaran (angka atau temuan yang mengejutkan dalam cerita)
+  - nama konsep sesudah cerita (Ata muncul)
+  - data nyata dari jurnal, bersumber
+  - trik legal dari Ata
+  - kalimat penutup yang mudah diingat

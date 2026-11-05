@@ -1,0 +1,116 @@
+##VIDEO kedai-5whys | Ratusan lewat, nol pembeli
+##SUMBER fivewhys
+
+##KETUKAN 01
+UCAP: [curious] Ratusan mahasiswa lewat depan kedai Raka. Nol yang beli.
+LATAR: kampus
+AKTOR: w1=pelajar jauh_kiri datar; w2=mahasiswa jauh_kanan datar; w3=teman kiri datar
+AKSI: w1 jalan ke jauh_kanan @Ratusan; w2 jalan ke jauh_kiri @mahasiswa; w3 jalan ke kanan @lewat
+PROPS: meja tengah muncul @kedai; jam atas muncul @Raka
+TEKS: 0 PEMBELI @Nol
+KAMERA: dorong
+
+##KETUKAN 02
+UCAP: [sighs] Raka yakin masalahnya nama. Diganti. Tetap sepi.
+KELUAR: w1; w2; w3
+AKTOR: raka=mahasiswa kiri senang
+AKSI: raka jalan ke tengah @Raka
+PROPS: papan kanan muncul @Diganti
+EKSPRESI: raka sedih @sepi
+KAMERA: lebar
+
+##KETUKAN 03
+UCAP: Masalahnya harga. Promo beli satu gratis satu. Tetap sepi.
+PROPS: koin kanan berputar @gratis
+EKSPRESI: raka capek @sepi
+KAMERA: dekat raka
+
+##KETUKAN 04
+UCAP: [tense] Masalahnya suasana. Lampu warna-warni. Tagihan listrik naik.
+PROPS: lampu atas melayang @Lampu
+SISIPAN: tagihan @Tagihan
+AKSI: raka panik @suasana
+KAMERA: goyang
+
+##KETUKAN 05
+UCAP: Sampai adiknya, Sasa, bertanya satu hal.
+AKTOR: sasa=anak jauh_kiri bingung
+AKSI: sasa lari ke kiri @adiknya
+KAMERA: lebar
+
+##KETUKAN 06
+UCAP: [curious] Orang-orang tadi lewat jam berapa?
+AKSI: sasa menunjuk @lewat
+EKSPRESI: raka bingung @berapa
+KAMERA: dekat sasa
+
+##KETUKAN 07
+UCAP: [surprised] Jam tujuh. Kedai Raka buka jam sepuluh.
+SISIPAN: jam_cepat @tujuh
+EKSPRESI: raka kaget @sepuluh
+
+##KETUKAN 08
+UCAP: Mereka bukan menolak kopinya. Mereka tidak pernah melihatnya buka.
+KELUAR: raka; sasa
+AKTOR: w1=pelajar jauh_kiri datar; w2=mahasiswa jauh_kanan datar
+AKSI: w1 jalan ke jauh_kanan @Mereka; w2 jalan ke jauh_kiri @menolak
+PROPS: meja tengah muncul @kopinya; jam atas muncul @melihatnya
+KAMERA: lebar
+
+##KETUKAN 09
+UCAP: Raka sibuk memperbaiki yang terlihat. Penyebabnya ada di jam dinding.
+LATAR: kosong
+AKTOR: raka=mahasiswa tengah malu
+PROPS: jam kiri berputar @jam
+ATA: menatap kanan pop
+
+##KETUKAN 10
+UCAP: Dalam manajemen, ini disebut akar masalah.
+SISIPAN: akar @akar
+TEKS: AKAR MASALAH @akar
+
+##KETUKAN 11
+UCAP: Toyota punya alatnya, tanya kenapa lima kali.
+LATAR: kantor
+AKTOR: ohno=petugas tengah bangga
+AKSI: ohno menunjuk @lima
+TEKS: 5 WHYS @kenapa
+FAKTA: ya
+
+##KETUKAN 12
+UCAP: [whispers] Tapi tahun 2016, peneliti mutu rumah sakit menemukan jebakannya.
+LATAR: perpustakaan
+AKTOR: p1=guru tengah licik
+TEKS: 2016 @2016
+FAKTA: ya
+
+##KETUKAN 13
+UCAP: Satu rantai kenapa bisa berhenti di jawaban yang paling nyaman.
+AKSI: p1 menggeleng @nyaman
+PROPS: silang kanan muncul @berhenti
+KAMERA: dekat p1
+
+##KETUKAN 14
+UCAP: Triknya, tanya di tiga jalur.
+LATAR: kampus
+AKTOR: raka=mahasiswa kiri senang
+KARTU: Tiga jalur kenapa | Kenapa terjadi? @terjadi | Kenapa orangnya begitu? @orangnya | Kenapa sistemnya membiarkan? @sistemnya
+FAKTA: ya
+
+##KETUKAN 15
+UCAP: Kenapa terjadi, kenapa orangnya begitu, kenapa sistemnya membiarkan.
+AKSI: raka berpikir @orangnya
+KAMERA: dekat raka
+
+##KETUKAN 16
+UCAP: Proposal lombamu ditolak? Sebelum ganti desain, cek jam bukanya.
+PROPS: dokumen tangan:raka muncul @Proposal; silang atas muncul @ditolak; jam kanan muncul @jam
+KAMERA: lebar
+
+##KETUKAN 17
+UCAP: [laughs] Kedai Raka sekarang buka jam tujuh. Lampunya? Dimatikan.
+PROPS: lampu atas hilang @Dimatikan
+EKSPRESI: raka bangga @tujuh
+KAMERA: geser
+ATA: tertawa kanan pop
+##AKHIR

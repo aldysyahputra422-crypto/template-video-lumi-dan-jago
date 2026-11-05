@@ -1,0 +1,43 @@
+{
+ "berkas": "a9262d0d-Kapan_terakhir_kamu_sadar_sedang_membayar_pajakChet",
+ "teknis": {
+  "durasi": 60.79,
+  "lebar": 720,
+  "tinggi": 1280,
+  "fps": 30.0,
+  "ukuran_mb": 10.04,
+  "ada_audio": true,
+  "audio_hz": 44100
+ },
+ "loudness": {
+  "lufs": -14.2,
+  "rentang_lu": 1.3,
+  "puncak_dbfs": -0.0
+ },
+ "potongan_keras": {
+  "jumlah": 5,
+  "waktu": [
+   21.93,
+   21.97,
+   33.77,
+   54.47,
+   58.77
+  ],
+  "per_menit": 4.9
+ },
+ "suara": {
+  "jumlah_kata": 184,
+  "kata_per_detik": 3.11,
+  "rata2_durasi_kata": 0.28,
+  "jeda_terpanjang": 0.36,
+  "jeda_di_atas_0_45": 0
+ },
+ "hook": "Setiap tahun, Raja membagikan sekarung beras untuk setiap keluarga.",
+ "kalimat": [
+  {
+   "mulai": 0.0,
+   "selesai": 59.16,
+   "jumlah_kata": 184
+  }
+ ]
+}

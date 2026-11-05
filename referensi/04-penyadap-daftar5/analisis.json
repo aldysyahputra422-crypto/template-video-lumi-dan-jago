@@ -1,0 +1,49 @@
+{
+ "berkas": "23ac0adb-Ternyata_Begini_Cara_kerja_Sebenarnya_Alat_Penyadap",
+ "teknis": {
+  "durasi": 88.98,
+  "lebar": 720,
+  "tinggi": 1280,
+  "fps": 30.0,
+  "ukuran_mb": 9.36,
+  "ada_audio": true,
+  "audio_hz": 44100
+ },
+ "loudness": {
+  "lufs": -14.1,
+  "rentang_lu": 2.5,
+  "puncak_dbfs": -2.2
+ },
+ "potongan_keras": {
+  "jumlah": 6,
+  "waktu": [
+   16.67,
+   31.47,
+   40.4,
+   42.7,
+   75.57,
+   81.77
+  ],
+  "per_menit": 4.0
+ },
+ "suara": {
+  "jumlah_kata": 221,
+  "kata_per_detik": 2.5,
+  "rata2_durasi_kata": 0.36,
+  "jeda_terpanjang": 0.66,
+  "jeda_di_atas_0_45": 1
+ },
+ "hook": "Prabowo disadap sama Listio CS dengan alat ini. Jadi",
+ "kalimat": [
+  {
+   "mulai": 0.0,
+   "selesai": 68.76,
+   "jumlah_kata": 169
+  },
+  {
+   "mulai": 69.42,
+   "selesai": 88.5,
+   "jumlah_kata": 52
+  }
+ ]
+}

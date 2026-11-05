@@ -1,0 +1,25 @@
+# Kartu riset: SATU-SATUNYA sumber angka nyata di naskah. Diisi Claude setelah memverifikasi makalah.
+id: buehler1994
+judul: 'Exploring the "planning fallacy": Why people underestimate their task completion times'
+penulis: Buehler, R., Griffin, D., & Ross, M.
+tahun: 1994
+jurnal: Journal of Personality and Social Psychology
+terbitan: 67(3), 366-381
+diverifikasi:
+  - abstrak dicek lewat Consensus (2026-11-05)
+  - angka studi 1 dicek lewat Wikipedia "Planning fallacy" yang mengutip makalah ini (2026-11-05)
+temuan: >
+  Orang meremehkan waktu penyelesaian tugasnya sendiri karena berfokus pada skenario rencana, bukan pengalaman
+  masa lalu. Bias optimis hilang saat orang diminta mengaitkan prediksi dengan pengalaman serupa (studi 4).
+angka:
+  - {nilai: 1994, arti: tahun terbit}
+  - {nilai: 37, arti: jumlah mahasiswa (studi 1)}
+  - {nilai: 33.9, satuan: hari, arti: rata-rata tebakan waktu selesai skripsi}
+  - {nilai: 48.6, satuan: hari, arti: rata-rata tebakan terburuk}
+  - {nilai: 55.5, satuan: hari, arti: rata-rata waktu selesai sebenarnya}
+  - {nilai: 30, satuan: persen, arti: kira-kira yang selesai sesuai tebakan}
+turunan:
+  - {nilai: 1.6, rumus: 55.5 / 33.9, arti: waktu sebenarnya dibanding tebakan (dibulatkan)}
+batas: Sampel mahasiswa psikologi tingkat akhir; angka satu studi, bukan aturan pasti untuk semua orang.
+kutipan_caption:  # untuk caption IG bila perlu; TIDAK tampil di video
+   'Buehler, Griffin & Ross (1994). Journal of Personality and Social Psychology, 67(3), 366-381.'

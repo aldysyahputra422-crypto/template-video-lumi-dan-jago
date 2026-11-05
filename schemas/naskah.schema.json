@@ -1,0 +1,23 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "naskah.json (mesin stickman Ata)",
+ "type": "object",
+ "required": ["id", "judul", "sumber", "disetujui", "ketukan"],
+ "properties": {
+  "id": {"type": "string"}, "judul": {"type": "string"}, "sumber": {"type": ["string", "null"]}, "disetujui": {"type": "boolean"},
+  "ketukan": {"type": "array", "minItems": 3, "items": {"type": "object",
+   "required": ["no", "baris", "ucap", "ucap_el", "tag", "latar", "aktor", "aksi", "ekspresi", "props", "teks", "data", "kartu", "ata", "kamera", "keluar", "fakta"],
+   "properties": {
+    "no": {"type": "integer"}, "baris": {"type": "integer"}, "ucap": {"type": "string", "minLength": 1}, "ucap_el": {"type": "string"},
+    "tag": {"type": "array", "items": {"type": "string"}}, "latar": {"type": "string"},
+    "aktor": {"type": "array", "items": {"type": "object", "required": ["id", "peran", "posisi", "ekspresi"]}},
+    "aksi": {"type": "array", "items": {"type": "object", "required": ["id", "aksi"]}},
+    "ekspresi": {"type": "array", "items": {"type": "object", "required": ["id", "ekspresi"]}},
+    "props": {"type": "array", "items": {"type": "object", "required": ["nama", "tempat", "gerak"]}},
+    "teks": {"type": "array", "items": {"type": "object", "required": ["teks"]}},
+    "data": {"type": "array", "items": {"type": "object", "required": ["label", "nilai"]}},
+    "kartu": {"type": ["object", "null"]}, "ata": {"type": ["object", "null"]}, "kamera": {"type": ["object", "null"]},
+    "keluar": {"type": "array", "items": {"type": "string"}}, "fakta": {"type": "boolean"},
+    "sisipan": {"type": ["object", "null"], "required": ["nama"]}, "suasana": {"type": "string"}}}}
+ }
+}

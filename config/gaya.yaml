@@ -1,0 +1,18 @@
+# Gaya edit terukur dari video referensi pemilik (scripts/ukur_gerak.py, 2026-11-05). Angka, bukan selera.
+# Sampel 6 video yang semuanya sukses: target adalah HIPOTESIS, bukan bukti. Ukur ulang bila referensi bertambah.
+referensi_gerak:
+  01-kos-kosan:   {gerak_rata: 11.61, persen_diam: 4,  diam_terpanjang: 3.0, beda_3dtk: 62.3}
+  02-tender:      {gerak_rata: 2.25,  persen_diam: 9,  diam_terpanjang: 1.0, beda_3dtk: 30.3}
+  03-pajak:       {gerak_rata: 9.36,  persen_diam: 0,  diam_terpanjang: 0.0, beda_3dtk: 38.0}   # patokan gaya (vt3)
+  04-penyadap:    {gerak_rata: 6.44,  persen_diam: 4,  diam_terpanjang: 1.0, beda_3dtk: 35.6}
+  05-cerai:       {gerak_rata: 2.10,  persen_diam: 43, diam_terpanjang: 2.5, beda_3dtk: 30.5}   # motion graphic data, pencilan
+  06-maskot:      {gerak_rata: 18.17, persen_diam: 0,  diam_terpanjang: 0.0, beda_3dtk: 62.7}
+pembanding_lama:   # versi mesin sebelum perbaikan gerak (masukan pemilik: "motion/editingnya boring")
+  contekan-testing-effect: {gerak_rata: 2.46, persen_diam: 53, diam_terpanjang: 6.5, beda_3dtk: 20.4}
+  kedai-5whys:             {gerak_rata: 2.90, persen_diam: 36, diam_terpanjang: 3.0, beda_3dtk: 24.7}
+# Gerbang QA (scripts/qa.py). Batas di antara median referensi dan vt3; semua referensi kecuali pencilan lolos.
+target_gerak:
+  gerak_rata_min: 6.0        # median referensi 7,9; vt3 9,4
+  persen_diam_maks: 10       # median 4; vt3 0
+  diam_terpanjang_maks: 1.5  # median 1,0; vt3 0
+  beda_3dtk_min: 30          # semua referensi >= 30
