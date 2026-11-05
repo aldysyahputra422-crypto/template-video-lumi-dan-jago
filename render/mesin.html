@@ -214,6 +214,9 @@ const PROPS = {
   grafik_naik: () => `<rect x="-50" y="-40" width="100" height="80" rx="6" fill="${C.krem}" ${ST(5)}/><path d="M-36,26 L-12,6 L6,14 L34,-24" ${ST(7, '#3F9A5A')} fill="none"/><path d="M34,-24 l-14,2 M34,-24 l-2,14" ${ST(7, '#3F9A5A')}/>`,
   grafik_turun: () => `<rect x="-50" y="-40" width="100" height="80" rx="6" fill="${C.krem}" ${ST(5)}/><path d="M-36,-24 L-12,-4 L6,-12 L34,26" ${ST(7, '#C94A4A')} fill="none"/>`,
   panah: () => `<path d="M-44,0 L30,0 M14,-18 L36,0 L14,18" ${ST(10, C.cahaya)} fill="none"/>`,
+  clicker: (t) => `<g transform="rotate(-20)"><rect x="-13" y="-34" width="26" height="68" rx="11" fill="#2A2D35" ${ST(4)}/><circle cy="-12" r="6" fill="#5C6070"/><circle cy="6" r="6" fill="#5C6070"/><circle cy="-26" r="3.5" fill="#E5484D" opacity="${.6 + .4 * Math.sin(t * 6)}"/></g>`,
+  mikrofon: () => `<path d="M0,-10 L0,120 M-28,120 L28,120" ${ST(6, '#3A3A40')}/><rect x="-14" y="-52" width="28" height="46" rx="14" fill="#4A4D57" ${ST(4)}/><path d="M-10,-40 L10,-40 M-10,-30 L10,-30 M-10,-20 L10,-20" ${ST(2, '#2A2A2E')}/>`,
+  layar: () => `<rect x="-120" y="-80" width="240" height="150" rx="6" fill="${C.krem}" ${ST(6)}/><path d="M-100,40 L-50,10 L0,25 L60,-35 L100,-50" ${ST(6, '#3F9A5A')} fill="none"/><path d="M0,70 L0,110 M-40,110 L40,110" ${ST(6, '#3A3A40')}/>`,
 };
 
 // ---------- SISIPAN: potongan layar penuh, benda besar yang bergerak (koordinat relatif pusat objek) ----------
@@ -334,9 +337,9 @@ function sarung(tutup = 0) {
     ${[-22, 0, 22].map(y => `<path d="M-6,${y} L46,${y * .8}" stroke="#2A2A2A" stroke-width="5" stroke-linecap="round"/>`).join('')}`;
 }
 const bendaBesar = (nama, t, sk = 2.4) => `<g transform="scale(${sk})">${(PROPS[nama] || PROPS.koin)(t)}</g>`;
-function gambarSisipan(k, t) {
+function gambarSisipan(k, t, turun = 0) {
   const S = k.sisipan; if (!S || t < S.t || t > S.selesai + .05) return {svg: '', aktif: false};
-  const u = t - S.t, masuk = keluar(u / .32), habis = cl((S.selesai - t) / .18), y = 860 + 900 * (1 - masuk) + 700 * (1 - habis);
+  const u = t - S.t, masuk = keluar(u / .32), habis = cl((S.selesai - t) / .18), y = 860 + turun + 900 * (1 - masuk) + 700 * (1 - habis);
   const obj = (SISIPAN[S.nama] || SISIPAN.jam_cepat)(u, S.isi, t);
   return {aktif: true, svg: `<rect width="720" height="1280" fill="#050506" opacity="${.88 * Math.min(masuk, habis)}"/>${sorot(360, 860, 460, .25 * masuk)}
     <g transform="translate(360 ${y}) rotate(${-7 * (1 - masuk)}) scale(${.92 + .08 * masuk})">${obj}</g>`};
@@ -358,7 +361,8 @@ const suasanaDi = k => SUASANA[k.suasana] || SUASANA.normal;
 // dinding = setinggi dinding; ikon = di atas kepala tokoh terdekat.
 const LETAK_PROPS = {buku: 'meja', laptop: 'meja', hp: 'meja', kalender: 'dinding', jam: 'dinding', karung: 'lantai', beras: 'meja', koin: 'meja', uang: 'meja',
   dokumen: 'meja', piala: 'meja', bendera: 'lantai', papan: 'dinding', meja: 'lantai', lilin: 'meja', lampu: 'ikon', bintang: 'ikon', hati: 'ikon', tanda_tanya: 'ikon',
-  tanda_seru: 'ikon', centang: 'ikon', silang: 'ikon', kucing: 'lantai', grafik_naik: 'dinding', grafik_turun: 'dinding', panah: 'ikon'};
+  tanda_seru: 'ikon', centang: 'ikon', silang: 'ikon', kucing: 'lantai', grafik_naik: 'dinding', grafik_turun: 'dinding', panah: 'ikon',
+  clicker: 'meja', mikrofon: 'lantai', layar: 'dinding'};
 const TINGGI_MEJA = 104 * 1.3, ATAS_MEJA = G - TINGGI_MEJA - 10 * 1.3;
 
 // ---------- Ata (pose PNG/SVG dari aset/maskot/panda/pose) ----------
@@ -476,7 +480,7 @@ function bangunDunia(k, t, i) {
     if (pa) { /* tangan:id dan kepala:id diatur di bawah, tanpa meja */ }
     else if (p.tempat === 'atas' || letak === 'ikon') { const a = p.tempat === 'atas' ? gambarAktor[0] : dekatX(x); if (a) { [x, y] = a.kepala; x += p.tempat === 'atas' ? 0 : (x < 360 ? 70 : -70); y -= 75; sk = 1.0; } else y = 440; }
     else if (letak === 'lantai') y = p.nama === 'meja' ? G - TINGGI_MEJA : G - 45;
-    else if (letak === 'dinding') y = G - 560;
+    else if (letak === 'dinding') y = G - 700;   // di atas area caption
     else if (pembaca && ['buku', 'laptop', 'dokumen', 'hp'].includes(p.nama)) { x = (pembaca.tangan.l[0] + pembaca.tangan.r[0]) / 2; y = Math.min(pembaca.tangan.l[1], pembaca.tangan.r[1]) - 10; sk = .9; }
     else { const m = mejaAda.find(mx => Math.abs(mx - x) < 120); if (m !== undefined) { x = m + (x - m) * .5; y = ATAS_MEJA - 30; }
       else { y = ATAS_MEJA - 30; mejaKecil = `<g transform="translate(${x} ${G - TINGGI_MEJA * .9}) scale(.8 1.17)">${PROPS.meja()}</g>`; } }   // benda meja tanpa meja: meja kecil muncul
@@ -516,7 +520,12 @@ window.render = function (t) {
   // hamparan: teks besar, data, kartu, sumber, caption
   let atas = '';
   const adaPanel = k.data.length || (k.kartu && t >= k.kartu.mulai);
-  k.teks.forEach((x, j) => { if (t < x.t) return; const s = pantul((t - x.t) / .28); const fs = Math.min(64, Math.floor(640 / (0.66 * x.teks.length))); atas += `<g transform="translate(360 ${adaPanel ? 180 : 300 + j * 90}) scale(${s})"><text text-anchor="middle" font-size="${fs}" fill="${C.cahaya}" stroke="#000" stroke-width="8" paint-order="stroke" font-weight="800" font-family="Mont" y="26">${x.teks}</text></g>`; });
+  // Tata letak berzona (masukan pemilik: teks saling menimpa): watermark < panel kartu/data < teks besar < caption.
+  const kartuTampil = KT.some(kk => kk.kartu && t >= kk.kartu.mulai && t <= kk.kartu.selesai);
+  const bawahData = k.data.length ? 195 + (k.data.length - 1) * 100 + 52 + 70 : 0;
+  k.teks.forEach((x, j) => { if (t < x.t || kartuTampil) return; const s = pantul((t - x.t) / .28); const fs = Math.min(64, Math.floor(640 / (0.66 * x.teks.length)));
+    const yT = bawahData ? Math.min(bawahData + j * 80, 470) : 300 + j * 90;
+    atas += `<g transform="translate(360 ${yT}) scale(${s})"><text text-anchor="middle" font-size="${fs}" fill="${C.cahaya}" stroke="#000" stroke-width="8" paint-order="stroke" font-weight="800" font-family="Mont" y="26">${x.teks}</text></g>`; });
   if (k.data.length) {
     const maks = Math.max(...k.data.map(d => d.nilai)), lebar = 420;
     k.data.forEach((d, j) => { if (t < d.t) return; const g = ez(cl((t - d.t) / .7)), w = lebar * d.nilai / maks * g, terakhir = d.nilai === maks;
@@ -526,14 +535,16 @@ window.render = function (t) {
     const s = pantul((t - k.kartu.mulai) / .3), keluarK = 1 - cl((t - (k.kartu.selesai - .25)) / .25);
     const dekatK = 1 + .08 * ez(cl((t - k.kartu.mulai) / Math.max(1, k.kartu.selesai - k.kartu.mulai)));   // kartu pelan mendekat
     atas += `<g transform="translate(360 ${150 + 7 * Math.sin(t * 2)}) rotate(${.7 * Math.sin(t * 1.3)}) scale(${s * keluarK * dekatK})" ><rect x="-300" y="0" width="600" height="${86 + k.kartu.butir.length * 92}" rx="22" fill="#141416" fill-opacity=".94" stroke="#E8A847" stroke-width="3"/><text x="0" y="56" text-anchor="middle" font-size="32" font-weight="800" fill="#E8A847" font-family="Mont">${k.kartu.judul}</text>
-      ${k.kartu.butir.map((b, j) => { const on = t >= b.t, sb = on ? pantul((t - b.t) / .25) : 0, masukB = 520 * (1 - ez(cl((t - Math.max(k.kartu.mulai, b.t - .45)) / .4))); return `<g transform="translate(${-270 + masukB} ${96 + j * 92})" opacity="${t >= b.t - .45 ? 1 : 0}"><rect width="54" height="54" rx="12" fill="${on ? C.cahaya : 'none'}" stroke="#E8A847" stroke-width="3"/><path d="M12,28 L24,40 L44,14" ${ST(8, '#fff')} fill="none" transform="scale(${sb})" transform-origin="27 27"/>${teksButir(b.teks, on ? '#FFFFFF' : '#7A7A7A')}</g>`; }).join('')}</g>`;
+      ${k.kartu.butir.map((b, j) => { const on = t >= b.t, sb = on ? pantul((t - b.t) / .25) : 0, mk = ez(cl((t - Math.max(k.kartu.mulai, b.t - .45)) / .4)), masukB = 40 * (1 - mk); return `<g transform="translate(${-270 + masukB} ${96 + j * 92})" opacity="${t >= b.t - .45 ? mk : 0}"><rect width="54" height="54" rx="12" fill="${on ? C.cahaya : 'none'}" stroke="#E8A847" stroke-width="3"/><path d="M12,28 L24,40 L44,14" ${ST(8, '#fff')} fill="none" transform="scale(${sb})" transform-origin="27 27"/>${teksButir(b.teks, on ? '#FFFFFF' : '#7A7A7A')}</g>`; }).join('')}</g>`;
   }
   // kartu yang ditahan sampai ketukan sesudahnya
   for (const kk of KT) if (kk !== k && kk.kartu && t >= kk.kartu.mulai && t <= kk.kartu.selesai) {
     atas += `<g transform="translate(360 150) scale(${1 - cl((t - (kk.kartu.selesai - .25)) / .25)})"><rect x="-300" y="0" width="600" height="${86 + kk.kartu.butir.length * 92}" rx="22" fill="#141416" fill-opacity=".94" stroke="#E8A847" stroke-width="3"/><text x="0" y="56" text-anchor="middle" font-size="32" font-weight="800" fill="#E8A847" font-family="Mont">${kk.kartu.judul}</text>${kk.kartu.butir.map((b, j) => `<g transform="translate(-270 ${96 + j * 92})"><rect width="54" height="54" rx="12" fill="${t >= b.t ? C.cahaya : 'none'}" stroke="#E8A847" stroke-width="3"/>${t >= b.t ? `<path d="M12,28 L24,40 L44,14" ${ST(8, '#fff')} fill="none"/>` : ''}${teksButir(b.teks, t >= b.t ? '#FFFFFF' : '#7A7A7A')}</g>`).join('')}</g>`;
   }
   const ataA = KT.slice(0, i + 1).reverse().find(x => x.ata && t >= x.ata.mulai && t <= x.ata.selesai)?.ata || (KT[i + 1]?.ata && KT[i + 1].ata.masuk === 'sapuan' && t >= KT[i + 1].ata.mulai ? KT[i + 1].ata : null);
-  const SIS = gambarSisipan(k, t);
+  const kartuAktif = KT.find(kk => kk.kartu && t >= kk.kartu.mulai && t <= kk.kartu.selesai);
+  const bawahKartu = kartuAktif ? 150 + (86 + kartuAktif.kartu.butir.length * 92) * 1.08 + 12 : 0;   // kartu bisa membesar 8%
+  const SIS = gambarSisipan(k, t, kartuAktif ? Math.max(0, bawahKartu + 180 - 560) : 0);   // sisipan turun bila ada kartu
   // Watermark nama akun: kecil, semi-transparan, berpindah posisi tiap 9 dtk (gaya video referensi 03).
   const POS_WATERMARK = [[360, 92], [210, 118], [510, 118]], iw = Math.floor(t / 9) % 3, aw = cl(((t % 9) - 0) / .4) * cl((9 - (t % 9)) / .4);
   const watermark = TL.watermark ? `<text x="${POS_WATERMARK[iw][0]}" y="${POS_WATERMARK[iw][1]}" text-anchor="middle" font-size="24" font-weight="700" fill="#FFFFFF" opacity="${.5 * aw}" stroke="rgba(0,0,0,.35)" stroke-width="3" paint-order="stroke" font-family="Mont">${TL.watermark}</text>` : '';
@@ -547,7 +558,7 @@ window.render = function (t) {
     return s; };
   const Sl = sebelum ? suasanaDi(sebelum) : SUASANA.normal, bS = sebelum && sebelum.suasana !== k.suasana ? ez(cl(lokal / .5)) : 1;
   const suasanaSvg = lapisSuasana(suasanaDi(k), bS) + (bS < 1 ? lapisSuasana(Sl, 1 - bS) : '');
-  const capX = 360, capY = SIS.aktif ? 455 : 565;
+  const capX = 360, capY = kartuAktif ? Math.max(565, bawahKartu + 40) : SIS.aktif ? 455 : 565;   // caption tidak pernah menimpa kartu
   const w = kataKini(t);
   const skCap = w ? pantul((t - w.a) / .16) : 1;
   const cap = w ? `<text transform="translate(${capX} ${capY}) scale(${skCap}) translate(${-capX} ${-capY})" x="${capX}" y="${capY}" text-anchor="middle" font-size="31" font-weight="700" fill="#FFFFFF" stroke="rgba(0,0,0,.55)" stroke-width="5" paint-order="stroke" font-family="Mont">${w.w}</text>` : '';

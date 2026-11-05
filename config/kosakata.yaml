@@ -83,6 +83,9 @@ props:            # ikon benda
   grafik_naik: grafik naik
   grafik_turun: grafik turun
   panah: panah
+  clicker: remote presentasi (dipegang atau di meja)
+  mikrofon: mikrofon berdiri
+  layar: layar presentasi berisi grafik (di dinding)
 gerak_props: [muncul, jatuh, membesar, berputar, melayang, hilang]
 tempat_props: "kiri | tengah | kanan | atas | tangan:<id> | kepala:<id>"
 kamera: [lebar, dekat, dorong, goyang, geser]
