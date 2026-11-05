@@ -60,7 +60,7 @@ def test_kata_kasar_dilarang():
 
 
 def test_ketukan_tanpa_visual():
-    t = TEKS.replace("TEKS: final_beneran.docx @beneran\nEKSPRESI: kamu capek @kesepuluh\n", "")
+    t = TEKS.replace("TEKS: final_beneran.docx @beneran\nEKSPRESI: kamu capek @kesepuluh\nKAMERA: dekat kamu\n", "")
     assert any("visual" in g["pesan"] for g in _lint(t)["galat"])
 
 

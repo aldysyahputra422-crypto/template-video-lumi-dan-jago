@@ -16,7 +16,7 @@ KAMERA: dorong
 UCAP: [deadpan] Otakmu barusan bohong.
 EKSPRESI: kamu kaget @bohong
 PROPS: tanda_seru kepala:kamu muncul @bohong
-KAMERA: goyang
+KAMERA: dekat kamu
 
 ##KETUKAN 03
 UCAP: [excited] Hari pertama, kamu bikin judul. Mantap.
@@ -41,6 +41,7 @@ EKSPRESI: kamu datar @ketujuh
 UCAP: [tense] Hari kesepuluh, final beneran.
 TEKS: final_beneran.docx @beneran
 EKSPRESI: kamu capek @kesepuluh
+KAMERA: dekat kamu
 
 ##KETUKAN 07
 UCAP: [shouting] Malam tenggat, final beneran revisi fix!
@@ -60,6 +61,7 @@ ATA: berpikir kanan sapuan
 UCAP: Kamu kena planning fallacy, nebak waktu dari skenario paling lancar.
 TEKS: PLANNING FALLACY @planning
 AKSI: kamu garuk_kepala @nebak
+KAMERA: dekat kamu
 
 ##KETUKAN 10
 UCAP: Tahun 1994, 37 mahasiswa disuruh nebak kapan skripsinya selesai.
@@ -78,6 +80,7 @@ AKSI: m2 menunjuk @34
 UCAP: [surprised] Kenyataannya 55 setengah.
 DATA: Kenyataan=55.5 hari @55
 EKSPRESI: m1 kaget @Kenyataannya; m2 kaget @Kenyataannya; m3 kaget @Kenyataannya
+KAMERA: dekat m2
 ATA: kaget kanan pop
 
 ##KETUKAN 13

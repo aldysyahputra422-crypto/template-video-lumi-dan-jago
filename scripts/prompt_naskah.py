@@ -53,6 +53,7 @@ Angka nyata di naskah HARUS dari kartu ini (boleh dibulatkan wajar, mis. 33,9 ja
 5. Alat yang disimpan: tepat satu `KARTU` berisi maksimal 3 langkah konkret yang bisa dipakai hari ini.
 6. Penutup = callback ke lelucon atau hook awal, bukan moral umum. Pola "bukan X, tapi Y" maksimal sekali.
 7. Durasi 40 sampai 55 detik (±2,6 kata per detik). Satu ketukan = satu kalimat pendek (maksimal 16 kata) supaya visual berganti tiap 2 sampai 5 detik.
+   Ganti komposisi minimal tiap 2 ketukan (KAMERA dekat untuk wajah atau reaksi, lalu kembali lebar; atau LATAR/AKTOR baru), seperti gaya video referensi.
 Tanpa tanda pisah panjang. Tanpa kata kasar. Tanpa politik, agama, tuduhan, atau orang sungguhan. Tanpa ajakan daftar, harga, atau "follow".
 
 ## 4. Format keluaran (blok bertanda, BUKAN JSON, BUKAN tabel)

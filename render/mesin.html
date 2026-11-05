@@ -1,6 +1,8 @@
 <!doctype html><html><head><meta charset="utf-8"><title>Mesin stickman Ata</title>
 <style>
 @font-face{font-family:'Baloo';src:url('/render/node_modules/@fontsource/baloo-2/files/baloo-2-latin-800-normal.woff2') format('woff2');font-weight:800}
+@font-face{font-family:'Mont';src:url('/render/node_modules/@fontsource/montserrat/files/montserrat-latin-700-normal.woff2') format('woff2');font-weight:700}
+@font-face{font-family:'Mont';src:url('/render/node_modules/@fontsource/montserrat/files/montserrat-latin-800-normal.woff2') format('woff2');font-weight:800}
 html,body{margin:0;background:#000}
 #stage{position:relative;width:720px;height:1280px;overflow:hidden;background:#0B0C10;font-family:'Baloo',sans-serif}
 #layar{position:absolute;inset:0}
@@ -12,9 +14,9 @@ html,body{margin:0;background:#000}
 // Semua nama di sini HARUS sama dengan config/kosakata.yaml (dijaga tests/test_mesin.py).
 const TL = await (await fetch(new URLSearchParams(location.search).get('tl') || '/ep/timeline.json')).json();
 const $ = id => document.getElementById(id);
-const W = 720, H = 1280, G = 905;                       // G = garis lantai
-const C = {bg:'#0B0C10', s1:'#14161D', s2:'#1C1F29', s3:'#262A36', s4:'#323747', cahaya:'#FAB756', cahaya2:'#F2D29B', kar:'#C3562A',
-  krem:'#F6E9D8', kepala:'#F4F1EA', garis:'#E9E3D6', tinta:'#101118', hijau:'#3E5A44', bintang:'#C9CEDB'};
+const W = 720, H = 1280, G = 1085;                       // G = garis lantai
+const C = {bg:'#08080A', s1:'#0E0E10', s2:'#161618', s3:'#1F1F22', s4:'#2C2C30', cahaya:'#E8A847', cahaya2:'#F0D9A8', kar:'#C3562A',
+  krem:'#F6E9D8', kepala:'#EDEDED', kulit:'#F2D3A8', garis:'#3C3C40', tinta:'#1E1E20', hijau:'#3E5A44', bintang:'#BDBDBD', tepi:'#2A2A2A'};
 const cl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ez = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 const keluar = x => 1 - Math.pow(1 - cl(x), 3);
@@ -29,7 +31,7 @@ function jendelaKota(x0, w, h, seed) { ACAK = seed; let s = ''; for (let y = G -
 const lantai = (c = C.s2) => `<rect x="-200" y="${G}" width="1120" height="${H - G + 50}" fill="${c}"/><path d="M-200,${G} L920,${G}" ${ST(3, C.s4)}/>`;
 const sorot = (x, y, r, a = .35) => `<circle cx="${x}" cy="${y}" r="${r}" fill="url(#cahaya)" opacity="${a}"/>`;
 const LATAR = {
-  kamar: t => `<rect x="-200" y="0" width="1120" height="${G}" fill="${C.s1}"/><rect x="420" y="250" width="220" height="250" rx="6" fill="#141B2E" ${ST(8, C.s4)}/><circle cx="560" cy="330" r="34" fill="${C.cahaya2}" opacity=".85"/><path d="M530,250 L530,500 M420,375 L640,375" ${ST(6, C.s4)}/>
+  kamar: t => `<rect x="-200" y="0" width="1120" height="${G}" fill="${C.s1}"/><rect x="420" y="250" width="220" height="250" rx="6" fill="#141416" ${ST(8, C.s4)}/><circle cx="560" cy="330" r="34" fill="${C.cahaya2}" opacity=".85"/><path d="M530,250 L530,500 M420,375 L640,375" ${ST(6, C.s4)}/>
     <rect x="430" y="${G - 120}" width="300" height="120" rx="14" fill="${C.s3}"/><rect x="440" y="${G - 150}" width="110" height="40" rx="14" fill="${C.s4}"/>
     <rect x="40" y="${G - 170}" width="220" height="16" fill="${C.s3}"/><path d="M70,${G - 154} L70,${G} M230,${G - 154} L230,${G}" ${ST(10, C.s3)}/><path d="M110,${G - 170} L130,${G - 250} L170,${G - 250}" ${ST(8, C.s4)} fill="none"/>${sorot(150, G - 230, 160, .5)}${lantai()}`,
   kelas: t => `<rect x="-200" y="0" width="1120" height="${G}" fill="${C.s1}"/><rect x="120" y="220" width="480" height="230" rx="8" fill="#1A2721" ${ST(10, C.s4)}/><path d="M160,280 q40,-20 80,0 t80,0 M160,330 l140,0 M380,300 l120,40" ${ST(4, '#5F7A6A')} fill="none"/>
@@ -37,57 +39,58 @@ const LATAR = {
     ${[180, 540].map(x => `<path d="M${x},0 L${x},90" ${ST(3, C.s4)}/><path d="M${x - 40},90 L${x + 40},90 L${x + 26},110 L${x - 26},110 Z" fill="${C.s4}"/>${sorot(x, 130, 140, .3)}`).join('')}${lantai()}`,
   perpustakaan: t => { ACAK = 5; let rak = ''; for (const x0 of [-20, 250, 520]) { rak += `<rect x="${x0}" y="160" width="220" height="${G - 160}" fill="${C.s2}" ${ST(6, C.s4)}/>`; for (let y = 190; y < G - 40; y += 90) { rak += `<path d="M${x0},${y + 70} L${x0 + 220},${y + 70}" ${ST(6, C.s4)}/>`; let x = x0 + 10; while (x < x0 + 205) { const w = 12 + acak() * 16; rak += `<rect x="${x}" y="${y + 70 - (50 + acak() * 15)}" width="${w}" height="${50 + acak() * 15}" fill="${['#3A2F2A', '#2E3A45', '#46302C', '#30402F', '#3D3A2B'][Math.floor(acak() * 5)]}"/>`; x += w + 3; } } }
     return `<rect x="-200" y="0" width="1120" height="${G}" fill="${C.s1}"/>${rak}<path d="M360,0 L360,120" ${ST(3, C.s4)}/><circle cx="360" cy="135" r="18" fill="${C.cahaya}"/>${sorot(360, 160, 280, .45)}${lantai()}`; },
-  kampus: t => `<rect x="-200" y="0" width="1120" height="${G}" fill="#0E1220"/>${bintang(40, 3)}<rect x="160" y="${G - 420}" width="400" height="420" fill="${C.s2}"/><path d="M140,${G - 420} L360,${G - 520} L580,${G - 420} Z" fill="${C.s3}"/>${jendelaKota(160, 400, 420, 9)}
+  kampus: t => `<rect x="-200" y="0" width="1120" height="${G}" fill="#0A0A0C"/>${bintang(40, 3)}<rect x="160" y="${G - 420}" width="400" height="420" fill="${C.s2}"/><path d="M140,${G - 420} L360,${G - 520} L580,${G - 420} Z" fill="${C.s3}"/>${jendelaKota(160, 400, 420, 9)}
     ${[60, 660].map(x => `<path d="M${x},${G} L${x},${G - 150}" ${ST(14, '#1B2018')}/><circle cx="${x}" cy="${G - 200}" r="70" fill="#1B241C"/>`).join('')}<path d="M110,${G} L110,${G - 260} L140,${G - 260}" ${ST(6, C.s4)} fill="none"/>${sorot(140, G - 250, 120, .45)}${lantai('#191B22')}`,
-  kota: t => `<rect x="-200" y="0" width="1120" height="${G}" fill="#0D1120"/>${bintang(30, 4)}<circle cx="590" cy="170" r="44" fill="${C.cahaya2}" opacity=".8"/>
+  kota: t => `<rect x="-200" y="0" width="1120" height="${G}" fill="#0A0A0C"/>${bintang(30, 4)}<circle cx="590" cy="170" r="44" fill="${C.cahaya2}" opacity=".8"/>
     ${[[-30, 140, 520], [100, 120, 380], [210, 150, 600], [350, 110, 430], [450, 140, 540], [580, 160, 400]].map(([x, w, h], i) => `<rect x="${x}" y="${G - h}" width="${w}" height="${h}" fill="${i % 2 ? C.s2 : C.s3}"/>${jendelaKota(x, w, h, 10 + i)}`).join('')}${lantai('#15171E')}`,
   pasar: t => { const lapak = (x, c1, c2) => `<path d="M${x},${G - 260} L${x + 200},${G - 260} L${x + 220},${G - 200} L${x - 20},${G - 200} Z" fill="${c1}"/>${[0, 1, 2, 3, 4].map(i => `<path d="M${x - 20 + i * 48},${G - 200} L${x + i * 40},${G - 260}" ${ST(14, c2)} opacity=".5"/>`).join('')}<path d="M${x},${G - 200} L${x},${G} M${x + 200},${G - 200} L${x + 200},${G}" ${ST(8, C.s4)}/><rect x="${x - 10}" y="${G - 90}" width="220" height="90" fill="${C.s3}"/>`;
-    return `<rect x="-200" y="0" width="1120" height="${G}" fill="#120F14"/>${lapak(20, '#3A2420', '#5A3326')}${lapak(270, '#22303A', '#2F4452')}${lapak(520, '#3A3320', '#56492A')}<path d="M-20,200 Q360,280 740,200" ${ST(3, C.s4)} fill="none"/>${[90, 230, 370, 510, 650].map((x, i) => `<circle cx="${x}" cy="${228 + Math.sin(i) * 12}" r="16" fill="${C.kar}"/>${sorot(x, 230, 70, .4 + .1 * Math.sin(t * 3 + i))}`).join('')}${lantai('#1A1716')}`; },
-  desa: t => `<rect x="-200" y="0" width="1120" height="${G}" fill="#0C1322"/>${bintang(50, 6)}<circle cx="560" cy="190" r="52" fill="${C.cahaya2}" opacity=".85"/><path d="M-200,${G - 120} Q120,${G - 220} 380,${G - 130} T920,${G - 140} L920,${G} L-200,${G} Z" fill="#141C1E"/>
+    return `<rect x="-200" y="0" width="1120" height="${G}" fill="#0E0C0D"/>${lapak(20, '#3A2420', '#5A3326')}${lapak(270, '#22303A', '#2F4452')}${lapak(520, '#3A3320', '#56492A')}<path d="M-20,200 Q360,280 740,200" ${ST(3, C.s4)} fill="none"/>${[90, 230, 370, 510, 650].map((x, i) => `<circle cx="${x}" cy="${228 + Math.sin(i) * 12}" r="16" fill="${C.kar}"/>${sorot(x, 230, 70, .4 + .1 * Math.sin(t * 3 + i))}`).join('')}${lantai('#1A1716')}`; },
+  desa: t => `<rect x="-200" y="0" width="1120" height="${G}" fill="#0A0A0C"/>${bintang(50, 6)}<circle cx="560" cy="190" r="52" fill="${C.cahaya2}" opacity=".85"/><path d="M-200,${G - 120} Q120,${G - 220} 380,${G - 130} T920,${G - 140} L920,${G} L-200,${G} Z" fill="#141C1E"/>
     ${[[80, 1], [480, .85]].map(([x, s]) => `<g transform="translate(${x} ${G}) scale(${s})"><path d="M0,0 L0,-90 M160,0 L160,-90" ${ST(10, C.s4)}/><rect x="-10" y="-200" width="180" height="110" fill="${C.s3}"/><path d="M-40,-200 L80,-300 L200,-200 Z" fill="${C.s4}"/><rect x="60" y="-170" width="40" height="50" fill="${C.cahaya}" opacity=".6"/></g>`).join('')}
     <path d="M330,${G} Q320,${G - 200} 360,${G - 330}" ${ST(12, '#1B1A16')} fill="none"/>${[0, 1, 2, 3, 4].map(i => `<path d="M360,${G - 330} q${-90 + i * 45},-30 ${-110 + i * 55},40" ${ST(10, '#1C2A1E')} fill="none"/>`).join('')}
     ${[0, 1, 2, 3, 4, 5].map(i => `<circle cx="${100 + i * 110 + Math.sin(t + i) * 14}" cy="${G - 200 - Math.cos(t * 1.3 + i) * 30}" r="3" fill="${C.cahaya}" opacity="${.4 + .4 * Math.sin(t * 4 + i)}"/>`).join('')}${lantai('#161A17')}`,
-  istana: t => `<rect x="-200" y="0" width="1120" height="${G}" fill="#120E12"/>${[60, 210, 510, 660].map(x => `<rect x="${x - 30}" y="140" width="60" height="${G - 140}" fill="${C.s3}"/><rect x="${x - 40}" y="130" width="80" height="24" fill="${C.s4}"/>`).join('')}
+  istana: t => `<rect x="-200" y="0" width="1120" height="${G}" fill="#0E0B0C"/>${[60, 210, 510, 660].map(x => `<rect x="${x - 30}" y="140" width="60" height="${G - 140}" fill="${C.s3}"/><rect x="${x - 40}" y="130" width="80" height="24" fill="${C.s4}"/>`).join('')}
     ${[135, 585].map(x => `<path d="M${x - 40},160 L${x + 40},160 L${x + 40},420 L${x},380 L${x - 40},420 Z" fill="${C.kar}" opacity=".75"/>`).join('')}<path d="M300,${G} L300,${G - 260} Q360,${G - 330} 420,${G - 260} L420,${G} Z" fill="${C.s4}"/>
     ${[210, 510].map(x => `<path d="M${x},${G - 330} l-12,30 l24,0 Z" fill="${C.cahaya}"/>${sorot(x, G - 330, 120, .45 + .08 * Math.sin(t * 7 + x))}`).join('')}${lantai('#1C1418')}`,
-  jalan: t => `<rect x="-200" y="0" width="1120" height="${G}" fill="#0D1018"/>${[[-20, 160, 360], [150, 120, 260], [500, 150, 330], [630, 120, 240]].map(([x, w, h], i) => `<rect x="${x}" y="${G - h}" width="${w}" height="${h}" fill="${C.s2}"/>${jendelaKota(x, w, h, 20 + i)}`).join('')}
+  jalan: t => `<rect x="-200" y="0" width="1120" height="${G}" fill="#0A0A0C"/>${[[-20, 160, 360], [150, 120, 260], [500, 150, 330], [630, 120, 240]].map(([x, w, h], i) => `<rect x="${x}" y="${G - h}" width="${w}" height="${h}" fill="${C.s2}"/>${jendelaKota(x, w, h, 20 + i)}`).join('')}
     ${[120, 600].map(x => `<path d="M${x},${G} L${x},${G - 330} L${x + 40},${G - 330}" ${ST(8, C.s4)} fill="none"/><circle cx="${x + 40}" cy="${G - 322}" r="10" fill="${C.cahaya}"/><path d="M${x + 40},${G - 320} L${x - 50},${G} L${x + 130},${G} Z" fill="${C.cahaya}" opacity=".07"/>`).join('')}
     <rect x="-200" y="${G}" width="1120" height="400" fill="#16181F"/>${[0, 1, 2, 3, 4, 5].map(i => `<rect x="${i * 140 - 40}" y="${G + 90}" width="70" height="10" fill="${C.s4}"/>`).join('')}`,
   panggung: t => `<rect x="-200" y="0" width="1120" height="${G}" fill="#100A0E"/><path d="M-200,0 L120,0 Q60,400 120,${G} L-200,${G} Z M920,0 L600,0 Q660,400 600,${G} L920,${G} Z" fill="#3A1418"/>
     <path d="M360,0 L180,${G} L540,${G} Z" fill="${C.cahaya2}" opacity=".08"/>${sorot(360, G - 40, 260, .35)}<rect x="-200" y="${G}" width="1120" height="400" fill="#2A1E16"/><path d="M-200,${G} L920,${G}" ${ST(6, '#5A3E2A')}/>
     <rect x="150" y="${G + 120}" width="420" height="60" rx="8" fill="${C.s3}"/>${[240, 360, 480].map(x => `<circle cx="${x}" cy="${G + 100}" r="26" fill="${C.s4}"/>`).join('')}`,
-  kantor: t => `<rect x="-200" y="0" width="1120" height="${G}" fill="${C.s1}"/><rect x="60" y="180" width="600" height="300" fill="#0F1424" ${ST(8, C.s4)}/>${jendelaKota(60, 600, 300 + G - 480, 31).replace(/y="(\d+)"/g, (m, y) => `y="${Math.min(+y, 460)}"`)}
+  kantor: t => `<rect x="-200" y="0" width="1120" height="${G}" fill="${C.s1}"/><rect x="60" y="180" width="600" height="300" fill="#101012" ${ST(8, C.s4)}/>${jendelaKota(60, 600, 300 + G - 480, 31).replace(/y="(\d+)"/g, (m, y) => `y="${Math.min(+y, 460)}"`)}
     ${[180, 540].map(x => `<rect x="${x - 110}" y="${G - 110}" width="220" height="16" fill="${C.s3}"/><rect x="${x - 50}" y="${G - 200}" width="100" height="70" rx="6" fill="#20304A"/><rect x="${x - 42}" y="${G - 192}" width="84" height="54" fill="#5C7FA8" opacity=".45"/>${sorot(x, G - 165, 100, .25)}`).join('')}${lantai()}`,
   kosong: t => `<rect x="-200" y="0" width="1120" height="${H}" fill="${C.bg}"/>${sorot(360, 640, 520, .22)}${bintang(25, 8)}`,
 };
 
 // ---------- PERAN, EKSPRESI ----------
 const PERAN = {
-  pelajar: {baju: '#5C6B8A', aks: (r) => ''}, mahasiswa: {baju: '#4E7A6B', aks: (r) => kacamata(r)}, guru: {baju: '#7A5C8A', aks: (r) => kacamata(r)},
-  raja: {baju: C.kar, aks: (r) => `<path d="M${-r * .8},${-r * .8} L${-r * .8},${-r * 1.5} L${-r * .4},${-r * 1.15} L0,${-r * 1.6} L${r * .4},${-r * 1.15} L${r * .8},${-r * 1.5} L${r * .8},${-r * .8} Z" fill="${C.cahaya}" ${ST(4)}/>`},
-  warga: {baju: '#8C6A4A', aks: (r) => `<path d="M${-r * 1.5},${-r * .55} L0,${-r * 1.55} L${r * 1.5},${-r * .55} Z" fill="#C9A060" ${ST(4)}/>`},
-  pedagang: {baju: '#B07A3A', aks: (r) => `<path d="M${-r},${-r * .7} Q0,${-r * 1.5} ${r},${-r * .7} Z" fill="#5A4636" ${ST(4)}/>`},
-  juri: {baju: '#6B7391', aks: (r) => kacamata(r)}, ibu: {baju: '#A85A6A', aks: (r) => `<circle cx="0" cy="${-r * 1.05}" r="${r * .45}" fill="#2A2420" ${ST(4)}/>`},
-  ayah: {baju: '#5A6E4A', aks: (r) => `<path d="M${-r * .4},${r * .28} Q0,${r * .12} ${r * .4},${r * .28}" ${ST(6)} fill="none"/>`}, anak: {baju: '#D08A3A', aks: (r) => '', skala: .72},
-  teman: {baju: '#3E7FA8', aks: (r) => `<path d="M${-r * .95},${-r * .45} Q0,${-r * 1.4} ${r * .95},${-r * .45} Z M${-r * .95},${-r * .5} L${-r * 1.6},${-r * .35}" fill="#B84A3A" ${ST(4)}/>`},
-  petugas: {baju: '#4A5A7A', aks: (r) => `<path d="M${-r},${-r * .7} L${r},${-r * .7} L${r * .8},${-r * 1.25} L${-r * .8},${-r * 1.25} Z" fill="#22283A" ${ST(4)}/><circle cx="0" cy="${-r}" r="5" fill="${C.cahaya}"/>`},
+  pelajar: {baju: '#3D7FD9', kepala: 'kulit', aks: r => ''}, mahasiswa: {baju: '#8E8E8E', kepala: 'kulit', aks: r => kacamata(r)},
+  guru: {baju: '#4E7A5B', kepala: 'putih', aks: r => kacamata(r)},
+  raja: {baju: '#B23A34', kepala: 'putih', aks: r => `<path d="M${-r * .75},${-r * .72} L${-r * .75},${-r * 1.35} L${-r * .38},${-r * 1.05} L0,${-r * 1.45} L${r * .38},${-r * 1.05} L${r * .75},${-r * 1.35} L${r * .75},${-r * .72} Z" fill="#E8B84B" stroke="#2A2A2A" stroke-width="2.5" stroke-linejoin="round"/>`},
+  warga: {baju: '#9A9A9A', kepala: 'putih', aks: r => `<path d="M${-r * 1.45},${-r * .5} L0,${-r * 1.45} L${r * 1.45},${-r * .5} Z" fill="#D9B25C" stroke="#2A2A2A" stroke-width="2.5" stroke-linejoin="round"/><path d="M${-r * 1.3},${-r * .55} L${r * 1.3},${-r * .55}" stroke="#A8843C" stroke-width="2"/>`},
+  pedagang: {baju: '#C9B79C', kepala: 'putih', aks: r => `<path d="M${-r * .95},${-r * .62} Q0,${-r * 1.4} ${r * .95},${-r * .62} Z" fill="#6B4A2E" stroke="#2A2A2A" stroke-width="2.5"/>`},
+  juri: {baju: '#4A4F5C', kepala: 'putih', aks: r => kacamata(r)}, ibu: {baju: '#C9B79C', kepala: 'putih', rok: '#6B4A2E', aks: r => `<path d="M${-r * .95},${-r * .1} Q${-r},${-r * 1.05} 0,${-r * 1.02} Q${r},${-r * 1.05} ${r * .95},${-r * .1} Q${r * .9},${-r * .7} 0,${-r * .72} Q${-r * .9},${-r * .7} ${-r * .95},${-r * .1} Z" fill="#1E1E20"/>`},
+  ayah: {baju: '#7A6A5A', kepala: 'putih', aks: r => `<path d="M${-r * .3},${r * .25} Q0,${r * .14} ${r * .3},${r * .25}" stroke="#2A2A2A" stroke-width="4" fill="none" stroke-linecap="round"/>`},
+  anak: {baju: '#3D7FD9', kepala: 'kulit', aks: r => '', skala: .74}, teman: {baju: '#F2C230', kepala: 'kulit', aks: r => `<path d="M${-r * .92},${-r * .42} Q0,${-r * 1.3} ${r * .92},${-r * .42} Z M${-r * .92},${-r * .46} L${-r * 1.5},${-r * .34}" fill="#B23A34" stroke="#2A2A2A" stroke-width="2.5"/>`},
+  petugas: {baju: '#2F3A52', kepala: 'putih', aks: r => `<path d="M${-r * .95},${-r * .62} L${r * .95},${-r * .62} L${r * .78},${-r * 1.18} L${-r * .78},${-r * 1.18} Z" fill="#1E2433" stroke="#2A2A2A" stroke-width="2.5"/><circle cx="0" cy="${-r * .92}" r="${r * .1}" fill="#E8B84B"/>`},
 };
-function kacamata(r) { return `<circle cx="${-r * .36}" cy="${-r * .1}" r="${r * .27}" fill="none" ${ST(4)}/><circle cx="${r * .36}" cy="${-r * .1}" r="${r * .27}" fill="none" ${ST(4)}/><path d="M${-r * .09},${-r * .1} L${r * .09},${-r * .1}" ${ST(4)}/>`; }
-const mata = (r, kind = 'titik') => [-1, 1].map(s => kind === 'titik' ? `<circle cx="${s * r * .36}" cy="${-r * .1}" r="${r * .09}" fill="${C.tinta}"/>` : kind === 'bulat' ? `<circle cx="${s * r * .36}" cy="${-r * .1}" r="${r * .2}" fill="#fff" ${ST(3.5)}/><circle cx="${s * r * .36}" cy="${-r * .08}" r="${r * .08}" fill="${C.tinta}"/>` :
-  kind === 'senyum' ? `<path d="M${s * r * .36 - r * .14},${-r * .05} q${r * .14},${-r * .2} ${r * .28},0" ${ST(4)} fill="none"/>` : kind === 'sayu' ? `<path d="M${s * r * .36 - r * .15},${-r * .1} l${r * .3},0" ${ST(4)}/><circle cx="${s * r * .36}" cy="${-r * .02}" r="${r * .07}" fill="${C.tinta}"/>` : '').join('');
-const alis = (r, a) => [-1, 1].map(s => `<path d="M${s * r * .52},${-r * .42 + s * a * 0} l${-s * r * .3},${a}" ${ST(4)}/>`).join('');
+function kacamata(r) { return `<circle cx="${-r * .34}" cy="${-r * .06}" r="${r * .22}" fill="none" stroke="#2A2A2A" stroke-width="2.4"/><circle cx="${r * .34}" cy="${-r * .06}" r="${r * .22}" fill="none" stroke="#2A2A2A" stroke-width="2.4"/><path d="M${-r * .12},${-r * .06} L${r * .12},${-r * .06}" stroke="#2A2A2A" stroke-width="2.4"/>`; }
+const GR = (r, w = .075) => `stroke="#222" stroke-width="${Math.max(2, r * w)}" stroke-linecap="round" stroke-linejoin="round" fill="none"`;
+const titik = r => [-1, 1].map(s => `<circle cx="${s * r * .32}" cy="${-r * .04}" r="${r * .065}" fill="#222"/>`).join('');
+const alis2 = (r, kiri, kanan) => [[-1, kiri], [1, kanan]].map(([s, a]) => `<path d="M${s * r * .5},${-r * .3 + a * r * .08 * -1} L${s * r * .16},${-r * .3 + a * r * .08}" ${GR(r, .085)}/>`).join('');
 const EKSPRESI = {
-  datar: r => mata(r) + `<path d="M${-r * .25},${r * .38} l${r * .5},0" ${ST(4)}/>`,
-  senang: r => mata(r) + `<path d="M${-r * .32},${r * .3} q${r * .32},${r * .32} ${r * .64},0" ${ST(4)} fill="none"/>`,
-  sedih: r => mata(r) + `<path d="M${-r * .28},${r * .48} q${r * .28},${-r * .24} ${r * .56},0" ${ST(4)} fill="none"/>` + [-1, 1].map(s => `<path d="M${s * r * .18},${-r * .38} l${s * r * .32},${r * .1}" ${ST(4)}/>`).join(''),
-  kaget: r => mata(r, 'bulat') + `<ellipse cx="0" cy="${r * .45}" rx="${r * .16}" ry="${r * .22}" fill="${C.tinta}"/>` + [-1, 1].map(s => `<path d="M${s * r * .2},${-r * .52} q${s * r * .16},${-r * .12} ${s * r * .32},0" ${ST(4)} fill="none"/>`).join(''),
-  marah: r => mata(r) + `<path d="M${-r * .26},${r * .45} q${r * .26},${-r * .16} ${r * .52},0" ${ST(4)} fill="none"/>` + [-1, 1].map(s => `<path d="M${s * r * .55},${-r * .45} L${s * r * .14},${-r * .26}" ${ST(5)}/>`).join(''),
-  bingung: r => mata(r) + `<path d="M${-r * .3},${r * .4} q${r * .15},${-r * .12} ${r * .3},0 t${r * .3},0" ${ST(4)} fill="none"/><path d="M${r * .2},${-r * .5} q${r * .2},${-r * .14} ${r * .38},${-r * .02}" ${ST(4)} fill="none"/>`,
-  takut: r => mata(r, 'bulat') + `<path d="M${-r * .3},${r * .45} q${r * .15},${-r * .12} ${r * .3},0 t${r * .3},0" ${ST(4)} fill="none"/><path d="M${r * .8},${-r * .3} q${r * .12},${r * .24} 0,${r * .3} q${-r * .12},${-r * .06} 0,${-r * .3}Z" fill="#8FC1E8"/>`,
-  bangga: r => mata(r, 'senyum') + `<path d="M${-r * .34},${r * .26} q${r * .34},${r * .38} ${r * .68},0 Z" fill="${C.tinta}"/>`,
-  malu: r => mata(r) + `<path d="M${-r * .14},${r * .4} l${r * .28},0" ${ST(4)}/>` + [-1, 1].map(s => `<ellipse cx="${s * r * .55}" cy="${r * .18}" rx="${r * .17}" ry="${r * .09}" fill="#E58A8A" opacity=".8"/>`).join(''),
-  capek: r => mata(r, 'sayu') + `<path d="M${-r * .22},${r * .42} l${r * .44},0" ${ST(4)}/>` + [-1, 1].map(s => `<path d="M${s * r * .36 - r * .12},${r * .08} q${r * .12},${r * .08} ${r * .24},0" ${ST(2.5, '#8A8A9A')} fill="none"/>`).join(''),
-  licik: r => mata(r, 'sayu') + `<path d="M${-r * .3},${r * .36} q${r * .3},${r * .14} ${r * .6},${-r * .12}" ${ST(4)} fill="none"/>`,
+  datar: r => titik(r) + `<path d="M${-r * .14},${r * .34} L${r * .14},${r * .34}" ${GR(r)}/>`,
+  senang: r => titik(r) + `<path d="M${-r * .22},${r * .26} Q0,${r * .46} ${r * .22},${r * .26}" ${GR(r)}/>`,
+  sedih: r => titik(r) + alis2(r, -1, -1) + `<path d="M${-r * .18},${r * .42} Q0,${r * .28} ${r * .18},${r * .42}" ${GR(r)}/>`,
+  kaget: r => [-1, 1].map(s => `<circle cx="${s * r * .32}" cy="${-r * .04}" r="${r * .13}" fill="#fff" ${GR(r, .06)}/><circle cx="${s * r * .32}" cy="${-r * .04}" r="${r * .05}" fill="#222"/>`).join('') + `<ellipse cx="0" cy="${r * .4}" rx="${r * .1}" ry="${r * .14}" fill="#222"/>` + alis2(r, -1.6, -1.6),
+  marah: r => titik(r) + alis2(r, 1.4, 1.4) + `<path d="M${-r * .16},${r * .38} L${r * .16},${r * .38}" ${GR(r)}/>`,
+  bingung: r => titik(r) + alis2(r, 0, -1.6) + `<path d="M${-r * .18},${r * .36} q${r * .09},${-r * .08} ${r * .18},0 t${r * .18},0" ${GR(r)}/>`,
+  takut: r => [-1, 1].map(s => `<circle cx="${s * r * .32}" cy="${-r * .04}" r="${r * .11}" fill="#fff" ${GR(r, .06)}/><circle cx="${s * r * .32}" cy="${-r * .03}" r="${r * .04}" fill="#222"/>`).join('') + alis2(r, -1.2, -1.2) + `<path d="M${-r * .18},${r * .4} q${r * .09},${-r * .08} ${r * .18},0 t${r * .18},0" ${GR(r)}/><path d="M${r * .78},${-r * .3} q${r * .1},${r * .2} 0,${r * .26} q${-r * .1},${-r * .06} 0,${-r * .26}Z" fill="#8FC1E8"/>`,
+  bangga: r => [-1, 1].map(s => `<path d="M${s * r * .32 - r * .1},${-r * .02} Q${s * r * .32},${-r * .14} ${s * r * .32 + r * .1},${-r * .02}" ${GR(r)}/>`).join('') + `<path d="M${-r * .28},${r * .22} Q0,${r * .52} ${r * .28},${r * .22} Z" fill="#222"/>`,
+  malu: r => titik(r) + `<path d="M${-r * .1},${r * .36} L${r * .1},${r * .36}" ${GR(r)}/>` + [-1, 1].map(s => `<ellipse cx="${s * r * .52}" cy="${r * .16}" rx="${r * .14}" ry="${r * .07}" fill="#E58A8A" opacity=".75"/>`).join(''),
+  capek: r => [-1, 1].map(s => `<path d="M${s * r * .32 - r * .11},${-r * .04} L${s * r * .32 + r * .11},${-r * .04}" ${GR(r)}/>`).join('') + `<path d="M${-r * .12},${r * .36} L${r * .12},${r * .36}" ${GR(r)}/>`,
+  licik: r => [-1, 1].map(s => `<path d="M${s * r * .32 - r * .11},${-r * .06} L${s * r * .32 + r * .11},${-r * .02}" ${GR(r)}/>`).join('') + alis2(r, 1, -1) + `<path d="M${-r * .18},${r * .32} Q${r * .05},${r * .42} ${r * .22},${r * .24}" ${GR(r)}/>`,
 };
 
 // ---------- AKSI (pose stickman) ----------
@@ -116,27 +119,30 @@ const AKSI = {
 };
 
 function stickman(o) {
-  // o: x, y(lantai), s, pose, peran, ekspresi, hadap, muncul
   const P = PERAN[o.peran] || PERAN.pelajar, s = o.s * (P.skala || 1), q = o.pose;
-  const kaki = 60 * s, betis = 58 * s, badanT = 100 * s, lengan = 52 * s, lengan2 = 50 * s, r = 34 * s;
+  const r = 44 * s, BW = 64 * s, BH = 90 * s, l1 = 46 * s, l2 = 44 * s, k1 = 50 * s, k2 = 46 * s, tl = 20 * s, tk = 22 * s;
+  const kulit = P.kepala === 'kulit' ? C.kulit : C.kepala;
   const vec = (sisi, deg) => [sisi * Math.sin(deg * Math.PI / 180), Math.cos(deg * Math.PI / 180)];
-  const pinggul = [o.x + q.dx, o.y - (kaki + betis) * Math.cos(Math.min(70, Math.max(q.lL, q.rL)) * Math.PI / 360) + q.dy];
-  const bahu = [pinggul[0] + Math.sin(q.miring * Math.PI / 180) * badanT, pinggul[1] - Math.cos(q.miring * Math.PI / 180) * badanT];
-  const anggota = (asal, sisi, a, b, l1, l2) => { const [x1, y1] = vec(sisi, a), j = [asal[0] + x1 * l1, asal[1] + y1 * l1], [x2, y2] = vec(sisi, a + b), u = [j[0] + x2 * l2, j[1] + y2 * l2]; return [j, u]; };
-  const [lS, lT] = anggota([bahu[0] - 14 * s, bahu[1] + 6 * s], -1, q.lA, q.lB, lengan, lengan2), [rS, rT] = anggota([bahu[0] + 14 * s, bahu[1] + 6 * s], 1, q.rA, q.rB, lengan, lengan2);
-  const [lJ, lF] = anggota([pinggul[0] - 10 * s, pinggul[1]], -1, q.lL, q.lK, kaki, betis), [rJ, rF] = anggota([pinggul[0] + 10 * s, pinggul[1]], 1, q.rL, q.rK, kaki, betis);
-  const kep = [bahu[0], bahu[1] - r - 8 * s + (q.angguk || 0) * s];
-  const garisAng = (a, b, c) => `<path d="M${a[0]},${a[1]} L${b[0]},${b[1]} L${c[0]},${c[1]}" ${ST(11 * s, C.garis)} fill="none"/>`;
-  const tas = o.peran === 'pelajar' ? `<rect x="${bahu[0] + 16 * s}" y="${bahu[1] + 10 * s}" width="${26 * s}" height="${50 * s}" rx="${8 * s}" fill="#3B4A6B" ${ST(4)}/>` : '';
-  const dasi = o.peran === 'juri' || o.peran === 'guru' ? `<path d="M${bahu[0]},${bahu[1] + 6 * s} l${-7 * s},${30 * s} l${7 * s},${12 * s} l${7 * s},${-12 * s} Z" fill="${C.kar}"/>` : '';
+  const pinggul = [o.x + q.dx, o.y - 8 * s - (k1 + k2) * Math.cos(Math.min(70, Math.max(q.lL, q.rL)) * Math.PI / 360) + q.dy];
+  const mr = q.miring * Math.PI / 180, bahu = [pinggul[0] + Math.sin(mr) * BH, pinggul[1] - Math.cos(mr) * BH];
+  const ruas = (asal, sisi, a, b, p1, p2) => { const [x1, y1] = vec(sisi, a), j = [asal[0] + x1 * p1, asal[1] + y1 * p1], [x2, y2] = vec(sisi, a + b); return [j, [j[0] + x2 * p2, j[1] + y2 * p2]]; };
+  const tabung = (a, b, c, w, warna) => `<path d="M${a[0]},${a[1]} L${b[0]},${b[1]} L${c[0]},${c[1]}" stroke="${C.tepi}" stroke-width="${w + 4 * s}" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M${a[0]},${a[1]} L${b[0]},${b[1]} L${c[0]},${c[1]}" stroke="${warna}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
+  const bL = [bahu[0] - BW * .4, bahu[1] + 14 * s], bR = [bahu[0] + BW * .4, bahu[1] + 14 * s], pL = [pinggul[0] - 15 * s, pinggul[1]], pR = [pinggul[0] + 15 * s, pinggul[1]];
+  const [lS, lT] = ruas(bL, -1, q.lA, q.lB, l1, l2), [rS, rT] = ruas(bR, 1, q.rA, q.rB, l1, l2);
+  const [lJ, lF] = ruas(pL, -1, q.lL, q.lK, k1, k2), [rJ, rF] = ruas(pR, 1, q.rL, q.rK, k1, k2);
+  const kaki = P.rok ? `<path d="M${pinggul[0] - BW * .45},${pinggul[1] - 4 * s} L${pinggul[0] + BW * .45},${pinggul[1] - 4 * s} L${pinggul[0] + BW * .62},${o.y - 6 * s} L${pinggul[0] - BW * .62},${o.y - 6 * s} Z" fill="${P.rok}" stroke="${C.tepi}" stroke-width="${2.5 * s}" stroke-linejoin="round"/>`
+    : tabung(pL, lJ, lF, tk, '#3A3A3E') + tabung(pR, rJ, rF, tk, '#3A3A3E') + [lF, rF].map(f => `<ellipse cx="${f[0]}" cy="${f[1] + 4 * s}" rx="${15 * s}" ry="${8 * s}" fill="#2A2A2E"/>`).join('');
+  const tengah = [(bahu[0] + pinggul[0]) / 2, (bahu[1] + pinggul[1]) / 2 + 4 * s];
+  const badan = `<g transform="translate(${tengah[0]} ${tengah[1]}) rotate(${q.miring})"><rect x="${-BW / 2}" y="${-BH / 2 - 6 * s}" width="${BW}" height="${BH + 10 * s}" rx="${16 * s}" fill="${P.baju}" stroke="${C.tepi}" stroke-width="${2.5 * s}"/></g>`;
+  const tasP = o.peran === 'pelajar' ? `<rect x="${bahu[0] + BW * .32}" y="${bahu[1] + 12 * s}" width="${22 * s}" height="${48 * s}" rx="${7 * s}" fill="#24456F" stroke="${C.tepi}" stroke-width="${2 * s}"/>` : '';
+  const dasi = o.peran === 'juri' || o.peran === 'guru' ? `<path d="M${bahu[0]},${bahu[1] + 4 * s} l${-6 * s},${30 * s} l${6 * s},${10 * s} l${6 * s},${-10 * s} Z" fill="#B23A34"/>` : '';
+  const kep = [bahu[0], bahu[1] - r * .92 + (q.angguk || 0) * s];
   const sk = o.muncul ?? 1, cx = pinggul[0], cy = o.y;
   return {svg: `<g transform="translate(${cx} ${cy}) scale(${sk}) translate(${-cx} ${-cy})">
-    <ellipse cx="${o.x}" cy="${o.y + 6}" rx="${46 * s}" ry="${9 * s}" fill="#000" opacity=".35"/>
-    ${garisAng([pinggul[0] - 10 * s, pinggul[1]], lJ, lF)}${garisAng([pinggul[0] + 10 * s, pinggul[1]], rJ, rF)}${tas}
-    <path d="M${bahu[0] - 22 * s},${bahu[1]} L${bahu[0] + 22 * s},${bahu[1]} L${pinggul[0] + 27 * s},${pinggul[1] + 6 * s} L${pinggul[0] - 27 * s},${pinggul[1] + 6 * s} Z" fill="${P.baju}" ${ST(5 * s)}/>${dasi}
-    ${garisAng([bahu[0] - 14 * s, bahu[1] + 6 * s], lS, lT)}${garisAng([bahu[0] + 14 * s, bahu[1] + 6 * s], rS, rT)}
-    <circle cx="${lT[0]}" cy="${lT[1]}" r="${7 * s}" fill="${C.kepala}"/><circle cx="${rT[0]}" cy="${rT[1]}" r="${7 * s}" fill="${C.kepala}"/>
-    <g transform="translate(${kep[0]} ${kep[1]}) rotate(${q.kepala})"><circle r="${r}" fill="${C.kepala}" ${ST(5 * s)}/>${(EKSPRESI[o.ekspresi] || EKSPRESI.datar)(r)}${P.aks(r)}</g></g>`,
+    <ellipse cx="${o.x}" cy="${o.y + 6}" rx="${50 * s}" ry="${9 * s}" fill="#000" opacity=".5"/>${kaki}${tasP}${badan}${dasi}
+    ${tabung(bL, lS, lT, tl, P.baju)}${tabung(bR, rS, rT, tl, P.baju)}
+    <circle cx="${lT[0]}" cy="${lT[1]}" r="${11 * s}" fill="${kulit}" stroke="${C.tepi}" stroke-width="${2 * s}"/><circle cx="${rT[0]}" cy="${rT[1]}" r="${11 * s}" fill="${kulit}" stroke="${C.tepi}" stroke-width="${2 * s}"/>
+    <g transform="translate(${kep[0]} ${kep[1]}) rotate(${q.kepala})"><circle r="${r}" fill="${kulit}" stroke="${C.tepi}" stroke-width="${2.6 * s}"/>${(EKSPRESI[o.ekspresi] || EKSPRESI.datar)(r)}${P.aks(r)}</g></g>`,
     tangan: {l: lT, r: rT}, kepala: [kep[0], kep[1] - r]};
 }
 
@@ -183,7 +189,7 @@ function kamera(k, t, posAktor) {
   const lokal = t - k.mulai, d = Math.max(.5, k.selesai - k.mulai), j = k.kamera?.jenis || 'lebar';
   let z = 1, fx = 360, fy = 640, gx = 0, gy = 0;
   if (j === 'dorong') z = 1 + .1 * ez(cl(lokal / d));
-  if (j === 'dekat' && posAktor[k.kamera.target]) { z = 1.55; fx = posAktor[k.kamera.target][0]; fy = posAktor[k.kamera.target][1] - 200; }
+  if (j === 'dekat' && posAktor[k.kamera.target]) { z = 2.2; fx = posAktor[k.kamera.target][0]; fy = posAktor[k.kamera.target][1] + 60; }
   if (j === 'goyang' && lokal < .5) { const a = 9 * (1 - lokal / .5); gx = a * Math.sin(lokal * 70); gy = a * Math.cos(lokal * 55); }
   z += .012 * Math.sin(t * .8);                       // napas kamera, selalu bergerak
   return {z, fx, fy, gx, gy};
@@ -208,11 +214,12 @@ function poseAktor(k, id, t) {
 function ekspresiAktor(k, id, t) { let e = k.pemeran[id].ekspresi; for (const x of k.ekspresi) if (x.id === id && t >= x.t) e = x.ekspresi; return e; }
 function kataKini(t) { let w = null; for (const x of TL.kata) { if (x.a - .03 <= t) w = x; else break; } const k = ketukanDi(t); return w && t <= k.selesai + .1 && t >= w.a - .03 && (w.ketukan === k.no || t < w.b + .25) ? w : (w && t < w.b + .25 ? w : null); }
 const PENEKAN = /^[0-9]/;
+function debu(t) { ACAK = 77; let s = ''; for (let n = 0; n < 40; n++) { const x0 = acak() * 720, y0 = acak() * 1280, v = 8 + acak() * 14; s += `<circle cx="${(x0 + Math.sin(t * .4 + n) * 18 + 720) % 720}" cy="${(y0 - t * v + 12800) % 1280}" r="${.8 + acak() * 1.4}" fill="#E8D9B8" opacity="${.08 + acak() * .22}"/>`; } return s; }
 function bungkus(teks, maks = 26) { const w = teks.split(' '), b = ['']; for (const x of w) { if ((b[b.length - 1] + ' ' + x).trim().length > maks && b[b.length - 1]) b.push(x); else b[b.length - 1] = (b[b.length - 1] + ' ' + x).trim(); } return b.slice(0, 2); }
-const teksButir = (teks, warna) => bungkus(teks).map((baris, n, all) => `<text x="76" y="${all.length > 1 ? 22 + n * 30 : 40}" font-size="${all.length > 1 ? 26 : 32}" fill="${warna}" font-family="Baloo">${baris}</text>`).join('');
+const teksButir = (teks, warna) => bungkus(teks).map((baris, n, all) => `<text x="76" y="${all.length > 1 ? 22 + n * 30 : 40}" font-size="${all.length > 1 ? 26 : 32}" fill="${warna}" font-weight="700" font-family="Mont">${baris}</text>`).join('');
 
-window.render = function (t) {
-  const k = ketukanDi(t), i = idx(k), lokal = t - k.mulai, sebelum = KT[i - 1];
+function bangunDunia(k, t, i) {
+  const lokal = t - k.mulai, sebelum = KT[i - 1];
   // aktor
   const posAktor = {}, gambarAktor = [], baru = sebelum && sebelum.latar === k.latar ? Object.keys(sebelum.pemeran) : [];
   for (const id of Object.keys(k.pemeran)) {
@@ -240,33 +247,43 @@ window.render = function (t) {
   const cam = kamera(k, t, posAktor), camLalu = sebelum ? kamera(sebelum, k.mulai, posAktor) : cam, m = ez(cl(lokal / .35));
   const z = camLalu.z + (cam.z - camLalu.z) * m, fx = camLalu.fx + (cam.fx - camLalu.fx) * m, fy = camLalu.fy + (cam.fy - camLalu.fy) * m;
   const dunia = `<g transform="translate(${360 + cam.gx} ${640 + cam.gy}) scale(${z}) translate(${-fx} ${-fy})">${(LATAR[k.latar] || LATAR.kosong)(t)}${props}${gambarAktor.map(a => a.svg).join('')}</g>`;
-  const pindahLatar = sebelum && sebelum.latar !== k.latar ? 1 - cl(lokal / .3) : 0;
+  return {dunia, posAktor};
+}
+window.render = function (t) {
+  const k = ketukanDi(t), i = idx(k), lokal = t - k.mulai, sebelum = KT[i - 1];
+  const D = bangunDunia(k, t, i), posAktor = D.posAktor;
+  let dunia = D.dunia;
+  if (sebelum && sebelum.latar !== k.latar && lokal < .6) {           // double exposure: adegan lama tembus samar
+    const L2 = bangunDunia(sebelum, t, i - 1).dunia, o = .55 * (1 - ez(cl(lokal / .6)));
+    dunia += `<g opacity="${o}" transform="translate(360 640) scale(${1 + .08 * lokal}) translate(-360 -640)">${L2}</g>`;
+  }
+  const pindahLatar = 0;
   // hamparan: teks besar, data, kartu, sumber, caption
   let atas = '';
   const adaPanel = k.data.length || (k.kartu && t >= k.kartu.mulai);
-  k.teks.forEach((x, j) => { if (t < x.t) return; const s = pantul((t - x.t) / .28); const fs = Math.min(76, Math.floor(640 / (0.6 * x.teks.length))); atas += `<g transform="translate(360 ${adaPanel ? 180 : 300 + j * 90}) scale(${s})"><text text-anchor="middle" font-size="${fs}" fill="${C.cahaya}" stroke="${C.tinta}" stroke-width="12" paint-order="stroke" font-family="Baloo" y="26">${x.teks}</text></g>`; });
+  k.teks.forEach((x, j) => { if (t < x.t) return; const s = pantul((t - x.t) / .28); const fs = Math.min(64, Math.floor(640 / (0.66 * x.teks.length))); atas += `<g transform="translate(360 ${adaPanel ? 180 : 300 + j * 90}) scale(${s})"><text text-anchor="middle" font-size="${fs}" fill="${C.cahaya}" stroke="#000" stroke-width="8" paint-order="stroke" font-weight="800" font-family="Mont" y="26">${x.teks}</text></g>`; });
   if (k.data.length) {
     const maks = Math.max(...k.data.map(d => d.nilai)), lebar = 420;
     k.data.forEach((d, j) => { if (t < d.t) return; const g = ez(cl((t - d.t) / .7)), w = lebar * d.nilai / maks * g, terakhir = d.nilai === maks;
-      atas += `<g transform="translate(70 ${195 + j * 100})"><text y="-10" font-size="28" fill="${C.krem}" font-family="Baloo">${d.label}</text><rect y="0" width="${w}" height="52" rx="12" fill="${terakhir ? C.kar : '#5E6478'}" ${ST(4)}/><text x="${w + 14}" y="40" font-size="36" fill="${C.krem}" font-family="Baloo">${String(Math.round(d.nilai * 10 * g) / 10).replace('.', ',')} ${d.satuan || ''}</text></g>`; });
+      atas += `<g transform="translate(70 ${195 + j * 100})"><text y="-10" font-size="24" font-weight="700" fill="#E8E8E8" font-family="Mont">${d.label}</text><rect y="0" width="${w}" height="52" rx="12" fill="${terakhir ? C.cahaya : '#8E8E8E'}" stroke="#000" stroke-width="2"/><text x="${w + 14}" y="36" font-size="30" font-weight="800" fill="#FFFFFF" font-family="Mont">${String(Math.round(d.nilai * 10 * g) / 10).replace('.', ',')} ${d.satuan || ''}</text></g>`; });
   }
   if (k.kartu && t >= k.kartu.mulai && t <= k.kartu.selesai) {
     const s = pantul((t - k.kartu.mulai) / .3), keluarK = 1 - cl((t - (k.kartu.selesai - .25)) / .25);
-    atas += `<g transform="translate(360 150) scale(${s * keluarK})" ><rect x="-300" y="0" width="600" height="${86 + k.kartu.butir.length * 92}" rx="22" fill="${C.krem}" ${ST(6)}/><text x="0" y="56" text-anchor="middle" font-size="36" fill="${C.tinta}" font-family="Baloo">${k.kartu.judul}</text>
-      ${k.kartu.butir.map((b, j) => { const on = t >= b.t, sb = on ? pantul((t - b.t) / .25) : 0; return `<g transform="translate(-270 ${96 + j * 92})"><rect width="54" height="54" rx="12" fill="${on ? C.kar : 'none'}" ${ST(5)}/><path d="M12,28 L24,40 L44,14" ${ST(8, '#fff')} fill="none" transform="scale(${sb})" transform-origin="27 27"/>${teksButir(b.teks, on ? C.tinta : '#8A8578')}</g>`; }).join('')}</g>`;
+    atas += `<g transform="translate(360 150) scale(${s * keluarK})" ><rect x="-300" y="0" width="600" height="${86 + k.kartu.butir.length * 92}" rx="22" fill="#141416" fill-opacity=".94" stroke="#E8A847" stroke-width="3"/><text x="0" y="56" text-anchor="middle" font-size="32" font-weight="800" fill="#E8A847" font-family="Mont">${k.kartu.judul}</text>
+      ${k.kartu.butir.map((b, j) => { const on = t >= b.t, sb = on ? pantul((t - b.t) / .25) : 0; return `<g transform="translate(-270 ${96 + j * 92})"><rect width="54" height="54" rx="12" fill="${on ? C.cahaya : 'none'}" stroke="#E8A847" stroke-width="3"/><path d="M12,28 L24,40 L44,14" ${ST(8, '#fff')} fill="none" transform="scale(${sb})" transform-origin="27 27"/>${teksButir(b.teks, on ? '#FFFFFF' : '#7A7A7A')}</g>`; }).join('')}</g>`;
   }
   // kartu yang ditahan sampai ketukan sesudahnya
   for (const kk of KT) if (kk !== k && kk.kartu && t >= kk.kartu.mulai && t <= kk.kartu.selesai) {
-    atas += `<g transform="translate(360 150) scale(${1 - cl((t - (kk.kartu.selesai - .25)) / .25)})"><rect x="-300" y="0" width="600" height="${86 + kk.kartu.butir.length * 92}" rx="22" fill="${C.krem}" ${ST(6)}/><text x="0" y="56" text-anchor="middle" font-size="36" fill="${C.tinta}" font-family="Baloo">${kk.kartu.judul}</text>${kk.kartu.butir.map((b, j) => `<g transform="translate(-270 ${96 + j * 92})"><rect width="54" height="54" rx="12" fill="${t >= b.t ? C.kar : 'none'}" ${ST(5)}/>${t >= b.t ? `<path d="M12,28 L24,40 L44,14" ${ST(8, '#fff')} fill="none"/>` : ''}${teksButir(b.teks, t >= b.t ? C.tinta : '#8A8578')}</g>`).join('')}</g>`;
+    atas += `<g transform="translate(360 150) scale(${1 - cl((t - (kk.kartu.selesai - .25)) / .25)})"><rect x="-300" y="0" width="600" height="${86 + kk.kartu.butir.length * 92}" rx="22" fill="#141416" fill-opacity=".94" stroke="#E8A847" stroke-width="3"/><text x="0" y="56" text-anchor="middle" font-size="32" font-weight="800" fill="#E8A847" font-family="Mont">${kk.kartu.judul}</text>${kk.kartu.butir.map((b, j) => `<g transform="translate(-270 ${96 + j * 92})"><rect width="54" height="54" rx="12" fill="${t >= b.t ? C.cahaya : 'none'}" stroke="#E8A847" stroke-width="3"/>${t >= b.t ? `<path d="M12,28 L24,40 L44,14" ${ST(8, '#fff')} fill="none"/>` : ''}${teksButir(b.teks, t >= b.t ? '#FFFFFF' : '#7A7A7A')}</g>`).join('')}</g>`;
   }
   const ataA = KT.slice(0, i + 1).reverse().find(x => x.ata && t >= x.ata.mulai && t <= x.ata.selesai)?.ata || (KT[i + 1]?.ata && KT[i + 1].ata.masuk === 'sapuan' && t >= KT[i + 1].ata.mulai ? KT[i + 1].ata : null);
-  const capX = ataA && ataA.masuk !== 'intip' ? (ataA.tempat === 'kiri' ? 440 : ataA.tempat === 'kanan' ? 280 : 360) : 360;
+  const capX = 360;
   const w = kataKini(t);
-  const cap = w ? `<text x="${capX}" y="1075" text-anchor="middle" font-size="58" fill="${PENEKAN.test(w.w) ? C.cahaya : C.krem}" stroke="${C.tinta}" stroke-width="12" paint-order="stroke" font-family="Baloo">${w.w}</text>` : '';
+  const cap = w ? `<text x="${capX}" y="565" text-anchor="middle" font-size="31" font-weight="700" fill="#FFFFFF" stroke="rgba(0,0,0,.55)" stroke-width="5" paint-order="stroke" font-family="Mont">${w.w}</text>` : '';
   const src = (k.fakta || k.data.length) && TL.sumber_layar ? `<text x="360" y="1250" text-anchor="middle" font-size="17" fill="${C.krem}" opacity=".7" font-family="Baloo">${TL.sumber_layar.replace(/&/g, '&amp;')}</text>` : '';
   $('layar').innerHTML = `<defs><radialGradient id="cahaya"><stop offset="0" stop-color="${C.cahaya}" stop-opacity=".9"/><stop offset="1" stop-color="${C.cahaya}" stop-opacity="0"/></radialGradient>
     <radialGradient id="vinyet" cx=".5" cy=".45" r=".75"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".75"/></radialGradient></defs>
-    ${dunia}<rect width="720" height="1280" fill="url(#vinyet)"/><rect width="720" height="1280" fill="#000" opacity="${pindahLatar}"/>${atas}${cap}${src}`;
+    ${dunia}${debu(t)}<rect width="720" height="1280" fill="url(#vinyet)"/><rect width="720" height="1280" fill="#000" opacity="${pindahLatar}"/>${atas}${cap}${src}`;
   // Ata
   const e = $('ata'), a = ataA;
   if (!a) { e.style.opacity = 0; return; }
