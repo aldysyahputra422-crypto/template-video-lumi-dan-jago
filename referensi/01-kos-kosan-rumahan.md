@@ -5,7 +5,7 @@ Sumber: file video dari pemilik + dua tangkapan layar profil akun. Isi video tid
 ## Data tayangan (dari tangkapan layar, belum diverifikasi lain)
 - Akun: 18 post, 6.416 pengikut. Kotak profil yang terlihat: 2,3 juta, 494 ribu, 607 ribu tayangan (tayangan jauh di atas jumlah pengikut: distribusi ke non-pengikut).
 - Video ini (2,3 juta): 206 ribu suka, 6.806 komentar, 5.832 repost, 19 ribu kirim, 58,1 ribu simpan. Rasio terhadap tayangan: suka ±9%, simpan ±2,5%, kirim ±0,8%, komentar ±0,3%.
-- **Tanggal unggah belum diketahui**, jadi syarat "1 juta dalam 7 hari" belum bisa diperiksa. Perlu dari pemilik.
+- Syarat "1 juta dalam 7 hari" tidak dipakai lagi (keputusan pemilik): yang dicari adalah desain dan alur cerita yang disukai audiens, dan audiens tidak mempermasalahkan konten buatan AI.
 - Seri berformat sama (judul sampul "Dari X jadi Y digital") dengan beberapa tayangan 494K+ menunjukkan format berulang, bukan sekali kebetulan. Itu bukti lebih kuat daripada satu video, tapi tetap hipotesis.
 
 ## Teknis (terukur)

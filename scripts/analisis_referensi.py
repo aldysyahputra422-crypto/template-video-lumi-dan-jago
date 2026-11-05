@@ -1,7 +1,7 @@
 """Analisis satu video referensi menjadi angka terukur, deterministik, tanpa LLM dan tanpa layanan berbayar.
 
 python -m scripts.analisis_referensi <video> <folder_keluar> [--tanpa-lembar]
-Keluaran di folder: analisis.json (angka turunan, aman masuk repo) dan lembar.png (kontak frame tiap 3 dtk,
+Keluaran di folder: analisis.json (angka turunan, aman masuk repo), transkrip.json (teks lengkap, JANGAN di-commit) dan lembar.png (kontak frame tiap 3 dtk,
 untuk dilihat; berisi cuplikan video pihak lain, jangan di-commit).
 Transkrip memakai faster-whisper lokal (model unduhan sekali). Audio diberikan sebagai array numpy karena
 decode_audio bawaan faster-whisper bentrok dengan versi PyAV tertentu.
@@ -58,18 +58,25 @@ def transkrip_lokal(wav: Path) -> list[dict]:
     return [{"k": w.word.strip(), "a": round(w.start, 2), "b": round(w.end, 2)} for s in seg for w in (s.words or [])]
 
 
+def _murni(kata: list[dict]) -> list[dict]:
+    """Ubah nilai numpy menjadi float/str Python supaya aman disimpan sebagai JSON."""
+    return [{"k": str(x["k"]), "a": float(x["a"]), "b": float(x["b"])} for x in kata]
+
+
 def statistik_kata(kata: list[dict]) -> dict:
+    kata = _murni(kata)
     if not kata:
         return {"jumlah_kata": 0, "kata_per_detik": 0.0, "jeda_terpanjang": 0.0, "jeda_di_atas_0_45": 0}
     durasi = kata[-1]["b"] - kata[0]["a"]
     jeda = [b["a"] - a["b"] for a, b in zip(kata, kata[1:])]
     return {"jumlah_kata": len(kata), "kata_per_detik": round(len(kata) / durasi, 2) if durasi else 0.0,
             "rata2_durasi_kata": round(statistics.mean(k["b"] - k["a"] for k in kata), 2),
-            "jeda_terpanjang": round(max(jeda, default=0.0), 2), "jeda_di_atas_0_45": sum(g >= JEDA_KALIMAT for g in jeda)}
+            "jeda_terpanjang": round(max(jeda, default=0.0), 2), "jeda_di_atas_0_45": int(sum(g >= JEDA_KALIMAT for g in jeda))}
 
 
 def kalimat(kata: list[dict], jeda: float = JEDA_KALIMAT) -> list[dict]:
     """Kelompok kata yang dipisah jeda >= `jeda` detik: pendekatan kasar atas frasa/kalimat."""
+    kata = _murni(kata)
     if not kata:
         return []
     grup = [[kata[0]]]
@@ -99,12 +106,16 @@ def analisis(video: Path, folder: Path, transkrip_fn=None, lembar_png: bool = Tr
         with tempfile.TemporaryDirectory() as t:
             wav = Path(t) / "a.wav"
             _jalankan(["ffmpeg", "-v", "error", "-y", "-i", str(video), "-ac", "1", "-ar", "16000", str(wav)])
-            kata = (transkrip_fn or transkrip_lokal)(wav)
+            kata = _murni((transkrip_fn or transkrip_lokal)(wav))
     cut = potongan(video)
+    kal = kalimat(kata)
     hasil = {"berkas": video.name[:60], "teknis": p, "loudness": loudness(video) if p["ada_audio"] else None,
              "potongan_keras": {"jumlah": len(cut), "waktu": cut, "per_menit": round(len(cut) / p["durasi"] * 60, 1)},
-             "suara": statistik_kata(kata), "hook": hook(kata), "kalimat": kalimat(kata), "kata": kata}
+             "suara": statistik_kata(kata), "hook": hook(kata),
+             "kalimat": [{"mulai": k["mulai"], "selesai": k["selesai"], "jumlah_kata": len(k["teks"].split())} for k in kal]}
     (folder / "analisis.json").write_text(json.dumps(hasil, ensure_ascii=False, indent=1), encoding="utf-8")
+    # teks lengkap milik pihak lain: dipisah dan di-gitignore, hanya untuk dibaca lokal
+    (folder / "transkrip.json").write_text(json.dumps({"kalimat": kal, "kata": kata}, ensure_ascii=False, indent=1), encoding="utf-8")
     if lembar_png:
         lembar(video, folder / "lembar.png")
     return hasil

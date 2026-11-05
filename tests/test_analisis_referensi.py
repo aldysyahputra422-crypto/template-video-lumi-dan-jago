@@ -63,8 +63,26 @@ def test_analisis_lengkap_dengan_transkrip_palsu(video, tmp_path):
     j = json.loads((tmp_path / "analisis.json").read_text())
     assert j["teknis"]["lebar"] == 360 and j["potongan_keras"]["jumlah"] == 1
     assert j["suara"]["jumlah_kata"] == 6 and j["hook"] == "Kalau kamar kosong Tapi tiap hari" and len(j["kalimat"]) == 2  # hook = 3 dtk pertama
-    assert h == j
+    assert h["suara"] == j["suara"]
+
+
+def test_teks_lengkap_hanya_di_transkrip_json(video, tmp_path):
+    """analisis.json aman masuk repo (angka saja); transkrip penuh pihak lain terpisah dan di-gitignore."""
+    a.analisis(video, tmp_path, transkrip_fn=lambda wav: KATA, lembar=False)
+    j = json.loads((tmp_path / "analisis.json").read_text())
+    assert "kata" not in j and all("teks" not in k for k in j["kalimat"])
+    assert j["kalimat"][1] == {"mulai": 2.0, "selesai": 3.0, "jumlah_kata": 3}
+    tr = json.loads((tmp_path / "transkrip.json").read_text())
+    assert [x["teks"] for x in tr["kalimat"]] == ["Kalau kamar kosong", "Tapi tiap hari"] and len(tr["kata"]) == 6
 
 
 def test_cli_kode_salah_pakai(capsys):
     assert a.main([]) == 2
+
+
+def test_transkrip_bernilai_numpy_tetap_bisa_disimpan(video, tmp_path):
+    import numpy as np
+    kata = [{"k": "Halo", "a": np.float64(0.0), "b": np.float64(0.4)}, {"k": "dunia", "a": np.float64(0.5), "b": np.float64(0.9)}]
+    h = a.analisis(video, tmp_path, transkrip_fn=lambda wav: kata, lembar=False)
+    assert isinstance(h["suara"]["jeda_di_atas_0_45"], int) and type(h["suara"]["jeda_di_atas_0_45"]) is int
+    assert json.loads((tmp_path / "analisis.json").read_text())["suara"]["jumlah_kata"] == 2
