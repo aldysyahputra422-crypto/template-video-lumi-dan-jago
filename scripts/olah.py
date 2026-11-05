@@ -1,7 +1,7 @@
 """/olah: jalankan seluruh produksi satu video dan berhenti di titik yang butuh pemilik.
 
 python -m scripts.olah <folder>   → satu baris JSON {kode, berhenti_di, instruksi, ...}
-Kode: 0 video jadi dan lulus QA, 1 gagal teknis, 4 Approval 1 (naskah), 5 butuh suara / suara tidak cocok, 6 butuh tempelan atau koreksi.
+Kode: 0 video jadi dan lulus QA, 1 gagal teknis, 4 Approval 1 (naskah), 5 butuh suara / suara tidak cocok, 6 butuh tempelan atau koreksi, 8 butuh aset baru (aset.js).
 Urutan: tempelan → naskah.json → lint standar → Approval 1 + lembar ElevenLabs → suara.mp3 → selaras → linimasa → campur → render → QA.
 """
 import json
@@ -11,7 +11,7 @@ from pathlib import Path
 
 import yaml
 
-from scripts import campur, caption, lembar, lint_naskah, linimasa, naskah_format, prompt_visual, qa, render, selaras
+from scripts import campur, caption, cek_aset, lembar, lint_naskah, linimasa, naskah_format, prompt_visual, qa, render, selaras
 
 
 def _baru(a: Path, b: Path) -> bool:
@@ -50,6 +50,11 @@ def maju(folder: Path, transkrip_fn=None, fps: int = 30) -> dict:
     if not n.get("disetujui"):
         return {"kode": 4, "berhenti_di": "approval_1", "perkiraan_durasi": lint["perkiraan_durasi"], "peringatan": [p["pesan"] for p in lint["peringatan"]],
                 "instruksi": f"Baca {f}/naskah.json. Bila setuju, ubah \"disetujui\" menjadi true, lalu generate {f}/lembar-elevenlabs.md di ElevenLabs dan simpan sebagai suara.mp3."}
+    if n.get("aset"):   # isi bebas per video: aset baru digambar Claude di aset.js sesudah naskah disetujui
+        ca = cek_aset.periksa(f, lembar=False)
+        if ca["galat"]:
+            return {"kode": 8, "berhenti_di": "aset", "galat": ca["galat"][:12],
+                    "instruksi": f"Naskah memakai {len(n['aset'])} aset baru (daftar: {f}/aset-dibutuhkan.md). Claude menggambarnya di {f}/aset.js mengikuti docs/gaya-visual.md, menjalankan python -m scripts.cek_aset {f}, memeriksa aset-cek.png, lalu /olah lagi."}
     if not selaras.cari_suara(f):
         return {"kode": 5, "berhenti_di": "suara", "instruksi": f"Generate {f}/lembar-elevenlabs.md di ElevenLabs (voice Ata, Eleven v3), simpan sebagai {f}/suara.mp3, lalu /olah lagi."}
     if selaras.main([str(f)], transkrip_fn=transkrip_fn) != 0:

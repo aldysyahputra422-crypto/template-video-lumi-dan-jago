@@ -90,3 +90,24 @@ def test_suasana_sama_dengan_mesin():
 
 def test_watermark_digambar_dan_berpindah():
     assert "TL.watermark" in MESIN and "POS_WATERMARK" in MESIN
+
+
+def test_aset_per_video_dan_kerumunan_dirender_tanpa_galat(tmp_path):
+    """Isi bebas per video (video/<nama>/aset.js) + kerumunan: mesin memuat aset, menggambar, tanpa galat halaman."""
+    import json
+    import shutil
+    import subprocess
+    import sys
+    sys.path.insert(0, str(ROOT / "tests"))
+    from scripts import linimasa, naskah_format as nf, selaras
+    from test_selaras_linimasa import _transkrip_palsu
+    F = ROOT / "tests/fixtures/aset_uji"
+    n = nf.urai((F / "tempelan.txt").read_text(encoding="utf-8")).naskah
+    assert n is not None
+    shutil.copy(F / "aset.js", tmp_path / "aset.js")
+    L = linimasa.susun(n, selaras.selaraskan(n, _transkrip_palsu(n)), None)
+    assert L["ketukan"][0]["pemeran"]["tk"]["jumlah"] == 12
+    (tmp_path / "timeline.json").write_text(json.dumps(L), encoding="utf-8")
+    r = subprocess.run(["node", str(ROOT / "render/render.js"), str(tmp_path), str(tmp_path / "f"), "30", "1.0,4.0"], capture_output=True, text=True, timeout=180)
+    assert r.returncode == 0, r.stderr[-800:]
+    assert (tmp_path / "f/cek_00.png").exists()

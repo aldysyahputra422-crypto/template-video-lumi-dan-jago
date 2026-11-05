@@ -56,6 +56,10 @@ def _kata_ke_angka(kata: list[str]) -> float:
     return total + grup + kini
 
 
+def _gaya() -> dict:
+    return yaml.safe_load((Path(__file__).resolve().parents[1] / "config/gaya.yaml").read_text(encoding="utf-8"))
+
+
 HENTI = {"yang", "dari", "kamu", "itu", "ini", "dan", "atau", "dengan", "untuk", "pada", "karena", "tapi", "juga", "masih", "sudah", "akan"}
 
 
@@ -107,10 +111,11 @@ def periksa(n: dict, kartu: dict | None) -> dict:
     if not (SAPAAN.search(ks[0]["ucap"]) or KONTRADIKSI.search(ks[0]["ucap"])):
         P(ks[0], "hook tidak menyapa penonton (kamu/-mu) dan tidak membalik dugaan")
     # 2 durasi
-    if not 30 <= durasi <= 70:
-        G(None, f"perkiraan durasi {durasi} dtk di luar 30 sampai 70 dtk")
-    elif not 40 <= durasi <= 55:
-        P(None, f"perkiraan durasi {durasi} dtk; sasaran 40 sampai 55 dtk")
+    D = _gaya()["durasi"]
+    if not D["batas_min"] <= durasi <= D["batas_maks"]:
+        G(None, f"perkiraan durasi {durasi} dtk di luar {D['batas_min']} sampai {D['batas_maks']} dtk")
+    elif not D["sasaran_min"] <= durasi <= D["sasaran_maks"]:
+        P(None, f"perkiraan durasi {durasi} dtk; sasaran {D['sasaran_min']} sampai {D['sasaran_maks']} dtk (video referensi)")
     # 3 visual tiap ketukan, panjang ketukan
     for k, nk in zip(ks, kata):
         if not any(k[f] for f in ("aksi", "ekspresi", "props", "teks", "data", "kartu", "ata", "kamera", "aktor")):

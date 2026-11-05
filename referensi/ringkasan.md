@@ -1,4 +1,6 @@
-# Ringkasan lintas referensi (5 video)
+# Ringkasan lintas referensi (5 video awal + 5 mindwander)
+
+Patokan gaya dan alur pemilik sejak 2026-11-05: mindwander (`referensi/mindwander-07-11.md`): gaya terkunci, isi bebas per video.
 
 | | 01 kos-kosan | 02 tender jalan | 03 pajak | 04 penyadap | 05 cerai |
 |---|---|---|---|---|---|

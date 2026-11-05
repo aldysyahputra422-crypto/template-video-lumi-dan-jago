@@ -7,12 +7,34 @@ referensi_gerak:
   04-penyadap:    {gerak_rata: 6.44,  persen_diam: 4,  diam_terpanjang: 1.0, beda_3dtk: 35.6}
   05-cerai:       {gerak_rata: 2.10,  persen_diam: 43, diam_terpanjang: 2.5, beda_3dtk: 30.5}   # motion graphic data, pencilan
   06-maskot:      {gerak_rata: 18.17, persen_diam: 0,  diam_terpanjang: 0.0, beda_3dtk: 62.7}
+  # mindwander_dot_id (patokan gaya dan alur pemilik, 2026-11-05): isi tiap video dibuat khusus, gaya tetap
+  07-tikus-ular:  {gerak_rata: 7.70,  persen_diam: 3,  diam_terpanjang: 0.5, beda_3dtk: 26.9}
+  08-pesawat:     {gerak_rata: 8.35,  persen_diam: 1,  diam_terpanjang: 0.5, beda_3dtk: 34.9}
+  09-dr-fox:      {gerak_rata: 8.13,  persen_diam: 0,  diam_terpanjang: 0.0, beda_3dtk: 37.0}
+  10-merak:       {gerak_rata: 6.10,  persen_diam: 1,  diam_terpanjang: 0.5, beda_3dtk: 24.4}
+  11-sumur-tikus: {gerak_rata: 3.27,  persen_diam: 16, diam_terpanjang: 4.0, beda_3dtk: 12.2}   # gaya garis tipis, pencilan
 pembanding_lama:   # versi mesin sebelum perbaikan gerak (masukan pemilik: "motion/editingnya boring")
   contekan-testing-effect: {gerak_rata: 2.46, persen_diam: 53, diam_terpanjang: 6.5, beda_3dtk: 20.4}
   kedai-5whys:             {gerak_rata: 2.90, persen_diam: 36, diam_terpanjang: 3.0, beda_3dtk: 24.7}
-# Gerbang QA (scripts/qa.py). Batas di antara median referensi dan vt3; semua referensi kecuali pencilan lolos.
+# Gerbang QA (scripts/qa.py). Dikalibrasi ulang dari 11 referensi (2026-11-05): 9 dari 11 lolos semua batas.
 target_gerak:
-  gerak_rata_min: 6.0        # median referensi 7,9; vt3 9,4
-  persen_diam_maks: 10       # median 4; vt3 0
-  diam_terpanjang_maks: 1.5  # median 1,0; vt3 0
-  beda_3dtk_min: 30          # semua referensi >= 30
+  gerak_rata_min: 6.0        # median 11 referensi 7,7
+  persen_diam_maks: 10       # median 3
+  diam_terpanjang_maks: 1.5  # median 0,5
+  beda_3dtk_min: 24          # median 34,9; video merak 24,4 dan tikus-ular 26,9 tetap lolos
+# Durasi dan tempo (scripts/analisis_referensi.py): mindwander 64 sampai 87 dtk, 2,7 sampai 3,45 kata/dtk.
+durasi:
+  referensi_dtk: [82.8, 43.6, 60.8, 89.0, 47.5, 63.7, 69.6, 65.9, 74.7, 87.3]
+  sasaran_min: 45
+  sasaran_maks: 80
+  batas_min: 30
+  batas_maks: 95
+  kata_per_detik_referensi: [2.50, 2.33, 3.11, 2.50, 2.06, 2.86, 3.11, 2.70, 3.45, 2.82]   # median 2,8
+# Palet terukur (scripts/ukur_palet.py) dari video 03 dan 07 sampai 11: porsi terbesar hampir hitam hangat.
+palet:
+  dasar: ["#0D0B09", "#0F0D0B", "#171715", "#1B140D", "#090909"]
+  lapis: ["#312A1C", "#3A352E", "#3E2D20", "#2D2E26", "#372D1F"]
+  tengah: ["#554C37", "#625235", "#57534F", "#494F49", "#6B462A"]
+  terang: ["#DFCEAD", "#E6E5E5", "#F0EBE1", "#CEC8BA", "#B6AFAD"]
+  aksen_tetap: ["#D09C27", "#F2B80E", "#A58859"]       # emas: aksen tetap semua video
+  aksen_contoh: ["#C1571C", "#8F4017", "#0F335B", "#426486"]   # oranye senja (pesawat), biru (merak): aksen khusus per video, maks 3
