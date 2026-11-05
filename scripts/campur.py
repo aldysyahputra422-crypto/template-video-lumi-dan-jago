@@ -15,12 +15,38 @@ from scripts.selaras import cari_suara
 ROOT = Path(__file__).resolve().parents[1]
 SR = 44100
 SFX_DB, MUSIK_DB = -13.0, -27.0
+SASARAN_LUFS, PUNCAK_TP = -14.0, -1.5
 MUSIK = ROOT / "aset/audio/musik_tegang.mp3"
 
 
 def _baca(p: Path) -> np.ndarray:
     raw = subprocess.run(["ffmpeg", "-v", "error", "-i", str(p), "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"], capture_output=True, check=True).stdout
     return np.frombuffer(raw, dtype=np.float32).copy()
+
+
+def _ukur(masuk: Path, f: str) -> dict:
+    err = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", str(masuk), "-af", f + ":print_format=json", "-f", "null", "-"],
+                         capture_output=True, text=True, check=True).stderr
+    return json.loads(err[err.rindex("{"):err.rindex("}") + 1])
+
+
+def normalkan(masuk: Path, keluar: Path) -> None:
+    """Narasi ke -14 LUFS, true peak <= -1,5 dBTP.
+    1) kompresor ringan + gain ke sasaran + limiter -3 dBFS (suara asli ElevenLabs bisa -24 LUFS dengan puncak -3 dBTP:
+       loudnorm saja jatuh ke mode dinamis dan berhenti 1 sampai 2 LU di bawah sasaran);
+    2) koreksi akhir loudnorm dua kali jalan, linear (kini mungkin karena puncak sudah diberi ruang)."""
+    tengah = Path(keluar).with_name("_norm_tengah.wav")
+    f = f"loudnorm=I={SASARAN_LUFS}:TP={PUNCAK_TP}:LRA=20"
+    kompres = "acompressor=threshold=0.05:ratio=2.5:attack=5:release=120"
+    i_awal = float(_ukur(masuk, kompres + "," + f)["input_i"])
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(masuk), "-af",
+                    f"{kompres},volume={SASARAN_LUFS - i_awal:.2f}dB,alimiter=limit=0.7:attack=3:release=60:level=false",
+                    "-ar", str(SR), str(tengah)], check=True)
+    m = _ukur(tengah, f)
+    f2 = (f + f":measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
+          f":measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true")
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(tengah), "-af", f2, "-ar", str(SR), "-ac", "2", str(keluar)], check=True)
+    tengah.unlink()
 
 
 def jalankan(folder: Path, musik: Path | None = MUSIK) -> Path:
@@ -48,7 +74,7 @@ def jalankan(folder: Path, musik: Path | None = MUSIK) -> Path:
     mentah = folder / "_campur_mentah.wav"
     sf.write(mentah, mix, SR)
     keluar = folder / "campur.wav"
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(mentah), "-af", "loudnorm=I=-14:TP=-1.5:LRA=7", "-ar", str(SR), "-ac", "2", str(keluar)], check=True)
+    normalkan(mentah, keluar)
     mentah.unlink()
     return keluar
 
