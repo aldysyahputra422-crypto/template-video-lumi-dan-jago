@@ -7,18 +7,21 @@ Template video pendek dengan maskot **Ata**, panda merah Sobat Ambis (mentoring 
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 npm install --prefix render
 ```
-Butuh `ffmpeg`, Node, dan Chromium Playwright (sudah ada di Claude Code web).
+Butuh `ffmpeg`, Node, dan Chromium Playwright (sudah ada di Claude Code web). Cek kesiapan: `/periksa` (`python -m scripts.periksa_siap`). Panduan sesi baru: `docs/serah-terima.md`.
 
 1. `/naskah <nama> "<topik>"`: Claude meriset dan memverifikasi jurnal, menulis `video/<nama>/kartu-riset.yaml`, lalu `prompt-chatgpt.md`.
 2. Tempel prompt ke ChatGPT, simpan jawabannya sebagai `video/<nama>/tempelan.txt`.
-3. `/olah <nama>`: impor format blok → lint standar naskah (angka riset dicek ke kartu) → **Approval 1** (`"disetujui": true`) → `lembar-elevenlabs.md`.
+3. `/olah <nama>`: impor format blok → lint standar naskah (angka riset dicek ke kartu) → ulasan Claude → **Approval 1** (`"disetujui": true`) → `lembar-elevenlabs.txt` (siap salin).
 4. Generate di ElevenLabs (satu suara Ata), simpan sebagai `video/<nama>/suara.mp3`.
-5. `/olah <nama>` lagi: selaras per kata (Whisper lokal) → linimasa → campur (-14 LUFS) → render stickman → QA → `video.mp4` (**Approval 2**).
+5. `/olah <nama>` lagi: selaras per kata (Whisper lokal) → linimasa (SFX otomatis, musik per SUASANA) → campur (-14 LUFS) → render stickman → QA audio dan gerak → `video.mp4` (**Approval 2**).
 
 Semua langkah mekanis deterministik, tanpa LLM dan tanpa API berbayar. Contoh lengkap: `contoh/tenggat-planning-fallacy/`.
 
 ## Visual
-Figur gaya video referensi 03 (kepala bulat besar, badan kotak berwarna, lengan dan kaki tabung, wajah garis tipis) di latar hitam sesuai tempat cerita dengan cahaya amber, caption kecil putih, close-up, dan transisi double exposure (`config/kosakata.yaml`: 12 latar, 12 peran, 11 ekspresi, 19 aksi, 26 props), isyarat visual per kata (`@kata`), SISIPAN layar penuh yang memvisualkan kata secara harfiah (HP yang feed-nya digulir, jam berputar kencang, kalender tersobek, layar laptop, chat, struk tagihan, akar tumbuh), kamera yang tidak pernah diam, grafik data, kartu simpan, dan Ata (9 pose) muncul di momen tertentu. Mesin: `render/mesin.html`.
+Figur gaya video referensi 03 (kepala bulat besar, badan kotak berwarna, lengan dan kaki tabung, wajah garis tipis) di latar hitam sesuai tempat cerita dengan cahaya amber, caption kecil putih, close-up, dan transisi double exposure (`config/kosakata.yaml`: 12 latar, 12 peran, 11 ekspresi, 19 aksi, 26 props), isyarat visual per kata (`@kata`), SISIPAN layar penuh yang memvisualkan kata secara harfiah (HP yang feed-nya digulir, jam berputar kencang, kalender tersobek, layar laptop, chat, struk tagihan, akar tumbuh), kamera yang tidak pernah diam, grafik data, kartu, dan Ata (9 pose) muncul di momen tertentu. Juga: kostum sesuai gender dan profesi (siswa, siswi, siswi berkerudung, mahasiswi, dokter, petani, pengusaha, tokoh kuning `kamu`), letak benda alami (lantai, meja, dinding, di atas kepala), tanda emosi gaya komik, cutaway tangan bersarung putih, figuran hanya di tempat ramai, dan SUASANA (normal, tegang, horor, ceria, sedih, misterius) yang mengatur warna, cahaya, gerak tokoh, dan musik. Gerak dijaga gerbang QA dari 6 video referensi (`config/gaya.yaml`). Mesin: `render/mesin.html`.
+
+## Audio
+Suara Ata dari ElevenLabs (pemilik). SFX otomatis dari isyarat visual (`scripts/linimasa.py`), diambil dari pustaka `katalog/sfx.yaml`: Mixkit (lisensi bebas komersial, tidak masuk git) lalu sintetis (`python -m scripts.sfx`). Musik latar per SUASANA, crossfade antarbagian. Loudness -14 LUFS dua tahap (`scripts/campur.py`).
 
 ## Sudah ada
 - `aset/maskot/asli/`: SVG asli Lumi dan Jago (tidak diubah).
