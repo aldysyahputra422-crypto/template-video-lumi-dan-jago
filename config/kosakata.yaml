@@ -37,6 +37,7 @@ peran:            # aktor stickman; aksesori membedakan peran
 ekspresi: [datar, senang, sedih, kaget, marah, bingung, takut, bangga, malu, capek, licik]
 aksi:             # gerak stickman; durasi bawaan 0,8 dtk kecuali berulang
   diam: berdiri bernapas
+  bicara: mulut bergerak per suku kata sampai akhir kalimat (tokoh seolah mengucapkan narasi)
   jalan: berjalan ke posisi lain (pakai "ke <posisi>")
   lari: berlari ke posisi lain (pakai "ke <posisi>")
   menunjuk: menunjuk ke depan

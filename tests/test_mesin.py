@@ -121,3 +121,17 @@ def test_tanpa_getar_cepat_pada_tokoh():
     cepat = [(i + 1, b.strip()[:80]) for i, b in enumerate(teks)
              for m in re.finditer(r"Math\.(?:sin|cos)\(([a-zA-Z]+) \* ([0-9.]+)", b) if float(m.group(2)) > 12 and not re.search(r"\blari\b|kedip", b)]
     assert not cepat, cepat
+
+
+def test_bicara_tidak_menimpa_gestur():
+    """Mulut bicara adalah lapisan: gestur tubuh (mis. sorak) tetap berjalan saat tokoh mulai bicara."""
+    teks = (ROOT / "render/mesin.html").read_text(encoding="utf-8")
+    assert "a.aksi !== 'bicara') aktif = a;" in teks and "if (ngomong) q.mulut = bukaMulut(k, t);" in teks
+
+
+def test_mulut_menghitung_suku_kata_dari_kunci_linimasa():
+    """Linimasa menyimpan kata di kunci 'w'; mulut harus membacanya agar buka-tutup per suku kata, bukan sekali per kata."""
+    from scripts import linimasa
+    teks = (ROOT / "render/mesin.html").read_text(encoding="utf-8")
+    assert "w.w || w.k" in teks
+    assert "\"w\"" in (ROOT / "scripts/linimasa.py").read_text(encoding="utf-8") or "'w'" in (ROOT / "scripts/linimasa.py").read_text(encoding="utf-8")

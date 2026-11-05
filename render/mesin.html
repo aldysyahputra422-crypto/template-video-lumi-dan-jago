@@ -21,6 +21,7 @@ const C = {bg:'#08080A', s1:'#0E0E10', s2:'#161618', s3:'#1F1F22', s4:'#2C2C30',
 const cl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ez = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 const keluar = x => 1 - Math.pow(1 - cl(x), 3);
+const pegas = x => x <= 0 ? 0 : 1 - Math.exp(-7 * x) * Math.cos(9 * x);   // spring: lewat ±8% lalu kembali
 const pantul = x => { x = cl(x); return x >= 1 ? 1 : keluar(x) + Math.sin(x * Math.PI) * .18; };
 let ACAK = 7; const acak = () => (ACAK = (ACAK * 16807) % 2147483647) / 2147483647;
 const POS = {jauh_kiri: 95, kiri: 190, tengah: 360, kanan: 530, jauh_kanan: 625};
@@ -134,6 +135,7 @@ const EKSPRESI = {
 const IDLE = {lA: 14, lB: -8, rA: 14, rB: -8, lL: 7, lK: 0, rL: 7, rK: 0, miring: 0, kepala: 0, dy: 0, dx: 0};
 const AKSI = {
   diam: {dur: 1, f: (p, u) => ({})},
+  bicara: {ulang: 1, f: (p, u) => ({})},   // mulut buka-tutup per suku kata selama kalimat (pola referensi)
   jalan: {dur: 1.0, f: (p, u) => ({lL: 7 + 24 * Math.sin(u * 9), rL: 7 - 24 * Math.sin(u * 9), lA: 14 - 18 * Math.sin(u * 9), rA: 14 + 18 * Math.sin(u * 9), dy: -Math.abs(Math.sin(u * 9)) * 6})},
   lari: {dur: .65, f: (p, u) => ({lL: 10 + 40 * Math.sin(u * 15), rL: 10 - 40 * Math.sin(u * 15), lK: -30, rK: -30, lA: 30 - 40 * Math.sin(u * 15), rA: 30 + 40 * Math.sin(u * 15), lB: -60, rB: -60, miring: 10, dy: -Math.abs(Math.sin(u * 15)) * 12})},
   menunjuk: {tahan: 1, f: (p, u, s) => ({[s + 'A']: 14 + 82 * keluar(p * 3), [s + 'B']: 0})},
@@ -154,6 +156,14 @@ const AKSI = {
   mengangguk: {dur: 1.3, f: (p, u) => ({angguk: 8 * Math.abs(Math.sin(u * 12)) * (1 - p)})},
 };
 
+function wajahHidup(o, r, kulit) {   // mulut bicara + kedip (tiap ±3 sampai 5 dtk, 0,13 dtk)
+  let s = '';
+  const m = o.pose?.mulut || 0;
+  if (m > .1) s += `<ellipse cx="0" cy="${r * .36}" rx="${r * .27}" ry="${r * .13}" fill="${kulit}"/><ellipse cx="0" cy="${r * .37}" rx="${r * (.1 + .07 * m)}" ry="${r * (.04 + .15 * m)}" fill="#3A1A14" stroke="#222" stroke-width="${Math.max(1.5, r * .05)}"/>`;
+  const per = 3.4 + ((Math.round(Math.abs(o.x)) % 7) * .23), fase = ((o.t || 0) + (Math.round(Math.abs(o.x)) % 13) * .31) % per;
+  if (fase < .13) s += [-1, 1].map(sx => `<ellipse cx="${sx * r * .32}" cy="${-r * .04}" rx="${r * .11}" ry="${r * .1}" fill="${kulit}"/><path d="M${sx * r * .32 - r * .08},${-r * .03} L${sx * r * .32 + r * .08},${-r * .03}" stroke="#222" stroke-width="${Math.max(1.5, r * .05)}" stroke-linecap="round"/>`).join('');
+  return s;
+}
 function stickman(o) {
   const P0 = PERAN[o.peran] || PERAN.pelajar, P = o.baju ? {...P0, baju: o.baju} : P0, s = o.s * (P.skala || 1), q = o.pose;
   if (P.gambar) {   // tokoh aset per video (hewan, benda hidup): digambar sendiri; posisi, gerak, dan bayangan dari mesin
@@ -191,7 +201,7 @@ function stickman(o) {
     <ellipse cx="${o.x}" cy="${o.y + 6}" rx="${40 * s}" ry="${8 * s}" fill="#000" opacity=".5"/>${kaki}${tasP}${badan}${dasi}
     ${tabung(bL, lS, lT, tl, P.jas || P.baju)}${tabung(bR, rS, rT, tl, P.jas || P.baju)}
     <circle cx="${lT[0]}" cy="${lT[1]}" r="${8 * s}" fill="${kulit}" stroke="${C.tepi}" stroke-width="${1.5 * s}"/><circle cx="${rT[0]}" cy="${rT[1]}" r="${8 * s}" fill="${kulit}" stroke="${C.tepi}" stroke-width="${1.5 * s}"/>
-    <g transform="translate(${kep[0]} ${kep[1]}) rotate(${q.kepala})">${rambutBelakang(P.rambut, r)}<circle r="${r}" fill="${kulit}" stroke="${C.tepi}" stroke-width="${1.8 * s}"/>${(EKSPRESI[o.ekspresi] || EKSPRESI.datar)(r)}${rambutDepan(P.rambut, r)}${P.aks(r)}${''}</g></g>`,
+    <g transform="translate(${kep[0]} ${kep[1]}) rotate(${q.kepala})">${rambutBelakang(P.rambut, r)}<circle r="${r}" fill="${kulit}" stroke="${C.tepi}" stroke-width="${1.8 * s}"/>${o.lama ? `<g opacity="${1 - o.campur}">${(EKSPRESI[o.lama] || EKSPRESI.datar)(r)}</g><g opacity="${o.campur}">${(EKSPRESI[o.ekspresi] || EKSPRESI.datar)(r)}</g>` : (EKSPRESI[o.ekspresi] || EKSPRESI.datar)(r)}${wajahHidup(o, r, kulit)}${rambutDepan(P.rambut, r)}${P.aks(r)}${''}</g></g>`,
     tangan: {l: lT, r: rT}, kepala: [kep[0], kep[1] - r]};
 }
 
@@ -401,7 +411,7 @@ const warnaAktor = (id, peran) => { if (PERAN[peran]?.seragam) return null; cons
 const ketukanDi = t => { let k = KT[0]; for (const x of KT) if (t >= x.mulai) k = x; return k; };
 const idx = k => KT.indexOf(k);
 const OTOMATIS = ['dorong', 'sedang', 'geser'];   // ketukan tanpa KAMERA: framing bergiliran supaya komposisi selalu berganti
-const LAWAN = {lebar: 'sedang', dorong: 'sedang', geser: 'sedang', sedang: 'lebar', dekat: 'lebar', goyang: 'sedang'};   // bidikan kedua
+const LAWAN = {lebar: 'sedang', dorong: 'sedang', geser: 'sedang', sedang: 'lebar', dekat: 'sedang', goyang: 'sedang'};   // dekat → sedang: gestur tetap terbaca (referensi menahan bidikan saat tokoh bergestur)   // bidikan kedua
 function bidikan(j, lokal, d, arah, utama, target, benda) {
   let z = 1, fx = 360, fy = 640, gx = 0, gy = 0, r = 0;
   const p = ez(cl(lokal / d));
@@ -446,20 +456,32 @@ function poseAktor(k, id, t) {
   if (S.mantul) q.dy -= 6 * Math.abs(Math.sin(t * 4 + id.length));
   if (S.tunduk) { q.angguk = 7; q.dy *= .4; q.miring *= .4; q.lA -= 6; q.rA -= 6; }
   if (id === utama) {                                      // SATU gestur per kalimat: naik pelan, ditahan, turun di akhir (pola referensi)
-    const lokal = t - k.mulai, naik = ez(cl((lokal - .15) / .55)), turun = 1 - ez(cl((t - (k.selesai - .45)) / .45)), e = naik * turun, sisiK = k.no % 2 ? 'l' : 'r';
+    const lokal = t - k.mulai, naik = Math.min(1.08, pegas((lokal - .15) / .55)), turun = 1 - ez(cl((t - (k.selesai - .45)) / .45)), e = naik * turun, sisiK = k.no % 2 ? 'l' : 'r';
     q[sisiK + 'A'] += 34 * e; q[sisiK + 'B'] -= 26 * e; q.kepala += 3 * e;
   }
   let sisi = (POS[k.pemeran[id].posisi] ?? 360) > 360 ? 'l' : 'r';   // tangan yang menunjuk mengarah ke tengah layar
   let aktif = null;
-  for (const a of k.aksi) if (a.id === id && t >= a.t) aktif = a;
+  for (const a of k.aksi) if (a.id === id && t >= a.t && a.aksi !== 'bicara') aktif = a;   // bicara = lapisan mulut, tidak menimpa gestur tubuh
+  const ngomong = k.aksi.some(a => a.id === id && a.aksi === 'bicara' && t >= a.t);
   if (aktif) {
     const A = AKSI[aktif.aksi], u = t - aktif.t, dur = A.dur || .9, p = u / dur;
     const jalan = aktif.ke && (aktif.aksi === 'jalan' || aktif.aksi === 'lari');
-    if (A.ulang || A.tahan || p < 1 || (jalan && u < (aktif.aksi === 'lari' ? .6 : 1))) Object.assign(q, A.f(cl(p), u, sisi));
+    if (A.ulang || A.tahan || p < 1 || (jalan && u < (aktif.aksi === 'lari' ? .6 : 1))) Object.assign(q, A.f(A.ulang || jalan ? cl(p) : pegas(cl(p * 1.4)), u, sisi));
   }
+  if (ngomong) q.mulut = bukaMulut(k, t);
   return q;
 }
+function bukaMulut(k, t) {   // 0..1: suku kata = kelompok vokal dalam kata yang sedang diucapkan
+  const w = TL.kata.find(x => x.a <= t && t <= x.b && x.a >= k.mulai - .05); if (!w) return 0;
+  const n = Math.max(1, ((w.w || w.k || '').toLowerCase().match(/[aiueo]+/g) || []).length), f = cl((t - w.a) / Math.max(.05, w.b - w.a)) * n;
+  return Math.pow(Math.sin(Math.PI * (f % 1)), .7) * (.65 + .35 * ((Math.floor(f) * 7 + n) % 3) / 2);
+}
 function ekspresiAktor(k, id, t) { let e = k.pemeran[id].ekspresi; for (const x of k.ekspresi) if (x.id === id && t >= x.t) e = x.ekspresi; return e; }
+function ekspresiTransisi(k, id, t) {   // ganti ekspresi bertahap 0,25 dtk, bukan meloncat
+  let e = k.pemeran[id].ekspresi, lama = null, tc = -9;
+  for (const x of k.ekspresi) if (x.id === id && t >= x.t && x.ekspresi !== e) { lama = e; e = x.ekspresi; tc = x.t; }
+  const m = cl((t - tc) / .25); return {ekspresi: e, lama: m < 1 ? lama : null, campur: ez(m)};
+}
 function kataKini(t) { let w = null; for (const x of TL.kata) { if (x.a - .03 <= t) w = x; else break; } const k = ketukanDi(t); return w && t <= k.selesai + .1 && t >= w.a - .03 && (w.ketukan === k.no || t < w.b + .25) ? w : (w && t < w.b + .25 ? w : null); }
 const PENEKAN = /^[0-9]/;
 function debu(t) { ACAK = 77; let s = ''; for (let n = 0; n < 40; n++) { const x0 = acak() * 720, y0 = acak() * 1280, v = 8 + acak() * 14; s += `<circle cx="${(x0 + Math.sin(t * .4 + n) * 18 + 720) % 720}" cy="${(y0 - t * v + 12800) % 1280}" r="${.8 + acak() * 1.4}" fill="#E8D9B8" opacity="${.08 + acak() * .22}"/>`; } return s; }
@@ -500,7 +522,11 @@ function bangunDunia(k, t, i) {
       posAktor[id] = [x, st.fokus ?? G - 320]; gambarAktor.push({id, x, ...st, svg: daftar.sort((a, c) => c.b - a.b).map(d => d.svg).join('')});
       continue;
     }
-    const st = stickman({t, x, y: G, s: 1.32, pose: poseAktor(k, id, t), peran: pr.peran, baju: warnaAktor(id, pr.peran), ekspresi: ekspresiAktor(k, id, t), muncul, hadap: hadapAktor(k, id, t)});
+    const dasar = {t, x, y: G, s: 1.32, peran: pr.peran, baju: warnaAktor(id, pr.peran), muncul, hadap: hadapAktor(k, id, t), ...ekspresiTransisi(k, id, t)};
+    const st = stickman({...dasar, pose: poseAktor(k, id, t)});
+    // jejak gerak (smear/ghosting seperti referensi): 0,3 dtk pertama gestur cepat, bayangan pose 2 frame lalu
+    const cepat = k.aksi.find(a => a.id === id && t >= a.t && t - a.t < .3 && !['jalan', 'lari', 'bicara', 'diam'].includes(a.aksi));
+    if (cepat) st.svg = `<g opacity=".22">${stickman({...dasar, pose: poseAktor(k, id, t - .066)}).svg}</g>` + st.svg;
     posAktor[id] = [x, st.fokus ?? G - 320]; gambarAktor.push({id, x, ...st});
   }
   // props
