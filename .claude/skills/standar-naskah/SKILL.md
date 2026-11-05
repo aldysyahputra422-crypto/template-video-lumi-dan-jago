@@ -7,7 +7,7 @@ description: Standar naskah video Ata (berguna sampai disimpan, tapi tidak membo
 
 Sebagian besar diperiksa otomatis oleh `scripts/lint_naskah.py`. Skill ini untuk penilaian yang tidak bisa dihitung.
 
-## Sembilan syarat (diperiksa program)
+## Syarat (diperiksa program)
 1. Hook di ketukan pertama, maksimal 10 kata, menyapa "kamu" atau membalik dugaan; premis lengkap di kalimat pertama.
 2. Cerita orang kedua yang dekat dengan pelajar (atau alegori singkat untuk konsep abstrak), minimal dua detail spesifik yang lucu, dan meningkat.
 3. Momen penamaan konsep sesudah cerita, definisi satu kalimat.
@@ -17,6 +17,14 @@ Sebagian besar diperiksa otomatis oleh `scripts/lint_naskah.py`. Skill ini untuk
 7. 40 sampai 55 detik; satu ketukan maksimal 16 kata supaya visual berganti tiap 2 sampai 5 detik.
 8. Tidak kaku: detik pertama wajib gerak besar (SISIPAN, atau aktor masuk/pindah/lari/lompat); komposisi berganti paling lambat tiap 2 ketukan (kamera dekat/geser/dorong, aktor pindah, latar, SISIPAN). Aktor yang berdiri di satu tempat lama dengan gerak sederhana = ditolak.
 9. Kata yang bisa digambar, digambar harfiah dengan SISIPAN (minimal 2): "scroll video kucing" berarti HP muncul dan feed kucing benar-benar digulir, bukan ikon kucing kecil. Sumber jurnal tidak tampil di layar.
+10. Ata hanya di ketukan lapang (maksimal 1 aktor, tanpa SISIPAN/KARTU/DATA), maksimal 3 kali; mesin juga menyembunyikannya otomatis di adegan ramai.
+11. Tidak mudah ditebak: nama konsep (`nama_konsep` di kartu riset) baru disebut sesudah 40% naskah; 4 ketukan berturut dengan kata pembuka sama ditolak.
+
+## Cara bercerita (pola video referensi 03, dinilai manusia)
+- Penonton harus ikut tertipu seperti tokohnya. Tanam petunjuk sejak awal (benda di layar, detail sambil lalu), lalu satu putaran sederhana membalik arti kejadian sebelumnya. Contoh baik: kerumunan di hook lewat saat kedai belum buka; jam di layar sudah menunjukkan pukul tujuh.
+- Jangan memperagakan teori sebelum putaran. "Kenapa?" lima kali untuk menjelaskan 5 Whys = penonton yang paham sudah tahu jawabannya.
+- Satu kalimat pembalik sesudah putaran ("Raja tidak sedang memberi, hanya mengembalikan"), baru nama konsep.
+- Tutup dengan pemetaan ke dunia penonton (tugas, lomba) lalu callback.
 
 ## Topik
 Pilar: skill yang tidak diajarkan di sekolah atau kampus, dan komponen lomba. Uji perhatian: klaim provokatif atau menyalahi dugaan, kegagalan yang dekat dengan penonton, tidak bisa ditebak dari judul. Lihat `docs/strategi-topik.md`.

@@ -59,4 +59,4 @@ def test_lembar_satu_suara_hanya_ucapan(tmp_path):
 
 def test_contoh_prompt_adalah_patokan_root_cause(tmp_path):
     contoh = pn.buat(_folder(tmp_path)).split("```text\n", 1)[1].split("```", 1)[0]
-    assert "5 Whys" in contoh and "kedai" in contoh
+    assert "akar masalah" in contoh and "kedai" in contoh and "jam_cepat" in contoh

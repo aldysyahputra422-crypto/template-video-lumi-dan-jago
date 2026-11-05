@@ -31,10 +31,10 @@ SISIPAN: hp_scroll kucing @nonton
 TEKS: HARI 3 @ketiga
 
 ##KETUKAN 05
-UCAP: Hari ketujuh, file-mu namanya final.
+UCAP: Seminggu lewat, file-mu namanya final.
 PROPS: dokumen tangan:kamu muncul @file-mu
 TEKS: final.docx @final
-EKSPRESI: kamu datar @ketujuh
+EKSPRESI: kamu datar @Seminggu
 KAMERA: dekat kamu
 
 ##KETUKAN 06
@@ -81,20 +81,17 @@ UCAP: [surprised] Kenyataannya 55 setengah.
 DATA: Kenyataan=55.5 hari @55
 EKSPRESI: m1 kaget @Kenyataannya; m2 kaget @Kenyataannya; m3 kaget @Kenyataannya
 KAMERA: dekat m2
-ATA: kaget kanan pop
 
 ##KETUKAN 13
 UCAP: [whispers] Yang bikin merinding, tebakan paling pesimis mereka pun masih kecepetan.
 DATA: Tebakan terburuk=48.6 hari @pesimis
 EKSPRESI: m3 takut @merinding
-ATA: menatap kanan pop
 
 ##KETUKAN 14
 UCAP: Triknya cuma tiga.
 LATAR: kamar
 AKTOR: kamu=pelajar kiri senang
 KARTU: Triknya | Tulis tebakanmu @tulis | Cek tugas mirip, beneran selesai berapa hari @cek | Pakai angka yang lebih besar (1,6x) @pakai
-ATA: sombong kanan pop
 
 ##KETUKAN 15
 UCAP: Satu, tulis tebakanmu. Dua, cek tugas mirip terakhir kali, beneran selesai berapa hari.

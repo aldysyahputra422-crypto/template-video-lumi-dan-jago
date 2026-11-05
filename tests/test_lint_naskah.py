@@ -109,3 +109,19 @@ def test_hook_wajib_gerak_besar_atau_sisipan():
 def test_tiga_ketukan_berturut_komposisi_sama_ditolak():
     r = _lint(_statis(TEKS))
     assert any("kaku" in g["pesan"] for g in r["galat"])
+
+
+def test_ata_tidak_boleh_muncul_di_adegan_ramai():
+    t = TEKS.replace("SISIPAN: hp_scroll kucing @nonton\n", "SISIPAN: hp_scroll kucing @nonton\nATA: kaget kanan pop\n")
+    assert any("Ata" in g["pesan"] and "ramai" in g["pesan"] for g in _lint(t)["galat"])
+
+
+def test_kalimat_pembuka_berulang_ditolak():
+    r = ln.periksa({"id": "x", "sumber": None, "ketukan": [
+        dict(k, ucap=f"Kenapa {k['ucap']}") if 2 <= i <= 5 else k for i, k in enumerate(nf.urai(TEKS).naskah["ketukan"])]}, KARTU)
+    assert any("mudah ditebak" in g["pesan"] for g in r["galat"])
+
+
+def test_nama_konsep_terlalu_awal_ditolak():
+    kartu = dict(KARTU, nama_konsep=["Otakmu"])
+    assert any("nama konsep" in g["pesan"] for g in _lint(kartu=kartu)["galat"])

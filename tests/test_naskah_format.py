@@ -58,7 +58,7 @@ def test_latar_mewarisi_ketukan_sebelumnya():
     ("UCAP: [curious] Kamu", "UCAP: [terrified] Kamu", "tag tidak dikenal", "terrified"),
     ("kamu sorak @kelar", "kamu sorak @libur", "@libur tidak ada", "@libur"),
     ("EKSPRESI: m3 takut @merinding", "EKSPRESI: siapa takut @merinding", "aktor belum ada", "siapa takut"),
-    ("ATA: kaget kanan pop", "ATA: kayang kanan pop", "pose ata tidak dikenal", "kayang"),
+    ("ATA: tertawa kanan pop", "ATA: kayang kanan pop", "pose ata tidak dikenal", "kayang"),
     ("Kamu nggak malas.", "Kamu nggak malas — sumpah.", "tanda pisah panjang", "sumpah"),
 ])
 def test_galat_per_baris(lama, baru, cari, potongan):

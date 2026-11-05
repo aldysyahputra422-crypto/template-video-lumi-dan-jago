@@ -162,11 +162,36 @@ def periksa(n: dict, kartu: dict | None) -> dict:
     isi = lambda k: {t for t in token(k["ucap"]) if len(t) >= 4 and t not in HENTI}
     if not isi(ks[-1]) & set().union(*(isi(k) for k in ks[: max(3, len(ks) // 2)])):
         P(ks[-1], "penutup tidak melakukan callback ke hook atau cerita awal (tidak ada kata kunci yang sama dengan separuh pertama)")
+    # 7 Ata hanya di adegan lapang: tidak dipaksa tampil di atas adegan yang sudah ramai
+    aktif: set[str] = set()
+    for i, k in enumerate(ks):
+        if i == 0 or k["latar"] != ks[i - 1]["latar"]:
+            aktif = set()
+        aktif |= {a["id"] for a in k["aktor"]}
+        aktif -= set(k["keluar"])
+        if k["ata"] and (k.get("sisipan") or k["kartu"] or k["data"] or len(aktif) >= 2):
+            G(k, f"Ata dipaksa tampil di adegan ramai (ketukan {k['no']}: {len(aktif)} aktor{', SISIPAN' if k.get('sisipan') else ''}{', KARTU' if k['kartu'] else ''}{', DATA' if k['data'] else ''}). Pindahkan ATA ke ketukan lapang (maksimal 1 aktor, tanpa SISIPAN/KARTU/DATA)")
     ata = sum(1 for k in ks if k["ata"])
-    if ata < 2:
-        P(None, f"Ata hanya muncul {ata} kali; sasaran di hook, momen penamaan, reaksi, dan penutup")
-    elif ata > 0.6 * len(ks):
-        P(None, f"Ata muncul di {ata} dari {len(ks)} ketukan; terlalu sering, cerita yang jadi bintang")
+    if ata == 0:
+        P(None, "Ata tidak muncul sama sekali; beri satu atau dua momen lapang (penamaan atau penutup)")
+    elif ata > 3:
+        G(None, f"Ata muncul {ata} kali; maksimal 3, cerita yang jadi bintang")
+    # 8 pola mudah ditebak: kata pembuka sama di 4 ketukan berturut (mis. Kenapa, Kenapa, Kenapa, Kenapa)
+    awal = [(token(k["ucap"]) or [""])[0] for k in ks]
+    i = 0
+    while i < len(ks):
+        j = i
+        while j + 1 < len(ks) and awal[j + 1] == awal[i]:
+            j += 1
+        if awal[i] and j - i + 1 >= 4:
+            G(ks[i], f"pola mudah ditebak: {j - i + 1} ketukan berturut dibuka dengan \"{awal[i]}\". Jangan memperagakan teorinya; sembunyikan petunjuk di cerita lalu balik di putaran")
+        i = j + 1
+    # 9 nama konsep sesudah putaran, bukan di awal
+    nama = [x.lower() for x in (kartu or {}).get("nama_konsep", [])]
+    if nama:
+        pertama = next((i for i, k in enumerate(ks) if any(x in k["ucap"].lower() for x in nama)), None)
+        if pertama is not None and pertama < 0.4 * len(ks):
+            G(ks[pertama], f"nama konsep muncul terlalu awal (ketukan {ks[pertama]['no']} dari {len(ks)}); sebut sesudah cerita berbalik, seperti video referensi")
     return {"galat": galat, "peringatan": peringatan, "perkiraan_durasi": durasi, "jumlah_ketukan": len(ks), "kata": sum(kata)}
 
 

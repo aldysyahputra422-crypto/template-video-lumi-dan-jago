@@ -51,7 +51,8 @@ Sudut harus lolos uji perhatian, kalau tidak, pilih sudut lain:
 - klaim yang menyalahi dugaan atau provokatif di kalimat pertama (mis. "menyontek itu bagus", lalu dibelokkan ke versi yang legal),
 - ada kegagalan atau taruhan yang dekat dengan penonton (bisnis sepi, presentasi dibantai juri, nilai jeblok),
 - isinya tidak bisa ditebak dari judul. Hindari nasihat generik ("rajin belajar", "percaya diri").
-Patokan alur: cerita kegagalan konkret → pertanyaan berlapis atau kejadian yang memburuk → putaran (ketahuan akar masalahnya) → nama teorinya → bukti dari jurnal, termasuk kritik atau batasnya → trik legal → callback.
+Patokan alur (pola video referensi terbaik): hook paradoks → cerita kegagalan yang memburuk, dengan PETUNJUK yang ditanam diam-diam (terlihat di layar atau disebut sambil lalu) → PUTARAN: satu pertanyaan atau temuan sederhana membalik arti kejadian sebelumnya, dan petunjuk tadi ternyata jawabannya → satu kalimat pembalik ("Mereka bukan menolak kopinya. Mereka tidak pernah melihatnya buka.") → nama konsep SESUDAH putaran → bukti jurnal termasuk kritik atau batasnya → trik legal → pemetaan ke dunia penonton (tugas, lomba) → callback.
+JANGAN memperagakan teorinya terang-terangan sebelum putaran (mis. bertanya "kenapa" lima kali berturut untuk menjelaskan 5 Whys): penonton yang paham sudah menebak duluan. Penonton harus ikut tertipu seperti tokohnya, lalu sadar bersama.
 
 ## 4. Standar naskah (diperiksa program; naskah yang melanggar ditolak)
 1. Hook di KETUKAN 01, maksimal 10 kata, menyapa "kamu" atau membalik dugaan. Premis sudah lengkap di kalimat pertama, tanpa salam.
@@ -65,6 +66,8 @@ Patokan alur: cerita kegagalan konkret → pertanyaan berlapis atau kejadian yan
 8. Hook diam ditolak: detik pertama wajib gerak besar, yaitu SISIPAN atau aktor masuk/pindah (`AKSI: id lari ke tengah @kata`, jalan ke, lompat), bukan aktor berdiri.
 9. Visualkan secara harfiah benda atau kegiatan yang diucapkan dengan SISIPAN (minimal 2 per video). Contoh: "malah nonton video kucing" → `SISIPAN: hp_scroll kucing @nonton` (HP naik, jempol menggulir feed kucing);
    "begadang" → `SISIPAN: jam_cepat @begadang`; "tagihan listrik naik" → `SISIPAN: tagihan @listrik`. Sumber jurnal tidak ditulis di layar.
+10. Ata hanya muncul di ketukan lapang (maksimal 1 aktor, tanpa SISIPAN/KARTU/DATA), maksimal 3 kali. Jangan memaksanya tampil di atas adegan yang sudah ramai.
+11. Nama konsep tidak boleh disebut sebelum 40% naskah; 4 ketukan berturut dengan kata pembuka sama ditolak (pola mudah ditebak).
 Tanpa tanda pisah panjang. Tanpa kata kasar. Tanpa politik, agama, tuduhan, atau orang sungguhan. Tanpa ajakan daftar, harga, atau "follow".
 
 ## 5. Format keluaran (blok bertanda, BUKAN JSON, BUKAN tabel)
