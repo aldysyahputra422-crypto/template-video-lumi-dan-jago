@@ -5,7 +5,8 @@ Bahasa kerja: Indonesia. Merek: Sobat Ambis (mentoring lomba dan les privat, htt
 ## Aturan dari pemilik
 - **Akun IG baru = murni personal branding maskot, TANPA CTA**: tidak ada ajakan daftar, harga, klaim prestasi, kartu CTA, atau "komen kata kunci". Satu-satunya jembatan ke merek adalah post Collab dengan @mentoringsobatambis. Karena post Collab tampil juga di profil resmi, topik harus aman untuk merek: tanpa politik, agama, tuduhan, atau orang sungguhan.
 - Aturan keras Ata (`config/tokoh.yaml`): hanya meledek situasi, berhenti bercanda bila topiknya menyangkut orang yang down, trik hanya yang legal, klaim riset wajib bersumber dan dicek.
-- Naskah: jurnal internasional dibungkus alegori (referensi 03): hook paradoks, alegori, putaran, nama konsep, data nyata bersumber, trik legal, kalimat penutup. Pilih temuan yang sudah direplikasi. Ata muncul hanya di momen tertentu (referensi 06), satu suara per video.
+- Naskah: temuan jurnal internasional (yang sudah direplikasi) dibungkus cerita orang kedua atau alegori; standar di `.claude/skills/standar-naskah/SKILL.md`, diperiksa `scripts/lint_naskah.py`. Angka nyata HANYA dari `kartu-riset.yaml`. Ata muncul hanya di momen tertentu, satu suara per video.
+- Alur produksi: `/naskah <id> "<topik>"` lalu `/olah <id>` (lihat README). Visual: stickman di latar gelap sesuai tempat (`render/mesin.html`, kosakata `config/kosakata.yaml`; `tests/test_mesin.py` menjaga keduanya sama).
 - Semua visual dibuat Claude (latar, grafik, kartu); gaya animasi mengikuti `referensi/ringkasan.md`.
 - **Latar wajib sesuai tempat cerita** (kota ya kota, pasar ya pasar, sekolah ya sekolah, desa ya desa): langit, bangunan, benda, dan warna alaminya. Bidang krem/peach polos BUKAN latar adegan; hanya untuk kartu, judul, dan grafik data.
 - Jangan memanggil API ElevenLabs atau layanan berbayar lain tanpa izin pemilik di sesi itu. Suara dibuat pemilik sendiri; uji memakai fixture dan audio palsu.
