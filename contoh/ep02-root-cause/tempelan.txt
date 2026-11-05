@@ -1,0 +1,119 @@
+##VIDEO ep02 | Kedai ramai, nol pembeli
+##SUMBER fivewhys
+
+##KETUKAN 01
+UCAP: [curious] Kedai kopi Raka ramai dilewati. Sebulan, nol pembeli.
+LATAR: kampus
+AKTOR: raka=mahasiswa tengah senang
+PROPS: meja kanan muncul @kedai
+TEKS: 0 PEMBELI @nol
+ATA: mengintip kanan intip
+KAMERA: dorong
+
+##KETUKAN 02
+UCAP: [sighs] Ganti nama kedai. Tetap sepi.
+PROPS: papan kiri muncul @nama
+EKSPRESI: raka sedih @sepi
+
+##KETUKAN 03
+UCAP: Promo beli satu gratis satu. Tetap sepi.
+PROPS: koin kanan berputar @gratis
+EKSPRESI: raka capek @sepi
+KAMERA: dekat raka
+
+##KETUKAN 04
+UCAP: [tense] Lampu warna-warni. Listrik naik, pembeli tetap nol.
+PROPS: lampu atas melayang @lampu; grafik_naik kiri muncul @listrik
+AKSI: raka panik @nol
+KAMERA: goyang
+
+##KETUKAN 05
+UCAP: Adiknya bertanya satu kata.
+AKTOR: sasa=anak kiri bingung
+AKSI: sasa garuk_kepala @bertanya
+KAMERA: lebar
+
+##KETUKAN 06
+UCAP: Kenapa nggak ada yang beli? Nggak ada yang mampir.
+TEKS: KENAPA #1 @Kenapa
+AKSI: sasa menunjuk @Kenapa
+KAMERA: dekat sasa
+
+##KETUKAN 07
+UCAP: Kenapa nggak mampir? Mahasiswa lewat jam tujuh, kedai buka jam sepuluh.
+TEKS: KENAPA #2 @Kenapa
+PROPS: jam kanan berputar @tujuh
+EKSPRESI: raka kaget @sepuluh
+KAMERA: lebar
+
+##KETUKAN 08
+UCAP: Kenapa buka jam sepuluh? Raka begadang tiap malam.
+LATAR: kamar
+AKTOR: raka=mahasiswa tengah capek
+TEKS: KENAPA #3 @Kenapa
+PROPS: laptop kiri muncul @begadang
+
+##KETUKAN 09
+UCAP: Kenapa begadang? Kedai tutup jam satu, kampus sepi jam sembilan.
+TEKS: KENAPA #4 @Kenapa
+PROPS: jam kanan berputar @satu
+EKSPRESI: raka capek @sembilan
+KAMERA: dekat raka
+
+##KETUKAN 10
+UCAP: [surprised] Kenapa dia nggak sadar? Karena nggak pernah ditanya kenapa.
+TEKS: KENAPA #5 @Kenapa
+EKSPRESI: raka kaget @sadar
+ATA: kaget kanan pop
+
+##KETUKAN 11
+UCAP: Ternyata masalahnya cuma jam buka.
+LATAR: kosong
+AKTOR: raka=mahasiswa tengah malu
+TEKS: JAM BUKA @jam
+KAMERA: dekat raka
+
+##KETUKAN 12
+UCAP: Ini namanya 5 Whys, pencari akar masalah dari Toyota.
+LATAR: kantor
+AKTOR: ohno=petugas tengah bangga
+TEKS: 5 WHYS @Whys
+ATA: berpikir kanan sapuan
+FAKTA: ya
+
+##KETUKAN 13
+UCAP: Taiichi Ohno bilang, tanya kenapa lima kali.
+AKSI: ohno menunjuk @lima
+FAKTA: ya
+
+##KETUKAN 14
+UCAP: [whispers] Tapi tahun 2016, peneliti mutu rumah sakit mengkritiknya.
+LATAR: perpustakaan
+AKTOR: p1=guru tengah licik
+TEKS: 2016 @2016
+FAKTA: ya
+
+##KETUKAN 15
+UCAP: Satu rantai bisa berhenti di penyebab yang salah.
+AKSI: p1 menggeleng @salah
+PROPS: silang kanan muncul @salah
+KAMERA: dekat p1
+
+##KETUKAN 16
+UCAP: Triknya, tanya di tiga jalur.
+LATAR: kampus
+AKTOR: raka=mahasiswa kiri senang
+KARTU: Tiga jalur kenapa | Kenapa terjadi? @terjadi | Kenapa orangnya begitu? @orangnya | Kenapa sistemnya membiarkan? @sistemnya
+ATA: sombong kanan pop
+FAKTA: ya
+
+##KETUKAN 17
+UCAP: Kenapa terjadi, kenapa orangnya begitu, kenapa sistemnya membiarkan.
+AKSI: raka berpikir @orangnya
+
+##KETUKAN 18
+UCAP: [laughs] Sekarang kedai Raka buka jam tujuh. Lampunya? Dimatikan.
+PROPS: lampu atas hilang @Dimatikan
+EKSPRESI: raka bangga @tujuh
+ATA: tertawa kanan pop
+##AKHIR

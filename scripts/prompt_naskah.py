@@ -10,7 +10,7 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTOH = ROOT / "contoh/ep01-planning-fallacy/tempelan.txt"
+CONTOH = ROOT / "contoh/ep02-root-cause/tempelan.txt"
 
 
 def _y(p: Path) -> dict:
@@ -45,18 +45,26 @@ Ata adalah narator (satu suara). Di layar, Ata hanya muncul di momen tertentu (h
 ```
 Angka nyata di naskah HARUS dari kartu ini (boleh dibulatkan wajar, mis. 33,9 jadi 34). Jangan menambah angka atau klaim riset lain.
 
-## 3. Standar naskah (diperiksa program; naskah yang melanggar ditolak)
+## 3. Pilar topik dan uji perhatian
+Pilar: skill yang TIDAK diajarkan di sekolah atau kampus (berpikir, belajar, bicara, menjual, memecahkan masalah) dan komponen lomba (business plan, BMC, riset pasar, presentasi juri).
+Sudut harus lolos uji perhatian, kalau tidak, pilih sudut lain:
+- klaim yang menyalahi dugaan atau provokatif di kalimat pertama (mis. "menyontek itu bagus", lalu dibelokkan ke versi yang legal),
+- ada kegagalan atau taruhan yang dekat dengan penonton (bisnis sepi, presentasi dibantai juri, nilai jeblok),
+- isinya tidak bisa ditebak dari judul. Hindari nasihat generik ("rajin belajar", "percaya diri").
+Patokan alur: cerita kegagalan konkret → pertanyaan berlapis atau kejadian yang memburuk → putaran (ketahuan akar masalahnya) → nama teorinya → bukti dari jurnal, termasuk kritik atau batasnya → trik legal → callback.
+
+## 4. Standar naskah (diperiksa program; naskah yang melanggar ditolak)
 1. Hook di KETUKAN 01, maksimal 10 kata, menyapa "kamu" atau membalik dugaan. Premis sudah lengkap di kalimat pertama, tanpa salam.
 2. Cerita orang kedua yang dekat dengan pelajar, minimal dua detail spesifik yang lucu, dan MENINGKAT (bukan daftar datar). Untuk konsep abstrak boleh alegori singkat.
 3. Momen penamaan: sebut nama konsep sesudah cerita, lalu definisi satu kalimat.
 4. Angka nyata dari kartu riset dengan kontras jelas. Tandai ketukan yang memuat angka riset dengan `FAKTA: ya` (ketukan ber-DATA otomatis fakta).
-5. Alat yang disimpan: tepat satu `KARTU` berisi maksimal 3 langkah konkret yang bisa dipakai hari ini.
+5. Alat yang berguna: tepat satu `KARTU` berisi maksimal 3 langkah konkret yang bisa dipakai hari ini. JANGAN menyuruh penonton menyimpan, membagikan, follow, atau komen (terasa jualan); cukup tunjukkan alatnya. Judul KARTU netral, mis. "Triknya".
 6. Penutup = callback ke lelucon atau hook awal, bukan moral umum. Pola "bukan X, tapi Y" maksimal sekali.
 7. Durasi 40 sampai 55 detik (±2,6 kata per detik). Satu ketukan = satu kalimat pendek (maksimal 16 kata) supaya visual berganti tiap 2 sampai 5 detik.
    Ganti komposisi minimal tiap 2 ketukan (KAMERA dekat untuk wajah atau reaksi, lalu kembali lebar; atau LATAR/AKTOR baru), seperti gaya video referensi.
 Tanpa tanda pisah panjang. Tanpa kata kasar. Tanpa politik, agama, tuduhan, atau orang sungguhan. Tanpa ajakan daftar, harga, atau "follow".
 
-## 4. Format keluaran (blok bertanda, BUKAN JSON, BUKAN tabel)
+## 5. Format keluaran (blok bertanda, BUKAN JSON, BUKAN tabel)
 Setiap ketukan punya UCAP (yang diucapkan Ata) dan isyarat visual. Visual memakai aktor stickman di latar gelap sesuai tempat cerita.
 Isyarat bisa dipicu tepat di satu kata dengan `@kata` (kata itu harus ada di UCAP ketukan yang sama), supaya setiap kata penting punya visualnya.
 
@@ -102,7 +110,7 @@ TAG SUARA (di depan kalimat UCAP, boleh lebih dari satu: [tense, slowly]):
 {contoh.strip()}
 ```
 
-## 5. Sebelum mengirim, periksa sendiri
+## 6. Sebelum mengirim, periksa sendiri
 Hook maksimal 10 kata; setiap @kata ada di UCAP-nya; setiap ketukan punya minimal satu isyarat visual; angka riset sama dengan kartu;
 satu KARTU maksimal 3 langkah; penutup callback; semua nama dari kosakata. Kirim hanya blok dari ##VIDEO sampai ##AKHIR.
 Bila nanti kuberi daftar galat, perbaiki hanya baris yang disebut dan kirim ulang seluruh naskah.

@@ -90,10 +90,10 @@ EKSPRESI: m3 takut @merinding
 ATA: menatap kanan pop
 
 ##KETUKAN 14
-UCAP: Jadi simpan ini.
+UCAP: Triknya cuma tiga.
 LATAR: kamar
 AKTOR: kamu=pelajar kiri senang
-KARTU: Simpan ini | Tulis tebakanmu @tulis | Cek tugas mirip, beneran selesai berapa hari @cek | Pakai angka yang lebih besar (1,6x) @pakai
+KARTU: Triknya | Tulis tebakanmu @tulis | Cek tugas mirip, beneran selesai berapa hari @cek | Pakai angka yang lebih besar (1,6x) @pakai
 ATA: sombong kanan pop
 
 ##KETUKAN 15

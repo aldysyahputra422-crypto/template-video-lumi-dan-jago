@@ -44,7 +44,7 @@ def test_data_harus_cocok_kartu():
 
 
 def test_wajib_kartu_simpan():
-    t = TEKS.replace("KARTU: Simpan ini | Tulis tebakanmu @tulis | Cek tugas mirip, beneran selesai berapa hari @cek | Pakai angka yang lebih besar (1,6x) @pakai\n", "")
+    t = TEKS.replace("KARTU: Triknya | Tulis tebakanmu @tulis | Cek tugas mirip, beneran selesai berapa hari @cek | Pakai angka yang lebih besar (1,6x) @pakai\n", "")
     assert any("KARTU" in g["pesan"] for g in _lint(t)["galat"])
 
 
@@ -74,3 +74,21 @@ def test_peringatan_callback_dan_pola_klise():
     t = t.replace("TEKS: final.docx @final\nPROPS: centang atas muncul @final\nEKSPRESI: kamu bangga @final", "EKSPRESI: kamu bangga @rencana")
     r = _lint(t)
     assert any("callback" in p["pesan"] for p in r["peringatan"])
+
+
+@pytest.mark.parametrize("kalimat", ["Jadi simpan ini.", "Share ke temanmu ya.", "Jangan lupa follow."])
+def test_ajakan_jualan_ditolak(kalimat):
+    t = TEKS.replace("UCAP: Triknya cuma tiga.", f"UCAP: {kalimat}")
+    assert any("ajakan" in g["pesan"] for g in _lint(t)["galat"])
+
+
+def test_kartu_berjudul_ajakan_ditolak():
+    t = TEKS.replace("KARTU: Triknya |", "KARTU: Simpan ini |")
+    assert any("ajakan" in g["pesan"] for g in _lint(t)["galat"])
+
+
+def test_patokan_root_cause_lolos_tanpa_peringatan():
+    d = ROOT / "contoh/ep02-root-cause"
+    n = nf.urai((d / "tempelan.txt").read_text(encoding="utf-8")).naskah
+    r = ln.periksa(n, yaml.safe_load((d / "kartu-riset.yaml").read_text(encoding="utf-8")))
+    assert r["galat"] == [] and r["peringatan"] == []

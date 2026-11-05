@@ -1,0 +1,23 @@
+# Kartu riset: satu-satunya sumber angka nyata di naskah ep02.
+id: fivewhys
+judul: "The problem with '5 whys'"
+penulis: Card, A. J.
+tahun: 2016
+jurnal: BMJ Quality & Safety (terbit daring 2016)
+pendukung:
+  - "Gangidi, P. (2019). A systematic approach to root cause analysis using 3 x 5 why's technique. International Journal of Lean Six Sigma."
+diverifikasi:
+  - abstrak dan isi pembuka Card dicek lewat Consensus (2026-11-05), termasuk kutipan Taiichi Ohno di dalamnya
+  - abstrak Gangidi dicek lewat Consensus (2026-11-05)
+temuan: >
+  5 Whys berasal dari Toyota Production System; Taiichi Ohno: tanya kenapa lima kali sampai sifat masalah dan solusinya
+  jelas. Card mengkritik: teknik ini populer karena silsilah, kesederhanaan, dan mudah diajarkan, bukan karena bukti
+  efektivitas; satu rantai bisa mengarah ke satu penyebab saja. Gangidi mengusulkan 3 x 5 Whys: rantai kenapa terpisah
+  untuk kejadian, faktor manusia, dan sistem, agar penyebab sistemik ikut terungkap.
+angka:
+  - {nilai: 5, arti: tanya kenapa lima kali (Ohno, dikutip Card)}
+  - {nilai: 2016, arti: tahun terbit daring kritik Card}
+  - {nilai: 3, arti: tiga jalur kenapa (Gangidi 2019)}
+  - {nilai: 2019, arti: tahun makalah Gangidi}
+batas: 5 Whys adalah alat bantu berpikir, bukan alat yang terbukti efektif; jangan diklaim selalu berhasil.
+kutipan_layar: "Card (2016), BMJ Quality & Safety · Gangidi (2019), International Journal of Lean Six Sigma"
