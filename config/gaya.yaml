@@ -22,6 +22,13 @@ target_gerak:
   persen_diam_maks: 10       # median 3
   diam_terpanjang_maks: 1.5  # median 0,5
   beda_3dtk_min: 24          # median 34,9; video merak 24,4 dan tikus-ular 26,9 tetap lolos
+# Rasa gambar (scripts/ukur_fx.py), 6 video mindwander 03, 07 sampai 11. Info di laporan QA, bukan gerbang.
+target_visual:
+  terang: [11, 49]            # median 28; hasil kita sesudah vinyet + grain: 42,6
+  sudut_per_tengah: [0.03, 0.34]  # median 0,14; kita dulu 0,35 sampai 0,52, sekarang 0,22
+  grain: [1.8, 4.8]           # median 2,8 (video 11 gaya garis 15,2 dikecualikan); kita 2,58
+# Editing terukur dari frame referensi (render/mesin.html): caption satu kata Roboto Bold ±27 px di tengah, tinggi 43%;
+# watermark Roboto Bold ±40 px abu-abu ±42% transparan, berpindah di pita atas (7 sampai 11% tinggi) tiap 9 dtk.
 # Durasi dan tempo (scripts/analisis_referensi.py): mindwander 64 sampai 87 dtk, 2,7 sampai 3,45 kata/dtk.
 durasi:
   referensi_dtk: [82.8, 43.6, 60.8, 89.0, 47.5, 63.7, 69.6, 65.9, 74.7, 87.3]

@@ -6,6 +6,7 @@ description: Tulis naskah reels animasi 60 sampai 80 detik bergaya "cerita yang 
 # Naskah reels "cerita yang bikin mikir"
 
 Formula ini diturunkan dari analisis terukur 6 video akun edukasi animasi yang tumbuh sangat cepat (median 66 dtk, 198 kata, 2,9 kata/dtk).
+**Wajib baca `benchmark.md` (di folder skill ini) sebelum menulis**: angka, cetak biru per kalimat, dan kerangka DNA.
 Keluaranmu adalah **naskah format blok** yang langsung bisa diolah skill `olah-reels` menjadi video.
 
 ## Langkah
@@ -17,16 +18,12 @@ Keluaranmu adalah **naskah format blok** yang langsung bisa diolah skill `olah-r
 3. **Pilih kendaraan cerita** yang mewujudkan konsep tanpa menyebut namanya: fabel atau alegori (kerajaan, hewan, desa, sumur, hutan) atau
    kisah nyata yang mengejutkan (perang, eksperimen, penemuan). Cerita harus bisa digambar: tokoh, tempat, dan benda yang jelas.
 4. **Uji kebenaran gelap**: putarannya membuat penonton merasa ikut tertipu, dan pelajarannya terasa seperti kearifan, bukan tips.
-5. **Tulis dengan 6 bagian** (posisi = persen durasi):
-   | bagian | posisi | isi |
-   |---|---|---|
-   | hook | 0% | 2 kalimat; kalimat pertama 9 sampai 15 kata: situasi konkret + hasil yang berlawanan |
-   | cerita | 0 sampai ±50% | kronologis, memburuk, detail yang bisa digambar, pengulangan berirama |
-   | putaran | ±40 sampai 60% | "Dan bagian paling ngeri?" (atau menyakitkan, mengejutkan) + fakta pembalik + kalimat "[Tokoh] tidak sedang X. [Tokoh] hanya Y." |
-   | penamaan | ±50 sampai 70% | "Dalam psikologi/logika/ekonomi, ini dikenal sebagai [istilah], [arti]." + satu kalimat definisi |
-   | pemetaan | ±60 sampai 83% | "Dan manusia juga begitu." + dua contoh sehari-hari (satu umum, satu yang tidak nyaman) |
-   | penutup | ±90% sampai akhir | "Jadi ingat ini, ..." + antitesis paralel dua kalimat yang bisa dikutip |
-6. **Panjang**: 170 sampai 230 kata, 18 sampai 26 ketukan, satu kalimat pendek per ketukan.
+5. **Isi kerangka DNA** di `benchmark.md` bagian C, slot demi slot (H1, H2, C1 sampai C9, P1 sampai P3, N1, N2, M1 sampai M5, T1, T2),
+   dengan posisi persen seperti di tabel. Baca bagian B (cetak biru 6 video) untuk melihat setiap slot bekerja. Pilih satu dari tiga
+   varian (penuh, kebenaran gelap, kisah nyata).
+6. **Panjang**: 175 sampai 215 kata, 22 sampai 28 kalimat, median 7 sampai 9 kata per kalimat, 3 sampai 8 kalimat pukulan (≤4 kata),
+   satu kalimat tanya (putaran). Sekitar 1 dari 4 kalimat dibuka kata sambung (Dan, Tapi, Lalu, Jadi, Padahal). Satu kalimat per ketukan;
+   kalimat pukulan boleh digabung dengan kalimat sebelumnya dalam satu ketukan.
 7. **Visual per ketukan** (format di bawah): setiap kalimat diberi isyarat visual; aset yang tidak ada di kosakata bawaan dideklarasikan di
    `##ASET` dengan deskripsi singkat (ilustrator menggambarnya dengan gaya yang sama). Tokoh penonton di bagian pemetaan memakai peran `kamu`
    (tokoh kuning). Kerumunan: `xJUMLAH`.
@@ -78,5 +75,6 @@ FAKTA: ya                             (ketukan yang memuat angka riset)
 ```
 
 ## Periksa sebelum mengirim
-Hook 2 kalimat dan paradoks; putaran di tengah dengan kalimat pembalik; nama konsep sesudah putaran; dua contoh pemetaan; penutup
-antitesis paralel; 170 sampai 230 kata; setiap kalimat bertag dan bervisual; aset baru dideklarasikan di ##ASET.
+Semua slot DNA terisi pada posisinya (bandingkan dengan tabel A dan C di benchmark.md); kalimat pembalik ada; dua contoh pemetaan berpola
+"terlihat. Tapi tak terlihat."; penutup antitesis yang bisa berdiri sendiri; 175 sampai 215 kata; tidak ada kalimat cerita yang
+disalin dari video referensi; setiap kalimat bertag dan bervisual; aset baru dideklarasikan di ##ASET.

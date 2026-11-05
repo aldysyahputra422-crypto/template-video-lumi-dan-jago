@@ -38,7 +38,15 @@ Butuh Python 3.11+, Node 18+, dan ffmpeg (macOS: `brew install ffmpeg`; Windows:
 ## Yang dijaga otomatis
 - Naskah: hook bergerak, komposisi berganti, kata yang bisa diucapkan, tanpa ajakan jualan, angka hanya dari kartu riset.
 - Gaya: palet terukur dari video referensi, tanpa gambar luar (`cek_aset`).
-- Gerak dan audio (QA): gerak rata-rata ≥6, layar diam ≤10%, beda gambar 3 dtk ≥24, -14 LUFS, puncak ≤ -1 dBFS.
+- Gerak dan audio (QA, gerbang): gerak rata-rata ≥6, layar diam ≤10%, beda gambar 3 dtk ≥24, -14 LUFS, puncak ≤ -1 dBFS.
+- Rasa gambar (QA, info `visual` + `catatan_visual`): terang 11 sampai 49, sudut/tengah 0,03 sampai 0,34 (vinyet), grain 1,8 sampai 4,8.
+
+## Gaya editing yang dikunci (terukur dari video referensi)
+- Caption satu kata, Roboto Bold ±27 px, putih dengan bayangan lembut, di tengah pada 43% tinggi layar.
+- Watermark Roboto Bold ±40 px, abu-abu setengah transparan, berpindah di pita atas tiap 9 dtk sambil bergeser pelan.
+- Vinyet kuat di tepi, tengah tetap terang (sorot); grain film halus saat encode; kamera selalu bergerak; pergantian komposisi ±3 dtk.
+- Palet hitam hangat, cokelat, krem, emas (`config/gaya.yaml` palet). Tokoh, latar, dan benda digambar baru per video; jangan meniru
+  tokoh kreator lain.
 
 ## Aturan
 - Jangan memanggil API berbayar (ElevenLabs, generator gambar) tanpa izin pengguna di sesi itu; suara dibuat pengguna.

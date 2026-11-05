@@ -10,7 +10,7 @@ from pathlib import Path
 
 import yaml
 
-from scripts import ukur_gerak
+from scripts import ukur_fx, ukur_gerak
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -44,7 +44,10 @@ def periksa(folder: Path) -> dict:
             masalah.append(f"puncak {h['puncak_dbfs']} dBFS, harus di bawah -1")
     g = ukur_gerak.ukur(v)
     h["gerak"] = g
-    T = yaml.safe_load((ROOT / "config/gaya.yaml").read_text(encoding="utf-8"))["target_gerak"]
+    gaya = yaml.safe_load((ROOT / "config/gaya.yaml").read_text(encoding="utf-8"))
+    T = gaya["target_gerak"]
+    h["visual"] = fx = ukur_fx.ukur(v)
+    h["catatan_visual"] = [f"{k} {fx[k]} di luar rentang referensi {r}" for k, r in gaya.get("target_visual", {}).items() if not r[0] <= fx[k] <= r[1]]
     if g["gerak_rata"] < T["gerak_rata_min"]:
         masalah.append(f"gerak rata-rata {g['gerak_rata']}, minimal {T['gerak_rata_min']} (vt3 9,4): adegan kurang bergerak")
     if g["persen_diam"] > T["persen_diam_maks"]:

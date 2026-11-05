@@ -28,7 +28,7 @@ def periksa(jalankan_test: bool = True) -> dict:
     c.append(_cek("node_playwright", shutil.which("node") and pw, "node + playwright siap" if pw else "npm install --prefix render"))
     font = list((ROOT / "render/node_modules/@fontsource").glob("*/files/*.woff2")) if (ROOT / "render/node_modules/@fontsource").exists() else []
     c.append(_cek("font", font, f"{len(font)} berkas font" if font else "npm install --prefix render (Montserrat, Baloo 2)"))
-    pose = yaml.safe_load((ROOT / "config/tokoh.yaml").read_text(encoding="utf-8"))["tokoh"]["ata"]["pose"]
+    pose = yaml.safe_load((ROOT / "config/tokoh.yaml").read_text(encoding="utf-8")).get("tokoh", {}).get("ata", {}).get("pose", {})
     hilang = [p for p in pose if not (ROOT / f"aset/maskot/panda/pose/{p}.svg").exists()]
     c.append(_cek("pose_ata", not hilang, f"{len(pose)} pose" if not hilang else f"hilang: {hilang} (python -m scripts.potong_pose)"))
     from scripts import sfx

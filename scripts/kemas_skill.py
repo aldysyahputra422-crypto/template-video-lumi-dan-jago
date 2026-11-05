@@ -3,7 +3,7 @@
 python -m scripts.kemas_skill [folder_keluar]   (bawaan: dist/)  → naskah-reels.zip, olah-reels.zip
 - naskah-reels: skills/naskah-reels/SKILL.template.md + kosakata terbaru + contoh naskah.
 - olah-reels: skills/olah-reels/SKILL.md + salinan mesin (scripts, render tanpa node_modules, config, schemas, katalog, aset audio,
-  docs gaya) dengan profil naskah filosofi dan nama akun pengganti. Tanpa video, transkrip pihak ketiga, atau aset maskot Ata.
+  docs gaya) dengan profil naskah filosofi dan nama akun pengganti. Tanpa video, transkrip pihak ketiga, atau maskot.
 """
 import shutil
 import sys
@@ -58,6 +58,7 @@ def kemas(keluar: Path) -> dict:
         md = (ROOT / "skills/naskah-reels/SKILL.template.md").read_text(encoding="utf-8")
         md = md.replace("{{KOSAKATA}}", _kosakata()).replace("{{CONTOH}}", (ROOT / "skills/naskah-reels/contoh-sunk-cost.txt").read_text(encoding="utf-8").strip())
         (n / "SKILL.md").write_text(md, encoding="utf-8")
+        shutil.copy(ROOT / "skills/naskah-reels/benchmark.md", n / "benchmark.md")
         hasil["naskah-reels"] = _zip(n, keluar / "naskah-reels.zip")
 
         o = tmp / "olah-reels"
@@ -70,10 +71,14 @@ def kemas(keluar: Path) -> dict:
             shutil.copytree(src, dst, ignore=ABAIKAN) if src.is_dir() else shutil.copy(src, dst)
         g = yaml.safe_load((m / "config/gaya.yaml").read_text(encoding="utf-8"))
         g["naskah"]["profil"] = "filosofi"
+        g["naskah"]["profil_isi"] = {"filosofi": g["naskah"]["profil_isi"]["filosofi"]}
         (m / "config/gaya.yaml").write_text(yaml.safe_dump(g, allow_unicode=True, sort_keys=False), encoding="utf-8")
-        t = yaml.safe_load((m / "config/tokoh.yaml").read_text(encoding="utf-8"))
-        t["akun"]["nama_akun"] = "@akunmu"
-        (m / "config/tokoh.yaml").write_text(yaml.safe_dump(t, allow_unicode=True, sort_keys=False), encoding="utf-8")
+        akun = yaml.safe_load((m / "config/tokoh.yaml").read_text(encoding="utf-8"))["akun"]
+        akun["nama_akun"] = "@akunmu"
+        (m / "config/tokoh.yaml").write_text("# Hanya identitas akun: watermark dan tagar caption. Ganti nama_akun dengan akunmu.\n"
+                                             + yaml.safe_dump({"akun": akun}, allow_unicode=True, sort_keys=False), encoding="utf-8")
+        tag = m / "config/tag_ekspresi.yaml"
+        tag.write_text(tag.read_text(encoding="utf-8").replace("suara Ata", "suara narator"), encoding="utf-8")
         (m / "video").mkdir()
         hasil["olah-reels"] = _zip(o, keluar / "olah-reels.zip")
     return hasil

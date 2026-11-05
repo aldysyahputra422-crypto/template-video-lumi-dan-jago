@@ -49,61 +49,65 @@ AKTOR: p=pekerja jauh_kiri capek x20
 AKSI: p jalan ke kanan @ditambah
 KAMERA: lebar
 ##KETUKAN 09
+UCAP: [whispers] Sedikit lagi. Setelah selesai, semua pengorbanan ini akan terbayar.
+EKSPRESI: r bangga @terbayar
+KAMERA: dekat r
+##KETUKAN 10
 UCAP: [serious] Tahun kelima, jembatan itu akhirnya selesai.
 PROPS: jembatan kanan membesar @selesai
 TEKS: TAHUN 5 @kelima
 KAMERA: dorong
-##KETUKAN 10
+##KETUKAN 11
 UCAP: [surprised] Dan bagian paling ngeri?
 SUASANA: misterius
 KELUAR: p; n
 EKSPRESI: r bingung @ngeri
 KAMERA: dekat r
-##KETUKAN 11
+##KETUKAN 12
 UCAP: [serious] Di hari peresmian, tidak ada satu orang pun yang menyeberang ke pulau itu.
 PROPS: jembatan kanan melayang @menyeberang
 KAMERA: geser
-##KETUKAN 12
+##KETUKAN 13
 UCAP: [serious] Yang menyeberang justru rakyatnya, pergi meninggalkan kerajaan yang bangkrut.
 AKTOR: w=warga kanan sedih x15
 AKSI: w jalan ke jauh_kanan @pergi
 KAMERA: lebar
-##KETUKAN 13
+##KETUKAN 14
 UCAP: [whispers] Raja tidak sedang menyelamatkan emasnya. Ia hanya terus membayar agar tidak perlu mengaku salah.
 KELUAR: w
 EKSPRESI: r malu @mengaku
 KAMERA: dekat r
-##KETUKAN 14
+##KETUKAN 15
 UCAP: [curious] Dalam psikologi, ini dikenal sebagai sunk cost fallacy, jebakan biaya hangus.
 SUASANA: normal
 LATAR: kosong
 TEKS: SUNK COST FALLACY @sunk
-##KETUKAN 15
+##KETUKAN 16
 UCAP: [serious] Kita bertahan pada keputusan buruk hanya karena sudah terlanjur berkorban banyak.
 SISIPAN: timbangan @berkorban
-##KETUKAN 16
+##KETUKAN 17
 UCAP: [serious] Dan manusia juga begitu.
 LATAR: kota
 AKTOR: k=kamu tengah bingung
 KAMERA: dorong
-##KETUKAN 17
+##KETUKAN 18
 UCAP: [annoyed] Kita bertahan di jurusan yang kita benci, karena sudah tiga semester.
 PROPS: buku tangan:k muncul @jurusan
 EKSPRESI: k capek @benci
 KAMERA: dekat k
-##KETUKAN 18
+##KETUKAN 19
 UCAP: [sad] Kita bertahan di hubungan yang menyakitkan, karena sudah lima tahun.
 SUASANA: sedih
 PROPS: hati kepala:k muncul @hubungan
 EKSPRESI: k sedih @menyakitkan
 KAMERA: geser
-##KETUKAN 19
+##KETUKAN 20
 UCAP: [serious] Jadi ingat ini, jembatan yang salah tidak menjadi benar karena terus dibangun.
 SUASANA: normal
 LATAR: istana_pantai
 AKTOR: r=raja tengah sedih
 KAMERA: lebar
-##KETUKAN 20
+##KETUKAN 21
 UCAP: [serious] Yang masih bisa kamu selamatkan hanyalah waktu yang tersisa.
 SISIPAN: jam_cepat @waktu
 ##AKHIR

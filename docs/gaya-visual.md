@@ -44,3 +44,9 @@ export default (GAYA) => {
 - Gambar luar, URL, font lain, `fetch`/`import`/akses halaman: semua visual SVG buatan sendiri.
 - Orang sungguhan yang masih hidup, logo merek, atau tokoh milik akun lain.
 - Teks panjang di latar (teks besar diatur `TEKS:` di naskah).
+
+## Editing terkunci (terukur, `scripts/ukur_fx.py` dan frame referensi)
+- Caption: satu kata, Roboto Bold ±27 px, putih, bayangan lembut, tengah pada tinggi 43%.
+- Watermark: Roboto Bold ±40 px, abu-abu ±42% transparan, berpindah di pita atas (7 sampai 11% tinggi) tiap 9 dtk.
+- Vinyet tepi kuat, tengah terang; grain film saat encode (`scripts/render.py` GRAIN).
+- Rentang referensi: terang 11 sampai 49, sudut/tengah 0,03 sampai 0,34, grain 1,8 sampai 4,8 (`config/gaya.yaml` target_visual).

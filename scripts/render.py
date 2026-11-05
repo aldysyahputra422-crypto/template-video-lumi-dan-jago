@@ -9,6 +9,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+# Grain film halus seperti video referensi (grain terukur 1,9 sampai 4,7; median 2,8). Diberikan saat encode agar deterministik per frame.
+GRAIN = "noise=alls=6:allf=t"
 
 
 def jalankan(folder: Path, fps: int = 30) -> Path:
@@ -20,7 +22,7 @@ def jalankan(folder: Path, fps: int = 30) -> Path:
         raise RuntimeError(f"render gagal: {r.stderr[-500:] or r.stdout[-500:]}")
     keluar = folder / "video.mp4"
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-framerate", str(fps), "-i", str(frame / "f%05d.jpg"), "-i", str(folder / "campur.wav"),
-                    "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k", "-shortest",
+                    "-vf", GRAIN, "-c:v", "libx264", "-preset", "medium", "-crf", "21", "-maxrate", "3500k", "-bufsize", "7000k", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k", "-shortest",
                     "-movflags", "+faststart", str(keluar)], check=True)
     info = json.loads(r.stdout.strip().splitlines()[-1])
     shutil.rmtree(frame, ignore_errors=True)

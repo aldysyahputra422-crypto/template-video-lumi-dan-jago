@@ -1,4 +1,5 @@
 """Kemas dua skill portabel: naskah-reels (MD saja) dan olah-reels (MD + mesin produksi, profil filosofi, tanpa Ata)."""
+import re
 import zipfile
 
 import yaml
@@ -19,4 +20,8 @@ def test_kemas_dua_skill(tmp_path):
     gaya = yaml.safe_load(o.read("olah-reels/mesin/config/gaya.yaml"))
     assert gaya["naskah"]["profil"] == "filosofi"
     tokoh = yaml.safe_load(o.read("olah-reels/mesin/config/tokoh.yaml"))
-    assert tokoh["akun"]["nama_akun"] == "@akunmu"
+    assert tokoh["akun"]["nama_akun"] == "@akunmu" and set(tokoh) == {"akun"}
+    teks = [o.read(x).decode() for x in nama if x.endswith((".md", ".yaml"))] + [n.read(x).decode() for x in n.namelist()]
+    assert not any(re.search(r"\bAta\b|ata\.ngulik|panda", x) for x in teks)
+    bm = n.read("naskah-reels/benchmark.md").decode()
+    assert "Kerangka DNA" in bm and "P3" in bm and "`benchmark.md`" in md

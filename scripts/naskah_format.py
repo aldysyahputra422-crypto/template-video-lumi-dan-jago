@@ -28,7 +28,7 @@ def kosakata() -> dict:
 
 @functools.lru_cache(maxsize=None)
 def pose_ata() -> list[str]:
-    return yaml.safe_load((ROOT / "config/tokoh.yaml").read_text(encoding="utf-8"))["tokoh"]["ata"]["pose"]
+    return yaml.safe_load((ROOT / "config/tokoh.yaml").read_text(encoding="utf-8")).get("tokoh", {}).get("ata", {}).get("pose", {})
 
 
 @dataclass

@@ -1,6 +1,7 @@
 <!doctype html><html><head><meta charset="utf-8"><title>Mesin stickman Ata</title>
 <style>
 @font-face{font-family:'Baloo';src:url('/render/node_modules/@fontsource/baloo-2/files/baloo-2-latin-800-normal.woff2') format('woff2');font-weight:800}
+@font-face{font-family:'Robo';src:url('/render/node_modules/@fontsource/roboto/files/roboto-latin-700-normal.woff2') format('woff2');font-weight:700}
 @font-face{font-family:'Mont';src:url('/render/node_modules/@fontsource/montserrat/files/montserrat-latin-700-normal.woff2') format('woff2');font-weight:700}
 @font-face{font-family:'Mont';src:url('/render/node_modules/@fontsource/montserrat/files/montserrat-latin-800-normal.woff2') format('woff2');font-weight:800}
 html,body{margin:0;background:#000}
@@ -581,8 +582,8 @@ window.render = function (t) {
   const bawahKartu = kartuAktif ? 150 + (86 + kartuAktif.kartu.butir.length * 92) * 1.08 + 12 : 0;   // kartu bisa membesar 8%
   const SIS = gambarSisipan(k, t, kartuAktif ? Math.max(0, bawahKartu + 180 - 560) : 0);   // sisipan turun bila ada kartu
   // Watermark nama akun: kecil, semi-transparan, berpindah posisi tiap 9 dtk (gaya video referensi 03).
-  const POS_WATERMARK = [[360, 92], [210, 118], [510, 118]], iw = Math.floor(t / 9) % 3, aw = cl(((t % 9) - 0) / .4) * cl((9 - (t % 9)) / .4);
-  const watermark = TL.watermark ? `<text x="${POS_WATERMARK[iw][0]}" y="${POS_WATERMARK[iw][1]}" text-anchor="middle" font-size="24" font-weight="700" fill="#FFFFFF" opacity="${.5 * aw}" stroke="rgba(0,0,0,.35)" stroke-width="3" paint-order="stroke" font-family="Mont">${TL.watermark}</text>` : '';
+  const POS_WATERMARK = [[360, 104], [292, 132], [428, 118]], iw = Math.floor(t / 9) % 3, aw = cl(((t % 9) - 0) / .4) * cl((9 - (t % 9)) / .4);
+  const watermark = TL.watermark ? `<text x="${POS_WATERMARK[iw][0]}" y="${POS_WATERMARK[iw][1]}" transform="translate(${10 * Math.sin(t * .37)} ${4 * Math.sin(t * .23)})" text-anchor="middle" font-size="40" font-weight="700" fill="#9A9A9A" opacity="${.42 * aw}" font-family="Robo">${TL.watermark}</text>` : '';
   const lapisSuasana = (S0, op) => { if (op <= 0) return ''; let s = '';
     if (S0.warna) s += `<rect width="720" height="1280" fill="${S0.warna}" opacity="${S0.kuat * op}"/>`;
     if (S0.gelap) s += `<rect width="720" height="1280" fill="url(#vinyet)" opacity="${S0.gelap * op * 3}"/>`;
@@ -593,17 +594,17 @@ window.render = function (t) {
     return s; };
   const Sl = sebelum ? suasanaDi(sebelum) : SUASANA.normal, bS = sebelum && sebelum.suasana !== k.suasana ? ez(cl(lokal / .5)) : 1;
   const suasanaSvg = lapisSuasana(suasanaDi(k), bS) + (bS < 1 ? lapisSuasana(Sl, 1 - bS) : '');
-  const capX = 360, capY = kartuAktif ? Math.max(565, bawahKartu + 40) : SIS.aktif ? 455 : 565;   // caption tidak pernah menimpa kartu
+  const capX = 360, capY = kartuAktif ? Math.max(565, bawahKartu + 40) : SIS.aktif ? 455 : 556;   // caption tidak pernah menimpa kartu
   const w = kataKini(t);
   const skCap = w ? pantul((t - w.a) / .16) : 1;
-  const cap = w ? `<text transform="translate(${capX} ${capY}) scale(${skCap}) translate(${-capX} ${-capY})" x="${capX}" y="${capY}" text-anchor="middle" font-size="31" font-weight="700" fill="#FFFFFF" stroke="rgba(0,0,0,.55)" stroke-width="5" paint-order="stroke" font-family="Mont">${w.w}</text>` : '';
+  const cap = w ? `<text transform="translate(${capX} ${capY}) scale(${skCap}) translate(${-capX} ${-capY})" x="${capX}" y="${capY}" text-anchor="middle" font-size="27" font-weight="700" fill="#FFFFFF" stroke="rgba(0,0,0,.35)" stroke-width="2.5" paint-order="stroke" filter="url(#bayangCap)" font-family="Robo">${w.w}</text>` : '';
   const src = '';  // sumber tidak ditampilkan di video (pemilik); tetap di kartu-riset.yaml
   $('layar').innerHTML = `<defs><radialGradient id="cahaya"><stop offset="0" stop-color="${C.cahaya}" stop-opacity=".9"/><stop offset="1" stop-color="${C.cahaya}" stop-opacity="0"/></radialGradient>
     <filter id="pudar"><feColorMatrix type="saturate" values=".3"/></filter>
     <radialGradient id="merah" cx=".5" cy=".5" r=".75"><stop offset=".55" stop-color="#8A0F14" stop-opacity="0"/><stop offset="1" stop-color="#8A0F14" stop-opacity=".9"/></radialGradient>
     <radialGradient id="kabutDingin"><stop offset="0" stop-color="#9AB4BA" stop-opacity=".3"/><stop offset="1" stop-color="#9AB4BA" stop-opacity="0"/></radialGradient>
     <radialGradient id="kabutUngu"><stop offset="0" stop-color="#B49ACB" stop-opacity=".3"/><stop offset="1" stop-color="#B49ACB" stop-opacity="0"/></radialGradient>
-    <radialGradient id="vinyet" cx=".5" cy=".45" r=".75"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".75"/></radialGradient></defs>
+    <radialGradient id="vinyet" cx=".5" cy=".45" r=".72"><stop offset=".48" stop-color="#000" stop-opacity="0"/><stop offset=".8" stop-color="#000" stop-opacity=".66"/><stop offset="1" stop-color="#000" stop-opacity=".94"/></radialGradient><filter id="bayangCap" x="-20%" y="-50%" width="140%" height="220%"><feDropShadow dx="0" dy="2" stdDeviation="2.2" flood-color="#000" flood-opacity=".75"/></filter></defs>
     ${dunia}${debu(t)}<rect width="720" height="1280" fill="url(#vinyet)"/><rect width="720" height="1280" fill="#000" opacity="${pindahLatar}"/>${suasanaSvg}${SIS.svg}${atas}${cap}${src}${watermark}`;
   // Ata
   const e = $('ata'), a = ataA;
