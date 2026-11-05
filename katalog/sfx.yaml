@@ -1,0 +1,41 @@
+# Pustaka SFX dan musik latar. Dipakai scripts/sfx.py (buat dan unduh) dan scripts/campur.py (pakai).
+# Urutan pakai per nama: unduhan Mixkit (aset/audio/unduhan, tidak masuk git) → aset pemilik (aset/audio/<nama>.mp3)
+# → sintetis (aset/audio/sintetis, dibuat ulang deterministik, tidak masuk git). Sintetis selalu ada sebagai cadangan.
+lisensi:
+  mixkit:
+    nama: Mixkit Sound Effects Free License
+    url: https://mixkit.co/license/#sfxFree
+    komersial: true
+    atribusi: false
+    larangan: file mentah tidak boleh disebarkan ulang atau dijual terpisah; hanya dipakai di dalam video
+  sintetis: {nama: milik sendiri (dibuat scripts/sfx.py), komersial: true, atribusi: false}
+# gain: dB relatif terhadap SFX_DB di campur.py. mixkit: id dari https://mixkit.co (pratinjau MP3).
+sfx:
+  whoosh:   {mixkit: 1492, judul: Cinematic whoosh fast transition, gain: 0}
+  swipe:    {mixkit: 2627, judul: Fast swipe zoom, gain: -4}
+  pop:      {mixkit: 2364, judul: Hard pop click, gain: -2}
+  jumput:   {gain: -3}
+  tok:      {gain: 0}
+  tik_cepat: {mixkit: 1063, judul: Fast wall clock ticking, gain: -4}
+  sobek:    {mixkit: 1104, judul: Page turn single, gain: -2}
+  gores:    {mixkit: 2376, judul: Short pencil writing, gain: -2}
+  ketik:    {gain: -5}
+  detak:    {mixkit: 490, judul: Human single heart beat, gain: 2}
+  stinger:  {mixkit: 1143, judul: Cinematic whoosh deep impact, gain: -1}
+  boing:    {mixkit: 2894, judul: Boing hit sound, gain: -4}
+  langkah:  {gain: -6}
+  notif:    {mixkit: 2354, judul: Message pop alert, gain: -3}
+  benar:    {mixkit: 2870, judul: Correct answer tone, gain: -4}
+  salah:    {gain: -6}
+  printer:  {gain: -6}
+  brak:     {gain: -2}
+  kilau:    {gain: -5}
+  tumbuh:   {gain: -4}
+# Musik latar per SUASANA (dB relatif MUSIK_DB). tegang dan ceria memakai file pemilik bila ada.
+musik:
+  musik_normal:    {gain: 0}
+  musik_tegang:    {gain: 0}
+  musik_ceria:     {gain: 0}
+  musik_horor:     {gain: 3}
+  musik_sedih:     {gain: 0}
+  musik_misterius: {gain: 1}
