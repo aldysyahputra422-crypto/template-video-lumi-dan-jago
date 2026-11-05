@@ -20,4 +20,5 @@ angka:
   - {nilai: 3, arti: tiga jalur kenapa (Gangidi 2019)}
   - {nilai: 2019, arti: tahun makalah Gangidi}
 batas: 5 Whys adalah alat bantu berpikir, bukan alat yang terbukti efektif; jangan diklaim selalu berhasil.
-kutipan_layar: "Card (2016), BMJ Quality & Safety · Gangidi (2019), International Journal of Lean Six Sigma"
+kutipan_caption:  # untuk caption IG bila perlu; TIDAK tampil di video
+   "Card (2016), BMJ Quality & Safety · Gangidi (2019), International Journal of Lean Six Sigma"

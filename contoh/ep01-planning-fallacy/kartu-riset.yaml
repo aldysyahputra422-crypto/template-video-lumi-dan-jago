@@ -21,4 +21,5 @@ angka:
 turunan:
   - {nilai: 1.6, rumus: 55.5 / 33.9, arti: waktu sebenarnya dibanding tebakan (dibulatkan)}
 batas: Sampel mahasiswa psikologi tingkat akhir; angka satu studi, bukan aturan pasti untuk semua orang.
-kutipan_layar: 'Buehler, Griffin & Ross (1994). Journal of Personality and Social Psychology, 67(3), 366-381.'
+kutipan_caption:  # untuk caption IG bila perlu; TIDAK tampil di video
+   'Buehler, Griffin & Ross (1994). Journal of Personality and Social Psychology, 67(3), 366-381.'

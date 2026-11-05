@@ -86,9 +86,8 @@ def susun(n: dict, kj: dict, kartu: dict | None) -> dict:
         out.append({"no": k["no"], "mulai": m0, "selesai": m1, "latar": k["latar"], "pemeran": awal_pemeran, "aksi": aksi, "ekspresi": ekspresi,
                     "props": props, "teks": teks, "data": [dict(d) for d in data_aktif], "kartu": kt, "ata": ata, "kamera": k["kamera"], "fakta": k["fakta"]})
     kata = [dict(w, ketukan=K["no"]) for K in KJ for w in K["kata"]]
-    ada_fakta = any(k["fakta"] for k in ks)
     return {"id": n["id"], "judul": n["judul"], "fps": 30, "durasi": round(akhir + 0.3, 3), "ketukan": out, "kata": kata,
-            "sumber_layar": (kartu or {}).get("kutipan_layar") if ada_fakta else None, "sfx": sorted(sfx, key=lambda s: s["t"])}
+            "sfx": sorted(sfx, key=lambda s: s["t"])}
 
 
 def main(argv: list[str]) -> int:

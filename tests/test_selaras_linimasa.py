@@ -66,7 +66,7 @@ def test_linimasa_isyarat_ke_waktu_kata(tmp_path):
     kartu_k = next(k for k in L["ketukan"] if k["kartu"])
     t_items = [b["t"] for b in kartu_k["kartu"]["butir"]]
     assert t_items == sorted(t_items) and kartu_k["kartu"]["selesai"] > t_items[-1] + 1.5
-    assert L["sumber_layar"].startswith("Buehler") and L["durasi"] > L["ketukan"][-1]["selesai"] - 0.01
+    assert "sumber_layar" not in L and L["durasi"] > L["ketukan"][-1]["selesai"] - 0.01
     assert any(s["nama"] == "whoosh" for s in L["sfx"]) and any(s["nama"] == "pop" for s in L["sfx"])
 
 

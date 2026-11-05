@@ -280,7 +280,7 @@ window.render = function (t) {
   const capX = 360;
   const w = kataKini(t);
   const cap = w ? `<text x="${capX}" y="565" text-anchor="middle" font-size="31" font-weight="700" fill="#FFFFFF" stroke="rgba(0,0,0,.55)" stroke-width="5" paint-order="stroke" font-family="Mont">${w.w}</text>` : '';
-  const src = (k.fakta || k.data.length) && TL.sumber_layar ? `<text x="360" y="1250" text-anchor="middle" font-size="17" fill="${C.krem}" opacity=".7" font-family="Baloo">${TL.sumber_layar.replace(/&/g, '&amp;')}</text>` : '';
+  const src = '';  // sumber tidak ditampilkan di video (pemilik); tetap di kartu-riset.yaml
   $('layar').innerHTML = `<defs><radialGradient id="cahaya"><stop offset="0" stop-color="${C.cahaya}" stop-opacity=".9"/><stop offset="1" stop-color="${C.cahaya}" stop-opacity="0"/></radialGradient>
     <radialGradient id="vinyet" cx=".5" cy=".45" r=".75"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".75"/></radialGradient></defs>
     ${dunia}${debu(t)}<rect width="720" height="1280" fill="url(#vinyet)"/><rect width="720" height="1280" fill="#000" opacity="${pindahLatar}"/>${atas}${cap}${src}`;
