@@ -113,3 +113,11 @@ def test_label_data_garis_bawah_jadi_spasi():
     t = _ubah("DATA: Tebakan rata-rata=33.9 hari @34", "DATA: tebakan_rata_rata=33.9 hari @34")
     k = next(k for k in nf.urai(t).naskah["ketukan"] if k["data"])
     assert k["data"][0]["label"] == "tebakan rata rata"
+
+
+def test_sisipan_tangan_memakai_nama_props():
+    t = _ubah("SISIPAN: hp_scroll kucing @nonton", "SISIPAN: tangan_ambil kucing @nonton")
+    k = next(k for k in nf.urai(t).naskah["ketukan"] if (k["sisipan"] or {}).get("nama") == "tangan_ambil")
+    assert k["sisipan"]["isi"] == "kucing"
+    assert any("isi sisipan" in str(g) for g in nf.urai(_ubah("SISIPAN: hp_scroll kucing @nonton", "SISIPAN: tangan_ambil naga @nonton")).galat)
+    assert nf.urai(_ubah("SISIPAN: hp_scroll kucing @nonton", "SISIPAN: tangan_tulis @nonton")).galat == []

@@ -21,6 +21,7 @@ peran:            # aktor stickman; aksesori membedakan peran
   dokter: dokter, jas putih panjang dan stetoskop
   petani: petani, caping, handuk di leher
   pengusaha: pengusaha atau bos, jas hitam dan dasi merah
+  kamu: tokoh kuning polos yang mewakili penonton (dipakai saat narasi menyapa kamu)
   pelajar: tas punggung
   mahasiswa: kacamata
   guru: kacamata dan buku
@@ -94,5 +95,8 @@ sisipan:
   layar_laptop: {arti: "layar laptop dekat: kursor berkedip atau baris terketik", isi: [kosong, ketik]}
   tagihan: {arti: "struk tagihan keluar memanjang, angka total naik", isi: []}
   akar: {arti: "tanaman kecil, akarnya tumbuh ke bawah sampai titik terdalam menyala", isi: []}
+  tangan_ambil: {arti: "tangan bersarung putih masuk, menjumput benda, menariknya keluar (berulang)", isi: props}
+  tangan_beri: {arti: "tangan bersarung putih menyodorkan benda ke tengah lalu melepaskannya", isi: props}
+  tangan_tulis: {arti: "tangan memegang pensil menulis di kertas besar, baris demi baris", isi: []}
 ata_masuk: [intip, pop, sapuan]
 ata_tempat: [kiri, tengah, kanan]

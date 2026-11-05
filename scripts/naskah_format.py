@@ -240,7 +240,7 @@ class _Urai:
                 if not b or b[0] not in S:
                     self.err(no, f"sisipan tidak dikenal: {b[0] if b else ''}. Sisipan: {', '.join(S)}")
                     continue
-                pilihan = S[b[0]]["isi"]
+                pilihan = list(self.k["props"]) if S[b[0]]["isi"] == "props" else S[b[0]]["isi"]
                 isi_s = b[1] if len(b) > 1 else (pilihan[0] if pilihan else None)
                 if len(b) > 1 and isi_s not in pilihan:
                     self.err(no, f"isi sisipan {b[0]} tidak dikenal: {isi_s}. Isi: {', '.join(pilihan) or '(tanpa isi)'}")

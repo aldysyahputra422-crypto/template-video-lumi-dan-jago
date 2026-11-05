@@ -49,3 +49,34 @@ def test_kostum_sesuai_profesi_dan_gender():
                         ("petani", "caping"), ("pengusaha", "dasi:"), ("siswa", "celana:")):
         baris = next(l for l in blok.splitlines() if l.strip().startswith(peran + ":"))
         assert ciri in baris, (peran, ciri)
+
+
+def test_tangan_dan_tokoh_penonton():
+    for s in ("tangan_ambil", "tangan_beri", "tangan_tulis"):
+        assert s in K["sisipan"], s
+    assert "kamu" in K["peran"]
+    a = MESIN.index("const PERAN = {")
+    baris = next(l for l in MESIN[a:MESIN.index("\n};", a)].splitlines() if l.strip().startswith("kamu:"))
+    assert "kepala: 'kuning'" in baris
+
+
+def test_setiap_props_punya_letak_alami():
+    """Masukan pemilik: buku malah di bawah meja. Setiap props wajib punya kategori letak (lantai, meja, dinding, ikon)."""
+    a = MESIN.index("const LETAK_PROPS = {")
+    blok = MESIN[a:MESIN.index("};", a)]
+    kategori = dict(re.findall(r"(\w+): '(lantai|meja|dinding|ikon)'", blok))
+    assert set(K["props"]) <= set(kategori), sorted(set(K["props"]) - set(kategori))
+
+
+def test_ekspresi_punya_tanda_emosi():
+    """Masukan pemilik: ekspresi bingung terlihat datar. Ekspresi kuat diberi tanda emosi yang terbaca di bidikan lebar."""
+    a = MESIN.index("const TANDA_EMOSI = {")
+    blok = MESIN[a:MESIN.index("\n};", a)]
+    for e in ("bingung", "kaget", "takut", "marah", "sedih", "capek", "malu"):
+        assert re.search(rf"^\s+{e}:", blok, re.M), e
+
+
+def test_figuran_hanya_di_tempat_ramai():
+    a = MESIN.index("const FIGURAN = {")
+    tempat = set(re.findall(r"(\w+):", MESIN[a:MESIN.index("};", a)]))
+    assert tempat <= {"pasar", "kota", "jalan"}, tempat

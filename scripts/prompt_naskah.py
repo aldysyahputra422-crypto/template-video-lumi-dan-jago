@@ -110,7 +110,7 @@ POSISI: {', '.join(k['posisi'])}
 PROPS: {', '.join(k['props'])}
 GERAK PROPS: {', '.join(k['gerak_props'])}
 SISIPAN:
-{chr(10).join(f"- `{n}`: {v['arti']}" + (f" (isi: {' | '.join(v['isi'])})" if v['isi'] else '') for n, v in k['sisipan'].items())}
+{chr(10).join(f"- `{n}`: {v['arti']}" + (" (isi: nama props mana pun)" if v['isi'] == 'props' else f" (isi: {' | '.join(v['isi'])})" if v['isi'] else '') for n, v in k['sisipan'].items())}
 POSE ATA: {', '.join(ata['pose'])} (pemetaan: {', '.join(f'{m}={p}' for m, p in ata['pemetaan_momen'].items())})
 TAG SUARA (di depan kalimat UCAP, boleh lebih dari satu: [tense, slowly]):
 {tags}
