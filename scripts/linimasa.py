@@ -16,8 +16,8 @@ JARAK_SFX = 0.08
 
 # SFX otomatis per kejadian visual: (nama sfx, jeda dari isyarat, ulangan, selang). Tidak perlu ditulis di naskah.
 SFX_SISIPAN = {"hp_scroll": ("swipe", .1, 6, .55), "chat": ("notif", .1, 5, .45), "jam_cepat": ("tik_cepat", .2, 1, 0),
-               "kalender_sobek": ("sobek", .1, 6, .38), "tagihan": ("printer", 0, 1, 0), "akar": ("tumbuh", 0, 1, 0),
-               "tangan_ambil": ("jumput", .55, 4, 1.6), "tangan_beri": ("pop", .9, 1, 0), "tangan_tulis": ("gores", 0, 1, 0)}
+               "kalender_sobek": ("sobek", .1, 6, .38), "tagihan": ("printer", .15, 1, 0), "akar": ("tumbuh", .15, 1, 0),
+               "tangan_ambil": ("jumput", .55, 4, 1.6), "tangan_beri": ("pop", .9, 1, 0), "tangan_tulis": ("gores", .15, 1, 0)}
 SFX_AKSI = {"lari": ("langkah", 0, 3, .2), "jalan": ("langkah", 0, 2, .5), "lompat": ("boing", 0, 1, 0), "terduduk": ("brak", .3, 1, 0)}
 SFX_EKSPRESI = {"kaget": "stinger", "takut": "detak"}
 SFX_PROPS = {"centang": "benar", "silang": "salah", "bintang": "kilau", "tanda_seru": "pop", "tanda_tanya": "pop"}

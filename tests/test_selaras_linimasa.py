@@ -112,3 +112,8 @@ def test_musik_mengikuti_suasana(tmp_path):
     assert [s["suasana"] for s in seg] == ["normal", "horor", "normal"]
     assert seg[0]["mulai"] == 0 and seg[-1]["selesai"] == L["durasi"] and all(a["selesai"] == b["mulai"] for a, b in zip(seg, seg[1:]))
     assert L["ketukan"][4]["suasana"] == "horor"
+
+
+def test_sfx_sisipan_tidak_tertelan_whoosh():
+    from scripts.linimasa import SFX_SISIPAN, JARAK_SFX
+    assert all(jeda >= JARAK_SFX for _, jeda, _, _ in SFX_SISIPAN.values())
