@@ -157,7 +157,7 @@ function stickman(o) {
     const tinggi = (P.tinggi || 220) * s, x = o.x + q.dx, y = o.y + q.dy, sk = o.muncul ?? 1;
     const isi = P.gambar({...o, s, x, y, q, t: o.t || 0}), h = o.hadap || 1;   // hadap -1 = bergerak ke kiri (dicerminkan)
     return {svg: `<ellipse cx="${o.x}" cy="${o.y + 6}" rx="${Math.max(30, tinggi * .35)}" ry="${8 * s}" fill="#000" opacity=".45"/><g transform="translate(${x} ${y}) scale(${sk * h} ${sk}) rotate(${q.miring * .5}) translate(${-x} ${-y})">${isi}</g>`,
-      tangan: {l: [x - 40 * s, y - tinggi * .55], r: [x + 40 * s, y - tinggi * .55]}, kepala: [x, y - tinggi]};
+      tangan: {l: [x - 40 * s, y - tinggi * .55], r: [x + 40 * s, y - tinggi * .55]}, kepala: [x, y - tinggi], fokus: o.y - tinggi * .45};   // fokus kamera sesuai tinggi tokoh
   }
   const r = 44 * s, BW = 64 * s, BH = 90 * s, l1 = 46 * s, l2 = 44 * s, k1 = 50 * s, k2 = 46 * s, tl = 20 * s, tk = 22 * s;
   const kulit = P.kepala === 'kulit' ? C.kulit : P.kepala === 'kuning' ? '#F2C230' : C.kepala;
@@ -496,11 +496,11 @@ function bangunDunia(k, t, i) {
         daftar.push({b, svg: stickman({t: t + j * .37, x: xj, y: G - b * 44, s: sj, pose: poseAktor(k, id, t - j * .06), peran: pr.peran, baju: bajuJ, ekspresi: ekspresiAktor(k, id, t), muncul, hadap: hadapAktor(k, id, t)}).svg});
       }
       const st = stickman({t, x, y: G, s: 1.32 * .8, pose: poseAktor(k, id, t), peran: pr.peran, ekspresi: ekspresiAktor(k, id, t), muncul});
-      posAktor[id] = [x, G - 320]; gambarAktor.push({id, x, ...st, svg: daftar.sort((a, c) => c.b - a.b).map(d => d.svg).join('')});
+      posAktor[id] = [x, st.fokus ?? G - 320]; gambarAktor.push({id, x, ...st, svg: daftar.sort((a, c) => c.b - a.b).map(d => d.svg).join('')});
       continue;
     }
     const st = stickman({t, x, y: G, s: 1.32, pose: poseAktor(k, id, t), peran: pr.peran, baju: warnaAktor(id, pr.peran), ekspresi: ekspresiAktor(k, id, t), muncul, hadap: hadapAktor(k, id, t)});
-    posAktor[id] = [x, G - 320]; gambarAktor.push({id, x, ...st});
+    posAktor[id] = [x, st.fokus ?? G - 320]; gambarAktor.push({id, x, ...st});
   }
   // props
   let props = '';

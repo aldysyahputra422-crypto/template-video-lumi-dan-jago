@@ -85,15 +85,21 @@ def _lembar(folder: Path, n: dict) -> Path:
         if j == "latar":
             ketukan.append([f"LATAR: {nama}", "KAMERA: lebar"])
         elif j == "peran":
-            ketukan.append(["LATAR: kosong", f"AKTOR: a=peran_x tengah datar".replace("peran_x", nama), "KAMERA: lebar"])
-            ketukan.append(["LATAR: kosong", f"AKTOR: c={nama} tengah datar x7", "KAMERA: lebar"])
+            ketukan.append([f"AKTOR: a{len(ketukan)}={nama} tengah datar", f"KAMERA: dekat a{len(ketukan)}"])
+            ketukan.append([f"AKTOR: c{len(ketukan)}={nama} tengah datar x7", "KAMERA: lebar"])
         elif j == "props":
-            ketukan.append(["LATAR: kosong", f"PROPS: {nama} tengah muncul", "KAMERA: lebar"])
+            ketukan.append([f"PROPS: {nama} tengah muncul", "KAMERA: lebar"])
         else:
             ketukan.append(["LATAR: kosong", f"SISIPAN: {nama}"])
     while len(ketukan) < 3:
         ketukan.append(["LATAR: kosong"])
+    semua: list[str] = []
     for i, isi in enumerate(ketukan, 1):
+        if not any(x.startswith("LATAR:") for x in isi):
+            isi = ["LATAR: kosong"] + isi
+        if semua:
+            isi = isi[:1] + [f"KELUAR: {'; '.join(semua)}"] + isi[1:]   # panggung bersih: tiap panel hanya asetnya sendiri
+        semua += [x.split("=")[0].split(":")[1].strip() for x in isi if x.startswith("AKTOR:")]
         baris += [f"##KETUKAN {i:02d}", "UCAP: Ini adalah adegan pemeriksaan gaya untuk aset video ini."] + isi
     baris.append("##AKHIR")
     h = nf.urai("\n".join(baris))
