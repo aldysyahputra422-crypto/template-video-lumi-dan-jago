@@ -136,3 +136,40 @@ def test_garis_miring_salin_markdown_dibuang():
     h = nf.urai(kotor)
     assert h.galat == [], [str(g) for g in h.galat]
     assert h.naskah["ketukan"][0]["ucap"] == nf.urai(TEKS).naskah["ketukan"][0]["ucap"]
+
+
+ASET = """##ASET
+LATAR sumur_tua: sumur bata melingkar dilihat dari dalam, gelap, cahaya bulan dari atas
+AKTOR tikus: tikus putih kecil, mata merah muda, ekor panjang
+PROPS keju: potongan keju kuning berlubang
+"""
+
+
+def test_aset_baru_dideklarasikan_lalu_boleh_dipakai():
+    t = TEKS.replace("##SUMBER buehler1994\n", "##SUMBER buehler1994\n" + ASET)
+    t = t.replace("LATAR: kamar\nAKTOR: kamu=pelajar jauh_kiri senang", "LATAR: sumur_tua\nAKTOR: kamu=pelajar jauh_kiri senang; tk=tikus kanan datar x12", 1)
+    t = t.replace("PROPS: laptop tengah muncul @bikin", "PROPS: keju tengah muncul @bikin")
+    h = nf.urai(t)
+    assert h.galat == [], [str(g) for g in h.galat]
+    n = h.naskah
+    assert {(a["jenis"], a["nama"]) for a in n["aset"]} == {("latar", "sumur_tua"), ("peran", "tikus"), ("props", "keju")}
+    assert n["ketukan"][0]["latar"] == "sumur_tua"
+    tk = next(a for a in n["ketukan"][0]["aktor"] if a["id"] == "tk")
+    assert tk["peran"] == "tikus" and tk["jumlah"] == 12
+
+
+def test_nama_tak_dikenal_tanpa_deklarasi_tetap_ditolak_dengan_saran_aset():
+    g = nf.urai(TEKS.replace("LATAR: kamar\n", "LATAR: sumur_tua\n", 1)).galat
+    assert any("latar tidak dikenal: sumur_tua" in str(x) and "##ASET" in str(x) for x in g)
+
+
+def test_deklarasi_aset_harus_rapi():
+    t = TEKS.replace("##SUMBER buehler1994\n", "##SUMBER buehler1994\n##ASET\nLATAR Sumur Tua: sumur\nMONSTER naga: naga\n")
+    g = [str(x) for x in nf.urai(t).galat]
+    assert any("nama aset" in x for x in g) and any("jenis aset" in x for x in g)
+
+
+def test_aset_boleh_di_akhir_naskah():
+    t = TEKS.replace("##AKHIR", ASET + "##AKHIR").replace("LATAR: kamar\n", "LATAR: sumur_tua\n", 1)
+    h = nf.urai(t)
+    assert h.galat == [], [str(g) for g in h.galat]

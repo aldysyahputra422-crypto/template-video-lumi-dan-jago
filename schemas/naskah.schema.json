@@ -4,7 +4,7 @@
  "type": "object",
  "required": ["id", "judul", "sumber", "disetujui", "ketukan"],
  "properties": {
-  "id": {"type": "string"}, "judul": {"type": "string"}, "sumber": {"type": ["string", "null"]}, "disetujui": {"type": "boolean"},
+  "id": {"type": "string"}, "judul": {"type": "string"}, "aset": {"type": "array", "items": {"type": "object", "required": ["jenis", "nama", "deskripsi"]}}, "sumber": {"type": ["string", "null"]}, "disetujui": {"type": "boolean"},
   "ketukan": {"type": "array", "minItems": 3, "items": {"type": "object",
    "required": ["no", "baris", "ucap", "ucap_el", "tag", "latar", "aktor", "aksi", "ekspresi", "props", "teks", "data", "kartu", "ata", "kamera", "keluar", "fakta"],
    "properties": {
