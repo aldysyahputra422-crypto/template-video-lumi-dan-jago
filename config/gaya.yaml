@@ -48,7 +48,7 @@ palet:
 # Profil naskah (scripts/lint_naskah.py). ata: video Ata dengan KARTU trik. filosofi: formula mindwander (alegori atau kisah nyata →
 # putaran → nama konsep → pemetaan → penutup paralel), tanpa KARTU dan tanpa maskot. Skill olah-reels memakai profil filosofi.
 naskah:
-  profil: ata
+  profil: filosofi
   profil_isi:
     ata: {wajib_kartu: true, maskot: Ata}
     filosofi: {wajib_kartu: false, maskot: null}

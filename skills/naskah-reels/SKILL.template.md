@@ -10,6 +10,9 @@ Formula ini diturunkan dari analisis terukur 6 video akun edukasi animasi yang t
 Keluaranmu adalah **naskah format blok** yang langsung bisa diolah skill `olah-reels` menjadi video.
 
 ## Langkah
+Alur lengkap: **topik-reels → naskah-reels → olah-reels**. Bila pengguna memberi kartu topik (dari skill `topik-reels`), pakai kartu
+itu dan mulai dari langkah 5; bila belum ada topik, jalankan metode `topik-reels` dulu (atau langkah 1 sampai 4 di bawah).
+
 1. **Pilih konsep yang punya nama** (bias kognitif, sesat pikir, efek psikologi sosial, hukum ekonomi perilaku). Utamakan yang ada di buku
    sains populer atau makalah klasik dan sudah direplikasi. Hindari temuan yang gagal direplikasi (power pose, ego depletion, efek Mozart,
    eksperimen penjara Stanford sebagai bukti).
@@ -40,8 +43,20 @@ Pakai formula, struktur, tempo, dan frasa fungsional pendek ini. Cerita sumber m
 ulang dengan kalimatmu sendiri. Jangan menyalin naskah kreator lain kata per kata. Hindari menuduh orang sungguhan yang masih hidup;
 pemetaan ke politik dan agama berisiko untuk akun yang bekerja sama dengan merek.
 
-## Format keluaran (WAJIB, dibaca program)
-Jawab hanya dengan blok dari `##VIDEO` sampai `##AKHIR`:
+## Format keluaran (WAJIB: dua blok kode, tanpa teks lain)
+**Blok 1, naskah** (dibaca skill `olah-reels`): dari `##VIDEO` sampai `##AKHIR`.
+**Blok 2, lembar ElevenLabs** (disalin pengguna ke ElevenLabs apa adanya): setiap kalimat UCAP, berurutan, sebagai tag di baris
+sendiri lalu kalimatnya di baris berikut, satu baris kosong di antaranya. Isinya harus **sama persis** dengan UCAP di blok 1 (tanpa
+nomor, tanpa nama ketukan, tanpa isyarat visual). Contoh bentuk:
+```text
+[curious]
+Seorang raja membangun jembatan ke pulau kosong.
+
+[serious]
+Dan semakin jelas jembatan itu sia-sia, semakin cepat ia membangunnya.
+```
+
+Isi blok 1:
 ```text
 ##VIDEO <nama-video> | <judul>
 ##SUMBER <id sumber>
@@ -74,7 +89,12 @@ FAKTA: ya                             (ketukan yang memuat angka riset)
 {{CONTOH}}
 ```
 
+Lembar ElevenLabs untuk contoh di atas:
+```text
+{{CONTOH_LEMBAR}}
+```
+
 ## Periksa sebelum mengirim
 Semua slot DNA terisi pada posisinya (bandingkan dengan tabel A dan C di benchmark.md); kalimat pembalik ada; dua contoh pemetaan berpola
 "terlihat. Tapi tak terlihat."; penutup antitesis yang bisa berdiri sendiri; 175 sampai 215 kata; tidak ada kalimat cerita yang
-disalin dari video referensi; setiap kalimat bertag dan bervisual; aset baru dideklarasikan di ##ASET.
+disalin dari video referensi; setiap kalimat bertag dan bervisual; aset baru dideklarasikan di ##ASET; blok 2 (lembar ElevenLabs) ada dan sama persis dengan semua UCAP.

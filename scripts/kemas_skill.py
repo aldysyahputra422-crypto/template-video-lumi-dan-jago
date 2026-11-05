@@ -1,10 +1,11 @@
-"""Kemas dua skill portabel untuk diimpor ke Claude: naskah-reels (MD saja) dan olah-reels (MD + mesin produksi).
+"""Kemas tiga skill portabel untuk diimpor ke Claude: topik-reels dan naskah-reels (MD saja), olah-reels (MD + mesin produksi).
 
-python -m scripts.kemas_skill [folder_keluar]   (bawaan: dist/)  → naskah-reels.zip, olah-reels.zip
+python -m scripts.kemas_skill [folder_keluar]   (bawaan: dist/)  → topik-reels.zip, naskah-reels.zip, olah-reels.zip
 - naskah-reels: skills/naskah-reels/SKILL.template.md + kosakata terbaru + contoh naskah.
 - olah-reels: skills/olah-reels/SKILL.md + salinan mesin (scripts, render tanpa node_modules, config, schemas, katalog, aset audio,
-  docs gaya) dengan profil naskah filosofi dan nama akun pengganti. Tanpa video, transkrip pihak ketiga, atau maskot.
+  docs gaya) dengan profil naskah filosofi; watermark dari config/tokoh.yaml (akun). Tanpa video, transkrip pihak ketiga, atau maskot.
 """
+import re
 import shutil
 import sys
 import tempfile
@@ -12,6 +13,8 @@ import zipfile
 from pathlib import Path
 
 import yaml
+
+from scripts import lembar
 
 ROOT = Path(__file__).resolve().parents[1]
 SALIN = ["scripts", "render", "config", "schemas", "katalog/sfx.yaml", "aset/audio", "requirements.txt",
@@ -39,6 +42,11 @@ def _kosakata() -> str:
     ])
 
 
+def lembar_dari_teks(naskah: str) -> str:
+    """Lembar ElevenLabs dari teks naskah blok: '[tag]\\nkalimat' per UCAP, dipisah baris kosong (format sama dengan scripts.lembar)."""
+    return "\n\n".join(lembar._baris(m) for m in re.findall(r"^UCAP:\s*(.+)$", naskah, re.M))
+
+
 def _zip(folder: Path, keluar: Path) -> Path:
     with zipfile.ZipFile(keluar, "w", zipfile.ZIP_DEFLATED) as z:
         for p in sorted(folder.rglob("*")):
@@ -56,10 +64,16 @@ def kemas(keluar: Path) -> dict:
         n = tmp / "naskah-reels"
         n.mkdir()
         md = (ROOT / "skills/naskah-reels/SKILL.template.md").read_text(encoding="utf-8")
-        md = md.replace("{{KOSAKATA}}", _kosakata()).replace("{{CONTOH}}", (ROOT / "skills/naskah-reels/contoh-sunk-cost.txt").read_text(encoding="utf-8").strip())
+        contoh = (ROOT / "skills/naskah-reels/contoh-sunk-cost.txt").read_text(encoding="utf-8").strip()
+        md = md.replace("{{KOSAKATA}}", _kosakata()).replace("{{CONTOH}}", contoh).replace("{{CONTOH_LEMBAR}}", lembar_dari_teks(contoh))
         (n / "SKILL.md").write_text(md, encoding="utf-8")
         shutil.copy(ROOT / "skills/naskah-reels/benchmark.md", n / "benchmark.md")
         hasil["naskah-reels"] = _zip(n, keluar / "naskah-reels.zip")
+
+        tp = tmp / "topik-reels"
+        tp.mkdir()
+        shutil.copy(ROOT / "skills/topik-reels/SKILL.md", tp / "SKILL.md")
+        hasil["topik-reels"] = _zip(tp, keluar / "topik-reels.zip")
 
         o = tmp / "olah-reels"
         m = o / "mesin"
@@ -74,8 +88,7 @@ def kemas(keluar: Path) -> dict:
         g["naskah"]["profil_isi"] = {"filosofi": g["naskah"]["profil_isi"]["filosofi"]}
         (m / "config/gaya.yaml").write_text(yaml.safe_dump(g, allow_unicode=True, sort_keys=False), encoding="utf-8")
         akun = yaml.safe_load((m / "config/tokoh.yaml").read_text(encoding="utf-8"))["akun"]
-        akun["nama_akun"] = "@akunmu"
-        (m / "config/tokoh.yaml").write_text("# Hanya identitas akun: watermark dan tagar caption. Ganti nama_akun dengan akunmu.\n"
+        (m / "config/tokoh.yaml").write_text("# Hanya identitas akun: watermark dan tagar caption.\n"
                                              + yaml.safe_dump({"akun": akun}, allow_unicode=True, sort_keys=False), encoding="utf-8")
         tag = m / "config/tag_ekspresi.yaml"
         tag.write_text(tag.read_text(encoding="utf-8").replace("suara Ata", "suara narator"), encoding="utf-8")

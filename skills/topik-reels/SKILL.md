@@ -1,0 +1,92 @@
+---
+name: topik-reels
+description: Cari dan pilih topik reels "cerita yang bikin mikir" dengan metode yang sama dengan akun referensi - konsep berpikir yang punya nama, dibungkus alegori atau kisah nyata, dengan putaran gelap dan pemetaan ke hidup penonton. Pakai saat diminta ide topik, bank topik mingguan, atau sebelum skill naskah-reels.
+---
+
+# Cari topik reels
+
+Langkah pertama dari alur **topik-reels → naskah-reels → olah-reels**. Keluarannya adalah kartu topik yang langsung bisa diberikan ke
+skill `naskah-reels`.
+
+## Metode (diturunkan dari 6 video referensi yang sukses)
+Keenamnya berangkat dari **satu konsep berpikir yang punya nama** (salience bias, survivorship bias, appeal to authority, spotlight
+effect, pecah belah, ilusi "aku aman"). Konsep itu tidak diajarkan langsung. Ia dibungkus **kendaraan cerita**, dan penonton baru
+diberi namanya sesudah merasa ikut tertipu. Empat dari enam memakai alegori kerajaan atau hewan; dua memakai kisah nyata yang
+mengejutkan (perang dunia, eksperimen 1970-an).
+
+### Langkah
+1. **Kumpulkan 10 sampai 15 kandidat konsep** dari bank di bawah, dari buku sains populer (Thinking Fast and Slow, Predictably
+   Irrational, The Art of Thinking Clearly, Nudge, Influence), atau dari daftar bias kognitif dan sesat pikir. Bila ada alat pencarian
+   atau konektor riset (Consensus, Elicit, Semantic Scholar), cari makalah klasik dan meta-analisisnya.
+2. **Saring status ilmiah**: pakai hanya yang direplikasi atau didukung meta-analisis. Yang diperdebatkan boleh dipakai sebagai
+   "kebenaran gelap" tanpa istilah ilmiah dan tanpa angka (varian kebenaran gelap), atau dibuang. Jangan pakai yang gagal direplikasi
+   sebagai fakta (power pose, ego depletion, efek Mozart, Stanford Prison sebagai bukti, Zeigarnik sebagai hukum).
+3. **Untuk tiap konsep, cari dua kendaraan cerita**:
+   - alegori: kerajaan, desa, pasar, hewan (sumur, hutan, kawanan, sarang), benda (jembatan, lumbung, menara); atau
+   - kisah nyata: eksperimen terkenal, peristiwa sejarah, penemuan. Kisah nyata wajib benar: siapa, kapan, angka.
+   Cerita harus bisa digambar: tokoh, tempat, dan satu benda yang menjadi simbol.
+4. **Tulis putaran dalam satu kalimat** ("Dan bagian paling ngeri? ..."). Bila putarannya tidak membuat penonton merasa ikut tertipu,
+   ganti kendaraan.
+5. **Tulis dua contoh pemetaan**: satu umum, satu yang sedikit tidak nyaman (uang, kuliah, kerja, keluarga, media sosial, takut tampil,
+   orang berkuasa). Bila penonton tidak bisa mengenali dirinya dalam 3 detik, buang konsepnya.
+6. **Beri skor** (tabel di bawah), urutkan, serahkan 3 teratas sebagai kartu topik.
+
+### Skor (0 sampai 2 per kriteria, maksimal 12)
+| kriteria | 2 | 1 | 0 |
+|---|---|---|---|
+| universal | hampir semua orang pernah mengalaminya | sebagian kelompok | khusus profesi |
+| ikut tertipu | penonton akan melakukan kesalahan yang sama dengan tokoh | penonton hanya menonton orang lain salah | tidak ada putaran |
+| bisa digambar | satu simbol kuat (beras, jembatan, bulu, pesawat) | bisa tapi abstrak | hanya bisa dijelaskan |
+| kebenaran gelap | ironis, sedikit menyakitkan, terasa seperti kearifan | menarik saja | terasa seperti tips |
+| bukti | direplikasi atau meta-analisis, atau peristiwa terdokumentasi | ada tapi diperdebatkan (pakai tanpa angka) | lemah atau gagal replikasi |
+| aman | tanpa politik praktis, agama, tuduhan ke orang hidup | perlu dibungkus alegori | berisiko |
+
+Ambil yang skornya ≥9. Pemetaan boleh menyentuh pajak, kekuasaan, atau media, tetapi lewat alegori dan tanpa menunjuk tokoh atau
+partai sungguhan.
+
+## Bank konsep awal (verifikasi lagi sebelum menulis angka)
+Sudah dipakai akun referensi, **hindari** supaya tidak terlihat meniru: salience bias, survivorship bias, appeal to authority, spotlight
+effect, pecah belah (sumur tikus), ilusi "kamu aman" (ular di sumur).
+
+| konsep | status | ide kendaraan |
+|---|---|---|
+| sunk cost fallacy (jebakan biaya hangus) | kuat untuk keputusan sehari-hari (Arkes dan Blumer 1985); detail diperdebatkan | raja membangun jembatan ke pulau kosong |
+| anchoring (jangkar angka) | kuat, direplikasi luas (Tversky dan Kahneman 1974) | pedagang pasar yang selalu menyebut harga pertama setinggi langit |
+| loss aversion (takut rugi) | kuat secara umum; besaran efek diperdebatkan | petani yang tak mau menjual sapi sakit |
+| availability heuristic | kuat (Tversky dan Kahneman 1973) | desa yang takut hiu, padahal yang membunuh kelapa jatuh (pakai tanpa angka bila tak terverifikasi) |
+| confirmation bias | kuat | peramal kerajaan yang hanya mencatat ramalan yang benar |
+| planning fallacy | kuat (Buehler dkk. 1994) | menara yang "selesai bulan depan" selama sepuluh tahun |
+| hindsight bias (sudah kuduga) | kuat (Fischhoff 1975) | para tetua yang semuanya "sudah tahu" setelah banjir |
+| fundamental attribution error | kuat, besaran beda antarbudaya | pengembara yang dikira malas, ternyata kakinya patah |
+| halo effect | kuat (Nisbett dan Wilson 1977) | pangeran tampan yang ucapannya selalu dianggap bijak |
+| framing effect | kuat (Tversky dan Kahneman 1981) | dua tabib menawarkan obat yang sama dengan kata berbeda |
+| base rate neglect | kuat | penjaga gerbang yang mencurigai semua pendatang berjubah hitam |
+| gambler's fallacy | kuat | nelayan yang yakin hari ini pasti dapat ikan karena kemarin kosong |
+| regression to the mean | kuat (statistika) | pelatih yang mengira teriakan membuat pemanah membaik |
+| Goodhart's law (target merusak ukuran) | prinsip ekonomi, bukan eksperimen | kerajaan yang membayar per ekor ular mati |
+| endowment effect | ada, besarannya diperdebatkan | anak yang menolak menukar batu biasa miliknya |
+| IKEA effect | direplikasi (Norton dkk. 2012) | tukang yang menganggap kursi reyotnya paling indah |
+| mere exposure effect | kuat (Zajonc 1968, meta-analisis) | lagu yang dibenci desa lalu jadi lagu kebanggaan |
+| bystander effect | ada; meta-analisis menunjukkan melemah dalam bahaya nyata | rumah terbakar di tengah kerumunan penonton |
+| Matthew effect (yang kaya makin kaya) | terdokumentasi (Merton 1968) | dua benih di ladang yang sama |
+| tragedy of the commons | model teoretis; Ostrom menunjukkan bisa dihindari | padang rumput desa yang habis |
+| Streisand effect | fenomena terdokumentasi, bukan eksperimen | raja yang melarang sebuah lagu |
+| Peltzman effect (rasa aman membuat ceroboh) | diperdebatkan, pakai tanpa angka | ksatria berbaju zirah yang makin nekat |
+| Parkinson's law | pengamatan, bukan eksperimen | pekerjaan yang membengkak sesuai waktu yang diberikan |
+| Semmelweis reflex | peristiwa sejarah terdokumentasi | dokter yang ditertawakan karena menyuruh cuci tangan |
+
+## Keluaran: kartu topik (satu per topik, 3 teratas)
+```text
+TOPIK: <judul kerja, maks 8 kata>
+KONSEP: <istilah> (<terjemahan>) | status: <kuat/diperdebatkan> | sumber: <Penulis Tahun, judul singkat>
+VARIAN: penuh | kebenaran gelap | kisah nyata
+KENDARAAN: <alegori atau kisah nyata, 1 kalimat; simbol utama>
+HOOK: <kalimat pertama 9 sampai 15 kata, situasi + hasil berlawanan>
+PUTARAN: <1 kalimat>
+PEMBALIK: <X tidak sedang A. X hanya B.>
+PEMETAAN: <contoh umum> / <contoh tidak nyaman>
+PENUTUP: <draf antitesis 2 kalimat>
+SKOR: <n>/12 (universal, ikut tertipu, digambar, gelap, bukti, aman)
+PERLU DICEK: <fakta atau angka yang harus diverifikasi sebelum naskah>
+```
+Lalu teruskan kartu yang dipilih pengguna ke skill `naskah-reels`.

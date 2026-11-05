@@ -1,4 +1,4 @@
-"""Lembar tempel ElevenLabs: SATU suara (Ata), semua UCAP berurutan dengan tag audio, siap salin.
+"""Lembar tempel ElevenLabs: SATU suara narator, semua UCAP berurutan dengan tag audio, siap salin.
 
 python -m scripts.lembar <folder>  → <folder>/lembar-elevenlabs.md
 """
@@ -24,7 +24,7 @@ def tulis(folder: Path) -> Path:
     dipakai = sorted({t for k in n["ketukan"] for t in k["tag"]})
     belum = [(t, kamus[t]) for t in dipakai if kamus[t]["terverifikasi"] == "belum"]
     b = [f"# Lembar ElevenLabs {n['id']}: {n['judul']}", "",
-         "Satu kali generate dengan voice Ata (model Eleven v3). Salin seluruh blok di bawah apa adanya, termasuk baris kosong",
+         "Satu kali generate dengan satu voice narator (model Eleven v3). Salin seluruh blok di bawah apa adanya, termasuk baris kosong",
          f"(versi teks polos tanpa format: `{folder.name}/lembar-elevenlabs.txt`).",
          f"Unduh hasilnya dan simpan sebagai `{folder.name}/suara.mp3`, lalu jalankan `/olah {folder.name}` lagi.",
          "Tag dalam kurung siku adalah arahan suara, bukan teks ucapan. Visual tidak ada di sini (diurus mesin).", "",

@@ -44,7 +44,11 @@ def test_data_harus_cocok_kartu():
     assert any("65" in g["pesan"] for g in r["galat"])
 
 
-def test_wajib_kartu_simpan():
+PROFIL_ATA = {"wajib_kartu": True, "maskot": "Ata"}
+
+
+def test_wajib_kartu_simpan(monkeypatch):
+    monkeypatch.setattr(ln, "_profil", lambda: PROFIL_ATA)
     t = TEKS.replace("KARTU: Triknya | Tulis tebakanmu @tulis | Cek tugas mirip, beneran selesai berapa hari @cek | Pakai angka yang lebih besar (1,6x) @pakai\n", "")
     assert any("KARTU" in g["pesan"] for g in _lint(t)["galat"])
 
@@ -70,7 +74,8 @@ def test_sumber_wajib_bila_ada_fakta():
     assert any("SUMBER" in g["pesan"] for g in _lint(t)["galat"])
 
 
-def test_peringatan_callback_dan_pola_klise():
+def test_peringatan_callback_dan_pola_klise(monkeypatch):
+    monkeypatch.setattr(ln, "_profil", lambda: PROFIL_ATA)
     t = TEKS.replace("UCAP: [laughs] Biar file-mu cukup satu nama, final.", "UCAP: [laughs] Rencana bukan harapan, tapi pengalaman.")
     t = t.replace("TEKS: final.docx @final\nPROPS: centang atas muncul @final\nEKSPRESI: kamu bangga @final", "EKSPRESI: kamu bangga @rencana")
     r = _lint(t)
@@ -155,9 +160,10 @@ def test_profil_filosofi_tanpa_kartu_dan_tanpa_ata(monkeypatch):
     """Profil 'filosofi' (formula mindwander): tidak wajib KARTU trik dan tidak meminta Ata."""
     t = re.sub(r"^KARTU:.*\n", "", TEKS, flags=re.M)
     t = re.sub(r"^ATA:.*\n", "", t, flags=re.M)
-    assert any("KARTU" in g["pesan"] for g in _lint(t)["galat"])                    # profil ata (bawaan)
-    monkeypatch.setattr(ln, "_profil", lambda: {"wajib_kartu": False, "maskot": None})
-    r = _lint(t)
+    monkeypatch.setattr(ln, "_profil", lambda: PROFIL_ATA)
+    assert any("KARTU" in g["pesan"] for g in _lint(t)["galat"])                    # profil ata (lama)
+    monkeypatch.undo()
+    r = _lint(t)                                                                     # profil filosofi (bawaan sekarang)
     assert not any("KARTU" in g["pesan"] for g in r["galat"]) and not any("Ata" in p["pesan"] for p in r["peringatan"])
 
 

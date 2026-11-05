@@ -2,6 +2,12 @@
 
 Bahasa kerja: Indonesia. Merek: Sobat Ambis (mentoring lomba dan les privat, https://sobatambis.netlify.app/); maskotnya **Ata, panda merah** (profil: `docs/profil-maskot.md`, terstruktur: `config/tokoh.yaml`, pose: `aset/maskot/panda/pose/`). Duo naga Lumi dan Jago diarsipkan (`docs/arsip/`). Repo ini mandiri dari repo `sobatambis-marketing`: kode dari sana hanya disalin bila dibutuhkan dan digeneralkan, repo itu tidak diubah.
 
+**Arah sejak 2026-11-05 (keputusan pemilik):** gaya dan DNA naskah mengikuti akun referensi mindwander 1:1 (struktur, tempo, frasa formula,
+editing terukur), dengan isi dan tokoh sendiri. Maskot Ata **hanya untuk foto profil**, tidak muncul di video; watermark tetap `@ata.ngulik`.
+Profil lint bawaan `filosofi` (`config/gaya.yaml`). Alur: skill `topik-reels` → `naskah-reels` (blok naskah + lembar ElevenLabs siap salin)
+→ `olah-reels`; sumber di `skills/`, dikemas `python -m scripts.kemas_skill` (DNA per kalimat: `skills/naskah-reels/benchmark.md`).
+Aturan Ata di bawah hanya berlaku bila pemilik memakai profil `ata` lagi.
+
 ## Aturan dari pemilik
 - **Akun IG baru = murni personal branding maskot, TANPA CTA**: tidak ada ajakan daftar, harga, klaim prestasi, kartu CTA, atau "komen kata kunci". Satu-satunya jembatan ke merek adalah post Collab dengan @mentoringsobatambis. Karena post Collab tampil juga di profil resmi, topik harus aman untuk merek: tanpa politik, agama, tuduhan, atau orang sungguhan.
 - Aturan keras Ata (`config/tokoh.yaml`): hanya meledek situasi, berhenti bercanda bila topiknya menyangkut orang yang down, trik hanya yang legal, klaim riset wajib bersumber dan dicek.
