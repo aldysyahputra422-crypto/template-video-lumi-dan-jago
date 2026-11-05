@@ -173,3 +173,19 @@ def test_aset_boleh_di_akhir_naskah():
     t = TEKS.replace("##AKHIR", ASET + "##AKHIR").replace("LATAR: kamar\n", "LATAR: sumur_tua\n", 1)
     h = nf.urai(t)
     assert h.galat == [], [str(g) for g in h.galat]
+
+
+def test_profil_tanpa_maskot_abaikan_ata_dan_kartu(monkeypatch):
+    """Profil filosofi: baris ATA dan KARTU dari naskah era lama dilewati dengan catatan, bukan ditolak."""
+    monkeypatch.setattr(nf, "profil", lambda: {"wajib_kartu": False, "maskot": None, "kartu": False})
+    monkeypatch.setattr(nf, "pose_ata", lambda: {})
+    h = nf.urai(TEKS)
+    assert not h.galat, h.galat
+    assert all(k["ata"] is None and k["kartu"] is None for k in h.naskah["ketukan"])
+    assert any("ATA" in c for c in h.catatan) and any("KARTU" in c for c in h.catatan)
+
+
+def test_profil_ata_tetap_periksa_pose(monkeypatch):
+    monkeypatch.setattr(nf, "profil", lambda: {"wajib_kartu": True, "maskot": "Ata"})
+    monkeypatch.setattr(nf, "pose_ata", lambda: {})
+    assert any("pose ata" in g.pesan for g in nf.urai(TEKS).galat)

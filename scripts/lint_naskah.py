@@ -9,6 +9,7 @@ from pathlib import Path
 
 import yaml
 
+from scripts import naskah_format as _nf
 from scripts.naskah_format import token
 
 KATA_PER_DETIK = 2.6
@@ -58,8 +59,7 @@ def _kata_ke_angka(kata: list[str]) -> float:
 
 def _profil() -> dict:
     """Profil naskah aktif (config/gaya.yaml → naskah): 'ata' (trik di KARTU, maskot Ata) atau 'filosofi' (formula mindwander)."""
-    n = _gaya().get("naskah", {})
-    return n.get("profil_isi", {}).get(n.get("profil", "ata"), {"wajib_kartu": True, "maskot": "Ata"})
+    return _nf.profil()
 
 
 def _gaya() -> dict:

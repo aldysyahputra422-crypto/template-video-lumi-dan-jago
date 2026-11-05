@@ -27,6 +27,8 @@ def maju(folder: Path, transkrip_fn=None, fps: int = 30) -> dict:
         kode, keluar, _ = naskah_format.proses(f)
         if kode == 7:
             return {"kode": 6, "berhenti_di": "tempelan", "instruksi": "tempelan.txt berubah sesudah naskah disetujui. Kembalikan tempelan, atau set disetujui: false dulu lalu jalankan dengan --timpa."}
+        if kode == 0:   # baris era lama yang dilewati profil aktif (ATA, KARTU) ditunjukkan di Approval 1
+            (f / "catatan-naskah.txt").write_text("\n".join(x for x in keluar if "dilewati" in x), encoding="utf-8")
         if kode != 0:
             return {"kode": 6, "berhenti_di": "koreksi", "galat": keluar[:12], "instruksi": f"Tempel isi {f}/koreksi-chatgpt.md ke ChatGPT, simpan jawabannya sebagai tempelan.txt, lalu /olah lagi."}
     n = json.loads(naskah.read_text(encoding="utf-8"))
@@ -49,6 +51,7 @@ def maju(folder: Path, transkrip_fn=None, fps: int = 30) -> dict:
     lembar.tulis(f)
     if not n.get("disetujui"):
         return {"kode": 4, "berhenti_di": "approval_1", "perkiraan_durasi": lint["perkiraan_durasi"], "peringatan": [p["pesan"] for p in lint["peringatan"]],
+                "dilewati": [x for x in ((f / "catatan-naskah.txt").read_text(encoding="utf-8").splitlines() if (f / "catatan-naskah.txt").exists() else []) if x],
                 "instruksi": f"Baca {f}/naskah.json. Bila setuju, ubah \"disetujui\" menjadi true, lalu generate {f}/lembar-elevenlabs.md di ElevenLabs dan simpan sebagai suara.mp3."}
     if n.get("aset"):   # isi bebas per video: aset baru digambar Claude di aset.js sesudah naskah disetujui
         ca = cek_aset.periksa(f, lembar=False)

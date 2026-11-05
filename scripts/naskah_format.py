@@ -27,6 +27,12 @@ def kosakata() -> dict:
 
 
 @functools.lru_cache(maxsize=None)
+def profil() -> dict:
+    """Profil naskah aktif (config/gaya.yaml → naskah): 'filosofi' (bawaan, tanpa maskot dan kartu) atau 'ata' (era lama)."""
+    n = yaml.safe_load((ROOT / "config/gaya.yaml").read_text(encoding="utf-8")).get("naskah", {})
+    return n.get("profil_isi", {}).get(n.get("profil", "ata"), {"wajib_kartu": True, "maskot": "Ata"})
+
+
 def pose_ata() -> list[str]:
     return yaml.safe_load((ROOT / "config/tokoh.yaml").read_text(encoding="utf-8")).get("tokoh", {}).get("ata", {}).get("pose", {})
 
@@ -45,6 +51,7 @@ class Galat:
 class Hasil:
     naskah: dict | None
     galat: list[Galat] = field(default_factory=list)
+    catatan: list[str] = field(default_factory=list)
 
 
 def token(teks: str) -> list[str]:
@@ -63,6 +70,8 @@ class _Urai:
         self.mentah = teks.splitlines()
         self.galat: list[Galat] = []
         self.k = kosakata()
+        self.profil = profil()
+        self.catatan: list[str] = []
         self.meta = {"id": None, "judul": None, "sumber": None}
         self.ketukan: list[dict] = []
         self.aset: list[dict] = []
@@ -262,6 +271,10 @@ class _Urai:
                         continue
                     kt["data"].append({"label": mm.group(1).strip().replace("_", " "), "nilai": float(mm.group(2).replace(",", ".")), "satuan": mm.group(3).strip(), "kata": kata})
                     kt["fakta"] = True
+            elif lab == "ATA" and not self.profil.get("maskot"):
+                self.catatan.append(f"baris {no}: ATA dilewati (profil tanpa maskot; maskot tidak tampil di video)")
+            elif lab == "KARTU" and self.profil.get("kartu", True) is False:
+                self.catatan.append(f"baris {no}: KARTU dilewati (profil ini tanpa kartu trik, sesuai gaya referensi)")
             elif lab == "KARTU":
                 bag = [x.strip() for x in isi.split("|")]
                 if len(bag) < 2:
@@ -336,8 +349,8 @@ def urai(teks: str) -> Hasil:
     u.baca()
     u.galat.sort(key=lambda g: (g.baris is None, g.baris or 0))
     if u.galat:
-        return Hasil(None, u.galat)
-    return Hasil({"id": u.meta["id"], "judul": u.meta["judul"], "sumber": u.meta["sumber"], "disetujui": False, "aset": u.aset, "ketukan": u.ketukan})
+        return Hasil(None, u.galat, u.catatan)
+    return Hasil({"id": u.meta["id"], "judul": u.meta["judul"], "sumber": u.meta["sumber"], "disetujui": False, "aset": u.aset, "ketukan": u.ketukan}, catatan=u.catatan)
 
 
 def pesan_koreksi(galat: list) -> str:
@@ -367,7 +380,7 @@ def proses(folder: Path, sumber: Path | None = None, timpa: bool = False) -> tup
         return 1, [str(g) for g in h.galat], h
     koreksi.unlink(missing_ok=True)
     tujuan.write_text(json.dumps(h.naskah, ensure_ascii=False, indent=1), encoding="utf-8")
-    return 0, [f"naskah.json dibuat ({len(h.naskah['ketukan'])} ketukan)"], h
+    return 0, [f"naskah.json dibuat ({len(h.naskah['ketukan'])} ketukan)"] + h.catatan, h
 
 
 def main(argv: list[str]) -> int:
