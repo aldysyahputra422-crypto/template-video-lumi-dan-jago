@@ -1,0 +1,128 @@
+"""Buat prompt-chatgpt.md: prompt agar ChatGPT menulis naskah Ata dalam format blok yang bisa diproses mesin.
+
+python -m scripts.prompt_naskah <folder> [--topik "teks"]
+Butuh <folder>/kartu-riset.yaml (angka nyata hanya dari sini). Kode 3 bila kartu belum ada.
+Semua daftar dibaca dari config (tidak ditulis ulang). Tanpa LLM.
+"""
+import sys
+from pathlib import Path
+
+import yaml
+
+ROOT = Path(__file__).resolve().parents[1]
+CONTOH = ROOT / "contoh/ep01-planning-fallacy/tempelan.txt"
+
+
+def _y(p: Path) -> dict:
+    return yaml.safe_load(p.read_text(encoding="utf-8"))
+
+
+def buat(folder: Path, topik: str = "") -> str:
+    folder = Path(folder)
+    k, t, tag = _y(ROOT / "config/kosakata.yaml"), _y(ROOT / "config/tokoh.yaml"), _y(ROOT / "config/tag_ekspresi.yaml")
+    riset = (folder / "kartu-riset.yaml").read_text(encoding="utf-8")
+    ata = t["tokoh"]["ata"]
+    contoh = CONTOH.read_text(encoding="utf-8")
+    contoh = contoh[contoh.index("##VIDEO"):]
+    daftar = lambda d: "\n".join(f"- `{n}`: {v}" for n, v in d.items())
+    tags = "\n".join(f"- [{n}] ({'emosi ' + v['emosi'] if v['jenis'] == 'suara' else 'pengubah'}){'' if v['terverifikasi'] == 'dokumentasi' else ' belum terverifikasi'}" for n, v in tag["tag"].items())
+    return f"""# Tugas: tulis naskah video pendek "{folder.name}" untuk maskot Ata
+
+Kamu penulis naskah video vertikal 40 sampai 55 detik untuk akun personal branding maskot. Penontonnya pelajar dan mahasiswa Indonesia.
+Tujuan: video yang DISIMPAN penonton karena berguna, tapi tidak membosankan. Bahasa sehari-hari, kalimat pendek.
+{f"{chr(10)}TOPIK DARI PEMILIK: {topik}{chr(10)}" if topik else ""}
+## 1. Tokoh: Ata
+{t['lore']['ata']}. Ciri: {', '.join(ata['ciri_wajib'])}.
+Kepribadian: {', '.join(ata['kepribadian'])}. Gaya bicara: {ata['gaya_bicara']}.
+Kalimat khas: {' / '.join(ata['kalimat_khas'])}
+Aturan keras:
+{chr(10).join('- ' + a for a in ata['aturan_keras'])}
+Ata adalah narator (satu suara). Di layar, Ata hanya muncul di momen tertentu (hook, momen penamaan, reaksi angka, trik, penutup); sisanya aktor stickman.
+
+## 2. Bahan riset (SATU-SATUNYA sumber angka nyata)
+```yaml
+{riset.strip()}
+```
+Angka nyata di naskah HARUS dari kartu ini (boleh dibulatkan wajar, mis. 33,9 jadi 34). Jangan menambah angka atau klaim riset lain.
+
+## 3. Standar naskah (diperiksa program; naskah yang melanggar ditolak)
+1. Hook di KETUKAN 01, maksimal 10 kata, menyapa "kamu" atau membalik dugaan. Premis sudah lengkap di kalimat pertama, tanpa salam.
+2. Cerita orang kedua yang dekat dengan pelajar, minimal dua detail spesifik yang lucu, dan MENINGKAT (bukan daftar datar). Untuk konsep abstrak boleh alegori singkat.
+3. Momen penamaan: sebut nama konsep sesudah cerita, lalu definisi satu kalimat.
+4. Angka nyata dari kartu riset dengan kontras jelas. Tandai ketukan yang memuat angka riset dengan `FAKTA: ya` (ketukan ber-DATA otomatis fakta).
+5. Alat yang disimpan: tepat satu `KARTU` berisi maksimal 3 langkah konkret yang bisa dipakai hari ini.
+6. Penutup = callback ke lelucon atau hook awal, bukan moral umum. Pola "bukan X, tapi Y" maksimal sekali.
+7. Durasi 40 sampai 55 detik (±2,6 kata per detik). Satu ketukan = satu kalimat pendek (maksimal 16 kata) supaya visual berganti tiap 2 sampai 5 detik.
+Tanpa tanda pisah panjang. Tanpa kata kasar. Tanpa politik, agama, tuduhan, atau orang sungguhan. Tanpa ajakan daftar, harga, atau "follow".
+
+## 4. Format keluaran (blok bertanda, BUKAN JSON, BUKAN tabel)
+Setiap ketukan punya UCAP (yang diucapkan Ata) dan isyarat visual. Visual memakai aktor stickman di latar gelap sesuai tempat cerita.
+Isyarat bisa dipicu tepat di satu kata dengan `@kata` (kata itu harus ada di UCAP ketukan yang sama), supaya setiap kata penting punya visualnya.
+
+```
+##VIDEO <id> | <judul>
+##SUMBER <id kartu riset>
+##KETUKAN 01
+UCAP: [tag] kalimat yang diucapkan
+LATAR: <latar>                        (wajib di ketukan pertama; ganti bila tempat berubah, aktor lama hilang)
+AKTOR: id=peran posisi ekspresi; id2=peran posisi ekspresi
+AKSI: id aksi [ke posisi] [@kata]; ...
+EKSPRESI: id ekspresi [@kata]; ...
+PROPS: benda tempat [gerak] [@kata]; ...   (tempat: kiri|tengah|kanan|atas|jauh_kiri|jauh_kanan|tangan:id|kepala:id)
+TEKS: tulisan besar maks 32 huruf [@kata]
+DATA: label=angka satuan [@kata]; ...      (grafik batang; angka dari kartu riset)
+KARTU: judul | langkah 1 [@kata] | langkah 2 [@kata] | langkah 3 [@kata]
+ATA: pose [kiri|tengah|kanan] [intip|pop|sapuan]
+KAMERA: lebar | dekat id | dorong | goyang
+KELUAR: id
+FAKTA: ya
+##KETUKAN 02
+...
+##AKHIR
+```
+
+### Kosakata (di luar daftar ditolak program)
+LATAR:
+{daftar(k['latar'])}
+PERAN aktor:
+{daftar(k['peran'])}
+EKSPRESI: {', '.join(k['ekspresi'])}
+AKSI:
+{daftar(k['aksi'])}
+POSISI: {', '.join(k['posisi'])}
+PROPS: {', '.join(k['props'])}
+GERAK PROPS: {', '.join(k['gerak_props'])}
+POSE ATA: {', '.join(ata['pose'])} (pemetaan: {', '.join(f'{m}={p}' for m, p in ata['pemetaan_momen'].items())})
+TAG SUARA (di depan kalimat UCAP, boleh lebih dari satu: [tense, slowly]):
+{tags}
+
+### Contoh naskah lengkap yang lolos standar
+```text
+{contoh.strip()}
+```
+
+## 5. Sebelum mengirim, periksa sendiri
+Hook maksimal 10 kata; setiap @kata ada di UCAP-nya; setiap ketukan punya minimal satu isyarat visual; angka riset sama dengan kartu;
+satu KARTU maksimal 3 langkah; penutup callback; semua nama dari kosakata. Kirim hanya blok dari ##VIDEO sampai ##AKHIR.
+Bila nanti kuberi daftar galat, perbaiki hanya baris yang disebut dan kirim ulang seluruh naskah.
+"""
+
+
+def main(argv: list[str]) -> int:
+    pos = [a for i, a in enumerate(argv) if not a.startswith("--") and (i == 0 or argv[i - 1] != "--topik")]
+    if not pos:
+        print(__doc__)
+        return 2
+    folder = Path(pos[0])
+    if not (folder / "kartu-riset.yaml").exists():
+        print(f"{folder}/kartu-riset.yaml belum ada: riset dan verifikasi makalah dulu (lihat /naskah)")
+        return 3
+    topik = argv[argv.index("--topik") + 1] if "--topik" in argv else ""
+    p = folder / "prompt-chatgpt.md"
+    p.write_text(buat(folder, topik), encoding="utf-8")
+    print(p)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
