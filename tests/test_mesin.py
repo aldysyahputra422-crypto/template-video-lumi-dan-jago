@@ -30,3 +30,10 @@ def test_posisi_dan_pose_ata():
         assert f"{p}:" in MESIN
     pose = yaml.safe_load((ROOT / "config/tokoh.yaml").read_text(encoding="utf-8"))["tokoh"]["ata"]["pose"]
     assert all(f"'{p}'" in MESIN for p in pose)
+
+
+def test_aktor_beda_peran_sama_dapat_warna_beda():
+    """Dua 'pelajar' (mis. Dinda dan Bima) harus bisa dibedakan penonton: varian warna per aktor, urut kemunculan."""
+    assert "const VARIAN_BAJU" in MESIN and "warnaAktor(" in MESIN
+    a = MESIN.index("const VARIAN_BAJU")
+    assert MESIN[a:MESIN.index("\n", a)].count("#") >= 4

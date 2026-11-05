@@ -119,7 +119,7 @@ const AKSI = {
 };
 
 function stickman(o) {
-  const P = PERAN[o.peran] || PERAN.pelajar, s = o.s * (P.skala || 1), q = o.pose;
+  const P0 = PERAN[o.peran] || PERAN.pelajar, P = o.baju ? {...P0, baju: o.baju} : P0, s = o.s * (P.skala || 1), q = o.pose;
   const r = 44 * s, BW = 64 * s, BH = 90 * s, l1 = 46 * s, l2 = 44 * s, k1 = 50 * s, k2 = 46 * s, tl = 20 * s, tk = 22 * s;
   const kulit = P.kepala === 'kulit' ? C.kulit : C.kepala;
   const vec = (sisi, deg) => [sisi * Math.sin(deg * Math.PI / 180), Math.cos(deg * Math.PI / 180)];
@@ -279,6 +279,10 @@ await document.fonts.ready;
 
 // ---------- pengolah waktu ----------
 const KT = TL.ketukan;
+// Aktor berbeda dengan peran sama dibedakan warna bajunya (urut kemunculan; aktor pertama memakai warna peran).
+const VARIAN_BAJU = ['#D9653D', '#3DAA7A', '#9A5BD9', '#D9B13D', '#C94A7A'];
+const URUT = {}; for (const k of KT) for (const [id, p] of Object.entries(k.pemeran)) { URUT[p.peran] ??= []; if (!URUT[p.peran].includes(id)) URUT[p.peran].push(id); }
+const warnaAktor = (id, peran) => { const i = (URUT[peran] || []).indexOf(id); return i > 0 ? VARIAN_BAJU[(i - 1) % VARIAN_BAJU.length] : null; };
 const ketukanDi = t => { let k = KT[0]; for (const x of KT) if (t >= x.mulai) k = x; return k; };
 const idx = k => KT.indexOf(k);
 function kamera(k, t, posAktor) {
@@ -323,7 +327,7 @@ function bangunDunia(k, t, i) {
   const posAktor = {}, gambarAktor = [], baru = sebelum && sebelum.latar === k.latar ? Object.keys(sebelum.pemeran) : [];
   for (const id of Object.keys(k.pemeran)) {
     const x = posisiAktor(k, id, t), muncul = baru.includes(id) ? 1 : pantul(lokal / .3);
-    const st = stickman({x, y: G, s: 1.32, pose: poseAktor(k, id, t), peran: k.pemeran[id].peran, ekspresi: ekspresiAktor(k, id, t), muncul});
+    const st = stickman({x, y: G, s: 1.32, pose: poseAktor(k, id, t), peran: k.pemeran[id].peran, baju: warnaAktor(id, k.pemeran[id].peran), ekspresi: ekspresiAktor(k, id, t), muncul});
     posAktor[id] = [x, G - 320]; gambarAktor.push({id, ...st});
   }
   // props
