@@ -1,0 +1,7 @@
+# Aset audio disalin dari repo sobatambis-marketing (milik pemilik).
+whoosh: {file: whoosh.mp3, sumber: elevenlabs-sound-generation, catatan: hak pakai komersial mengikuti paket ElevenLabs pemilik}
+pop: {file: pop.mp3, sumber: elevenlabs-sound-generation, catatan: hak pakai komersial mengikuti paket ElevenLabs pemilik}
+tok: {file: tok.mp3, sumber: elevenlabs-sound-generation, catatan: hak pakai komersial mengikuti paket ElevenLabs pemilik}
+brak: {file: brak.mp3, sumber: elevenlabs-sound-generation, catatan: hak pakai komersial mengikuti paket ElevenLabs pemilik}
+musik_tegang: {file: musik_tegang.mp3, sumber: dibuat sendiri (musik_sintetis.py), lisensi: milik sendiri, sementara: true}
+musik_ceria: {file: musik_ceria.mp3, sumber: dibuat sendiri (musik_sintetis.py), lisensi: milik sendiri, sementara: true}

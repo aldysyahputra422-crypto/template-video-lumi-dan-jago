@@ -7,3 +7,5 @@ referensi/**/*.mp4
 referensi/**/transkrip.json
 prototipe/node_modules/
 prototipe/frames/
+render/node_modules/
+episode/
