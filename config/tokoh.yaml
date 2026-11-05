@@ -1,0 +1,17 @@
+# DRAF kepribadian dan suara, diturunkan dari tampilan SVG. Pemilik yang memutuskan; sunting bebas.
+# Isi file ini dibaca pembuat prompt /naskah (belum dibuat). Jangan memberi gender kecuali pemilik menetapkannya.
+lumi:
+  tampilan: anak naga kecil berbulu krem, tanduk cokelat, syal merah bermotif awan, tas selempang, api kecil di ujung ekor
+  peran: wakil penonton. Penasaran, polos, hangat; bertanya dan bereaksi.
+  gaya_bicara: kalimat pendek, nada naik saat heran, suka bertanya "kok bisa?", jujur mengaku belum tahu.
+  suara_elevenlabs: lebih tinggi dan ringan, hangat, tempo sedang. (voice id diisi pemilik)
+  tag_khas: [curious, excited, surprised, happy]
+jago:
+  tampilan: naga hitam berkacamata hitam dan bandana, alis tajam, taring kecil, api di ujung ekor
+  peran: yang menjelaskan. Santai, kering, percaya diri; jawaban singkat dan tepat.
+  gaya_bicara: datar-kering, sindiran ringan, jarang berseru; satu kalimat penutup yang menancap.
+  suara_elevenlabs: lebih rendah, santai, datar-kering. (voice id diisi pemilik)
+  tag_khas: [sarcastic, deadpan, whispers, laughs]
+catatan:
+  - Peran di atas usulan: Lumi bertanya, Jago menjelaskan. Boleh dibalik atau dicampur per episode.
+  - Tag bertanda belum terverifikasi (mis. deadpan) harus diuji pemilik di ElevenLabs.
