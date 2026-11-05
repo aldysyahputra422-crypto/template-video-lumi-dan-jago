@@ -101,7 +101,7 @@ FAKTA: ya
 ### Kosakata (di luar daftar ditolak program)
 LATAR:
 {daftar(k['latar'])}
-PERAN aktor:
+PERAN aktor (pilih yang cocok dengan gender dan profesi tokoh: tokoh perempuan memakai siswi/mahasiswi/ibu, dokter memakai dokter, petani memakai petani; dua tokoh sejenis boleh, mesin membedakan warnanya):
 {daftar(k['peran'])}
 EKSPRESI: {', '.join(k['ekspresi'])}
 AKSI:

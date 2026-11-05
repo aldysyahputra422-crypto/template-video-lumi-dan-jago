@@ -14,6 +14,13 @@ latar:            # semua gelap, sesuai tempat cerita
   kantor: meja kerja, monitor, jendela kota
   kosong: hitam dengan cahaya lembut di tengah
 peran:            # aktor stickman; aksesori membedakan peran
+  siswa: siswa SMA laki-laki, kemeja putih, celana abu, rambut pendek
+  siswi: siswi SMA perempuan, kemeja putih, rok abu panjang, rambut hitam panjang
+  siswi_kerudung: siswi SMA perempuan berkerudung putih, kemeja putih, rok abu
+  mahasiswi: mahasiswi, rambut panjang, atasan kasual, jeans
+  dokter: dokter, jas putih panjang dan stetoskop
+  petani: petani, caping, handuk di leher
+  pengusaha: pengusaha atau bos, jas hitam dan dasi merah
   pelajar: tas punggung
   mahasiswa: kacamata
   guru: kacamata dan buku

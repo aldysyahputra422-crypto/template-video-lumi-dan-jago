@@ -37,3 +37,15 @@ def test_aktor_beda_peran_sama_dapat_warna_beda():
     assert "const VARIAN_BAJU" in MESIN and "warnaAktor(" in MESIN
     a = MESIN.index("const VARIAN_BAJU")
     assert MESIN[a:MESIN.index("\n", a)].count("#") >= 4
+
+
+def test_kostum_sesuai_profesi_dan_gender():
+    """Masukan pemilik: Dinda (cewek) berseragam putih, dokter berjas dokter, petani berpakaian petani."""
+    for peran in ("siswa", "siswi", "siswi_kerudung", "mahasiswi", "dokter", "petani", "pengusaha"):
+        assert peran in K["peran"], peran
+    a = MESIN.index("const PERAN = {")
+    blok = MESIN[a:MESIN.index("\n};", a)]
+    for peran, ciri in (("siswi", "rambut: 'panjang'"), ("siswi_kerudung", "rambut: 'kerudung'"), ("dokter", "jas:"), ("dokter", "stetoskop"),
+                        ("petani", "caping"), ("pengusaha", "dasi:"), ("siswa", "celana:")):
+        baris = next(l for l in blok.splitlines() if l.strip().startswith(peran + ":"))
+        assert ciri in baris, (peran, ciri)
