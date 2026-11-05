@@ -54,3 +54,39 @@ export default (GAYA) => {
   tepi tipis, wajah kecil (mata titik, mulut garis). Proporsi diukur dari referensi; desain tokoh tetap milik sendiri.
 - TEKS tampil sebagai papan tulisan di dalam adegan (kayu gelap, bingkai emas tipis), bukan judul besar melayang.
 - Profil filosofi: setiap LATAR wajib dideklarasikan di ##ASET (dunia khusus per video); hanya `kosong` yang bawaan.
+
+## Totalitas visual (2026-11-05, masukan pemilik)
+### Latar berlapis (parallax 3D)
+`latar.nama` boleh berupa fungsi (satu lapisan) atau objek lapisan; tiap lapisan `t => svg`:
+```js
+ruang_kuliah: {
+  langit: t => `...`,   // faktor parallax .12 (paling lambat)
+  jauh:   t => `...`,   // .45, otomatis sedikit digelapkan (perspektif udara)
+  tengah: t => `...`,   // 1, sejajar tokoh (lantai, panggung, podium)
+  atas:   t => `...`,   // 1, digambar SESUDAH tokoh (meja depan, tali boneka; boleh pakai GAYA.tokoh(id))
+  depan:  t => GAYA.kepalaPenonton(),   // 1,4 (paling cepat): siluet kepala, pagar, dahan
+}
+```
+Lapisan jauh dan depan digambar lebar (x -600..1320) karena bergerak lebih jauh.
+
+### Alat bantu dunia (`GAYA`)
+- `kepalaPenonton(n = 12, y = null, skala = 1, t, warna, seed)`: barisan siluet kepala dan bahu; `y = null` dikunci ke bawah layar.
+- `panggung(x0, x1, naik = 260, warna, tirai)`: panggung bertingkat; permukaannya cocok dengan token tingkat `panggung`.
+- `tanganBoneka(x, y, skala, t, ujung = [[x, y], ...], lengan)`: tangan raksasa dari atas memegang palang dan tali ke titik `ujung`.
+- `tokoh(id)`: `{tangan: {l, r}, kepala}` tokoh di frame ini (hanya di lapisan `atas`). `bawahLayar(f, sy)`: y dunia untuk tepi layar.
+
+### Ukuran dan tingkat tokoh (naskah)
+`AKTOR: id=peran posisi ekspresi [xN] [mini|kecil|besar|raksasa] [panggung|tinggi|naikNNN]`: skala .45/.7/1,5/2,6; naik 260/480/NNN px.
+
+### Arketipe (field PERAN)
+`rambut` (pendek, panjang, klimis, kerudung, mekar, botak, sanggul, gondrong, cepak), `warnaRambut`, `kumis` (tebal, tipis), `jenggot`
+(pendek, panjang), `topi` (tinggi, fedora, baret, polisi, pilot, helm, koki, wisuda, peci, caping), `warnaTopi`, `pegang` (tongkat, kapur,
+kamera, map, kaca_pembesar, palu, pancing, kuas, kunci), `badan` (gemuk, kurus), `postur` (bungkuk, tegap, santai), `kebiasaan`
+(tangan_belakang, tangan_saku), `jalan` (pelan, tegap, tergesa). Peran bawaan: lihat `config/kosakata.yaml` (ilmuwan sampai wisudawan).
+Desain generik per profesi; bukan wajah orang sungguhan tertentu.
+
+### Kamera satu bidikan dan render kualitas
+- Kamera: titik kunci per kalimat (awal, tengah, akhir rangkaian di dunia yang sama) dilalui kurva Catmull-Rom; drift pelan selalu jalan.
+  Pindah dunia: `sambung` (dunia lama keluar, baru masuk sambil kamera menggeser) atau `tembus` (kamera maju menembus dunia lama).
+- Gerak tokoh: satu gestur per kalimat (pegas), mulut per suku kata, kedip, jejak gerak; tanpa getar (dijaga test).
+- Render: 60 fps dicampur ke 30 fps (motion blur), grain saat encode.

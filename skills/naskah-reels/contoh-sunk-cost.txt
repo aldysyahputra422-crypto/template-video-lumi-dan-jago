@@ -1,7 +1,7 @@
 ##VIDEO jembatan-raja | Jembatan ke pulau kosong
 ##SUMBER arkes1985
 ##ASET
-LATAR istana_pantai: istana batu di tepi laut malam, bulan, mercusuar kecil, pulau gelap di kejauhan
+LATAR istana_pantai: istana batu di tepi laut malam, bulan, pulau gelap di kejauhan (lapisan jauh); siluet kepala rakyat di depan (parallax)
 LATAR laut_badai: laut malam berombak tinggi, tiang-tiang jembatan kayu dihantam ombak, langit tanpa bintang
 LATAR aula_istana: aula singgasana batu, tiang-tiang tinggi, obor di dinding, karpet merah ke singgasana emas
 LATAR kota_malam: jalan kota malam, gedung kantor dan apartemen berjendela kuning, lampu jalan
@@ -13,13 +13,13 @@ SISIPAN timbangan: timbangan besar, satu sisi peti emas, sisi lain jam pasir yan
 UCAP: [curious] Seorang raja membangun jembatan ke pulau kosong.
 SUASANA: misterius
 LATAR: istana_pantai
-AKTOR: r=raja jauh_kiri bangga
+AKTOR: r=raja jauh_kiri bangga besar
 AKSI: r jalan ke kiri @raja; r menunjuk @pulau
 PROPS: jembatan kanan muncul @jembatan
 KAMERA: dorong
 ##KETUKAN 02
 UCAP: [serious] Dan semakin jelas jembatan itu sia-sia, semakin cepat ia membangunnya.
-AKTOR: p=pekerja tengah capek x12
+AKTOR: p=pekerja tengah capek x12 kecil
 AKSI: p jalan ke kanan @cepat
 KAMERA: lebar
 ##KETUKAN 03
@@ -37,7 +37,7 @@ KAMERA: goyang
 ##KETUKAN 05
 UCAP: [whispers] Seorang penasihat berbisik, pulau itu tidak berpenghuni, Paduka.
 LATAR: aula_istana
-AKTOR: n=guru kanan takut; r=raja kiri datar
+AKTOR: n=kakek kanan takut; r=raja kiri datar besar
 EKSPRESI: n takut @berbisik
 KAMERA: dekat n
 ##KETUKAN 06
@@ -70,7 +70,7 @@ KAMERA: dorong
 UCAP: [surprised] Dan bagian paling ngeri?
 SUASANA: misterius
 LATAR: aula_istana
-AKTOR: r=raja tengah bingung
+AKTOR: r=raja tengah bingung kecil
 KAMERA: dekat r
 ##KETUKAN 12
 UCAP: [serious] Di hari peresmian, tidak ada satu orang pun yang menyeberang ke pulau itu.
@@ -86,7 +86,7 @@ KAMERA: lebar
 ##KETUKAN 14
 UCAP: [whispers] Raja tidak sedang menyelamatkan emasnya. Ia hanya terus membayar agar tidak perlu mengaku salah.
 LATAR: aula_istana
-AKTOR: r=raja tengah malu
+AKTOR: r=raja tengah malu kecil
 PROPS: emas kiri muncul @emasnya
 EKSPRESI: r malu @mengaku
 KAMERA: dekat r

@@ -225,8 +225,9 @@ def periksa(n: dict, kartu: dict | None) -> dict:
             if run == 5:
                 G(k, f"ketukan {awal['no']} sampai {k['no']} di latar yang sama tanpa sisipan: maksimal 4; ganti LATAR atau sisipkan SISIPAN")
         for k in ks:
-            if re.search(r"dikenal sebagai|disebut|inilah yang", k["ucap"], re.I) and not (k.get("sisipan") or k.get("props") or k.get("data")):
-                G(k, f"ketukan {k['no']} (penamaan konsep) butuh gambar metafora: SISIPAN atau PROPS, bukan hanya TEKS di latar kosong")
+            dipentaskan = k.get("latar") not in (None, "kosong") and k.get("aktor")   # metafora berupa dunia yang dipentaskan (boneka, podium)
+            if re.search(r"dikenal sebagai|disebut|inilah yang", k["ucap"], re.I) and not (k.get("sisipan") or k.get("props") or k.get("data") or dipentaskan):
+                G(k, f"ketukan {k['no']} (penamaan konsep) butuh gambar metafora: SISIPAN, PROPS, atau tokoh yang dipentaskan di dunia khusus; bukan hanya TEKS di latar kosong")
     return {"galat": galat, "peringatan": peringatan, "perkiraan_durasi": durasi, "jumlah_ketukan": len(ks), "kata": sum(kata)}
 
 

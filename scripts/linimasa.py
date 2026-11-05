@@ -68,7 +68,8 @@ def susun(n: dict, kj: dict, kartu: dict | None) -> dict:
             pemeran = {}
         latar_lalu = k["latar"]
         for a in k["aktor"]:
-            pemeran[a["id"]] = {"peran": a["peran"], "posisi": a["posisi"], "ekspresi": a["ekspresi"], "jumlah": a.get("jumlah", 1)}
+            pemeran[a["id"]] = {"peran": a["peran"], "posisi": a["posisi"], "ekspresi": a["ekspresi"], "jumlah": a.get("jumlah", 1),
+                                "ukuran": a.get("ukuran"), "naik": a.get("naik", 0)}
         for i_keluar in k["keluar"]:
             pemeran.pop(i_keluar, None)
         awal_pemeran = {i_: dict(v) for i_, v in pemeran.items()}

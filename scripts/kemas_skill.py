@@ -37,6 +37,7 @@ def _kosakata() -> str:
         f"- POSISI: {', '.join(k['posisi'])}",
         f"- PROPS: {daftar(k['props'])}",
         f"- GERAK PROPS: {', '.join(k['gerak_props'])}",
+        "- UKURAN TOKOH (token AKTOR): mini, kecil, besar, raksasa. TINGKAT: panggung (naik 260), tinggi (480), naikNNN (piksel).",
         f"- SISIPAN: {', '.join(f'{n} ({v['arti']})' for n, v in k['sisipan'].items())}",
         f"- SUASANA: {', '.join(k['suasana'])}",
         f"- TAG SUARA teruji: {', '.join(f'[{t}]' for t in teruji)}; lainnya: {', '.join(f'[{t}]' for t in tag if t not in teruji)}",

@@ -135,3 +135,16 @@ def test_mulut_menghitung_suku_kata_dari_kunci_linimasa():
     teks = (ROOT / "render/mesin.html").read_text(encoding="utf-8")
     assert "w.w || w.k" in teks
     assert "\"w\"" in (ROOT / "scripts/linimasa.py").read_text(encoding="utf-8") or "'w'" in (ROOT / "scripts/linimasa.py").read_text(encoding="utf-8")
+
+
+def test_totalitas_visual_ada_di_mesin():
+    """Masukan terakhir pemilik: kamera satu bidikan, parallax berlapis, skala/tingkat tokoh, arketipe, metafora boneka."""
+    teks = (ROOT / "render/mesin.html").read_text(encoding="utf-8")
+    for wajib in ["function kamera(k, t)", "Catmull-Rom", "lapisLatar", "lap('depan', 1.4)", "lap('langit', .12)", "Lp.atas",
+                  "const UKR = {mini: .45, kecil: .7, besar: 1.5, raksasa: 2.6}", "function kepalaPenonton", "function panggung",
+                  "function tanganBoneka", "function topi(P, r)", "function pegangan", "function detailWajah", "lajuTokoh",
+                  "sambung", "tembus"]:
+        assert wajib in teks, wajib
+    kos = yaml.safe_load((ROOT / "config/kosakata.yaml").read_text(encoding="utf-8"))
+    for peran in ["ilmuwan", "profesor", "hakim", "detektif", "kakek", "nenek", "konglomerat", "pejabat"]:
+        assert peran in kos["peran"] and f"  {peran}: {{" in teks

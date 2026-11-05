@@ -32,8 +32,20 @@ itu dan mulai dari langkah 5; bila belum ada topik, jalankan metode `topik-reels
    sama tanpa SISIPAN; ketukan penamaan konsep wajib punya SISIPAN atau PROPS sebagai metafora. **Setiap latar wajib dideklarasikan di ##ASET**
    (dunia khusus per video, seperti akun referensi); hanya `kosong` yang bawaan. Tokoh penonton di bagian pemetaan memakai peran `kamu`
    (tokoh kuning). Kerumunan: `xJUMLAH`.
-8. **Tag suara**: satu tag ElevenLabs di depan setiap kalimat UCAP.
-9. **Caption**: baris pertama = penutup paralel; lalu sumber (Penulis, Tahun, Judul).
+8. **Totalitas visual (wajib)**: tulis ##ASET seolah memberi brief ke ilustrator yang mahal.
+   - **Arketipe utuh**: tokoh dikenali dari siluet, kostum, atribut, postur, dan cara jalan, bukan sekadar warna baju. Ilmuwan = rambut
+     putih mekar, kumis tebal, jas lab, kapur, tangan di belakang, jalan pelan. Kakek = bungkuk, tongkat, langkah pelan. Pakai peran
+     arketipe bawaan bila cocok (daftar di bawah); bila tidak, tulis deskripsi selengkap itu di ##ASET. Desain arketipe generik, jangan
+     wajah orang sungguhan tertentu (kecuali tokoh sejarah yang memang diceritakan, tanpa karikatur merendahkan).
+   - **Skala bermakna**: ukuran menceritakan kuasa. Ular di antara tikus = `raksasa` lawan `mini`; penonton yang terkecoh = `besar` di
+     depan pembicara `kecil` di atas podium `tinggi`. Token AKTOR: ukuran `mini|kecil|besar|raksasa`, tingkat `panggung|tinggi|naikNNN`.
+   - **Kedalaman, bukan wayang**: dunia berlapis (langit, jauh, tengah, depan). Pembicara di panggung, penonton di bawah; siluet kepala
+     penonton di lapisan depan. Tulis lapisannya di deskripsi LATAR ("...; siluet kepala penonton di depan").
+   - **Metafora besar**: konsep abstrak dipentaskan sebagai gambar fisik. Contoh pola: tangan raksasa dari atas memainkan boneka kecil
+     yang berpidato di panggung, kepala-kepala penonton di depan menatapnya (kekuasaan di balik layar). Untuk tema kekuasaan, pakai
+     alegori tanpa tokoh atau partai sungguhan.
+9. **Tag suara**: satu tag ElevenLabs di depan setiap kalimat UCAP.
+10. **Caption**: baris pertama = penutup paralel; lalu sumber (Penulis, Tahun, Judul).
 
 ## Gaya bahasa
 Narator tunggal tenang, kalimat pendek, kosakata sehari-hari. Istilah asing disebut sekali lalu diterjemahkan. Angka konkret di puncak
@@ -71,7 +83,7 @@ SISIPAN <nama>: <deskripsi potongan layar penuh, mis. diagram>
 UCAP: [tag] kalimat yang diucapkan
 SUASANA: <suasana>                    (berlaku sampai diganti)
 LATAR: <latar>                        (wajib di ketukan pertama)
-AKTOR: id=peran posisi ekspresi [xJUMLAH]; ...
+AKTOR: id=peran posisi ekspresi [xJUMLAH] [mini|kecil|besar|raksasa] [panggung|tinggi|naikNNN]; ...
 AKSI: id aksi [ke posisi] [@kata]; ...
 EKSPRESI: id ekspresi [@kata]
 PROPS: benda tempat [gerak] [@kata]   (tempat: kiri|tengah|kanan|atas|jauh_kiri|jauh_kanan|tangan:id|kepala:id)
@@ -98,5 +110,6 @@ Lembar ElevenLabs untuk contoh di atas:
 
 ## Periksa sebelum mengirim
 Semua slot DNA terisi pada posisinya (bandingkan dengan tabel A dan C di benchmark.md); kalimat pembalik ada; dua contoh pemetaan berpola
-"terlihat. Tapi tak terlihat."; penutup antitesis yang bisa berdiri sendiri; 175 sampai 215 kata; tidak ada kalimat cerita yang
+"terlihat. Tapi tak terlihat."; penutup antitesis yang bisa berdiri sendiri; tiap tokoh punya arketipe utuh dan ukuran yang bermakna; minimal satu metafora besar yang dipentaskan;
+175 sampai 215 kata; tidak ada kalimat cerita yang
 disalin dari video referensi; setiap kalimat bertag dan bervisual; aset baru dideklarasikan di ##ASET; blok 2 (lembar ElevenLabs) ada dan sama persis dengan semua UCAP.

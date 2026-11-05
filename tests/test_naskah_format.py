@@ -199,3 +199,16 @@ def test_profil_filosofi_wajib_latar_dari_aset(monkeypatch):
     assert not latar_galat(dasar.format("kosong"))
     dengan = dasar.format("menara_batu").replace("##KETUKAN 01", "##ASET\nLATAR menara_batu: menara batu di bukit malam\n##KETUKAN 01")
     assert not latar_galat(dengan)
+
+
+def test_aktor_ukuran_dan_tingkat(monkeypatch):
+    """Skala bermakna (ular raksasa, tikus mini) dan tingkat lantai (pembicara di panggung, penonton di bawah)."""
+    monkeypatch.setattr(nf, "profil", lambda: {"wajib_kartu": False, "maskot": None, "latar_bawaan": True})
+    teks = ("##VIDEO uji | Uji\n##SUMBER x\n##KETUKAN 01\nUCAP: [serious] Seekor raja berdiri di panggung tinggi sekali.\nLATAR: istana\n"
+            "AKTOR: r=raja tengah bangga raksasa panggung; w=warga kiri datar x6 kecil; m=warga kanan datar naik120\n##AKHIR\n")
+    h = nf.urai(teks)
+    ak = {a["id"]: a for a in (h.naskah or {"ketukan": [{"aktor": []}]})["ketukan"][0]["aktor"]} if h.naskah else {}
+    galat = [g.pesan for g in h.galat if "ukuran" in g.pesan or "AKTOR" in g.pesan]
+    assert not galat, galat
+    if ak:
+        assert ak["r"]["ukuran"] == "raksasa" and ak["r"]["naik"] == 260 and ak["w"]["ukuran"] == "kecil" and ak["m"]["naik"] == 120

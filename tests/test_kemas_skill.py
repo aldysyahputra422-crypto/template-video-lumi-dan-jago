@@ -56,3 +56,14 @@ def test_mesin_paket_tanpa_maskot_dan_latar_lama(tmp_path):
     kos = yaml.safe_load(o.read("olah-reels/mesin/config/kosakata.yaml"))
     assert list(kos["latar"]) == ["kosong"] and "ata_tempat" not in kos
     assert not any(x.endswith(("gambar_jago_datar.py", "potong_pose.py")) for x in o.namelist())
+
+
+def test_skill_memuat_totalitas_visual(tmp_path):
+    hasil = ks.kemas(tmp_path)
+    md = zipfile.ZipFile(hasil["naskah-reels"]).read("naskah-reels/SKILL.md").decode()
+    assert "Totalitas visual" in md and "raksasa" in md and "panggung|tinggi|naikNNN" in md and "ilmuwan" in md
+    o = zipfile.ZipFile(hasil["olah-reels"])
+    olah = o.read("olah-reels/SKILL.md").decode()
+    assert "motion_blur" in olah and "kepalaPenonton" in olah and "tanganBoneka" in olah
+    html = o.read("olah-reels/mesin/render/mesin.html").decode()
+    assert "function tanganBoneka" in html and "lapisLatar" in html

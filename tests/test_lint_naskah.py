@@ -198,3 +198,6 @@ def test_bidikan_ketat_latar_dan_penamaan(monkeypatch):
     assert any("minimal 3 latar" in p for p in pesan(_naskah_bidikan(["a", "a", "b", "b"])))
     assert any("metafora" in p for p in pesan(_naskah_bidikan(["a", "b", "c", "kosong"], penamaan=4)))
     assert not any("metafora" in p for p in pesan(_naskah_bidikan(["a", "b", "c", "kosong"], penamaan=4, isi_penamaan=True)))
+    dipentaskan = _naskah_bidikan(["a", "b", "c", "podium"], penamaan=4)
+    dipentaskan["ketukan"][3]["aktor"] = [{"id": "a", "peran": "raja", "posisi": "tengah", "ekspresi": "bangga", "ukuran": "kecil", "naik": 480}]
+    assert not any("metafora" in p for p in pesan(dipentaskan))

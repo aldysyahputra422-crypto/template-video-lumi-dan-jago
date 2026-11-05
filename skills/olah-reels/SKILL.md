@@ -50,6 +50,21 @@ Butuh Python 3.11+, Node 18+, dan ffmpeg (macOS: `brew install ffmpeg`; Windows:
 - Palet hitam hangat, cokelat, krem, emas (`config/gaya.yaml` palet). Tokoh, latar, dan benda digambar baru per video; jangan meniru
   tokoh kreator lain.
 
+## Kesabaran dan totalitas (masukan pemilik: boleh menunggu sampai ±1 jam per video demi hasil)
+- **Render kualitas**: `config/gaya.yaml` → `render: {motion_blur: true}` merender 60 fps lalu mencampur ke 30 fps (motion blur ala Remotion).
+  Waktu render ±2 kali lipat; jalankan di latar belakang.
+- **Gambar aset seperti ilustrator mahal**, berulang sampai benar: gambar, `cek_aset`, lihat `aset-cek.png`, render beberapa frame cek
+  (`node render/render.js video/<nama> <folder> 30 <t1,t2,...>`), perbaiki, ulangi. Jangan berhenti di "lolos cek"; berhenti saat adegan
+  terlihat seperti dunia yang hidup.
+- **Kedalaman**: setiap latar utama ditulis berlapis `{langit, jauh, tengah, atas, depan}`. Lapisan depan berisi benda dekat kamera
+  (siluet kepala penonton `GAYA.kepalaPenonton()`, pagar, dahan) supaya parallax terasa. Pembicara di `GAYA.panggung()` + token `panggung`.
+- **Skala**: ukuran tokoh mengikuti makna (token `mini|kecil|besar|raksasa`, tingkat `panggung|tinggi|naikNNN`). Ular di antara tikus
+  benar-benar raksasa; pemimpin boneka benar-benar kecil di bawah tangan raksasa (`GAYA.tanganBoneka`, tali ke `GAYA.tokoh(id)`).
+- **Arketipe utuh**: pakai peran arketipe bawaan (ilmuwan, profesor, hakim, detektif, kakek, nenek, konglomerat, dll.) atau buat sendiri
+  dengan field kostum lengkap: rambut, warnaRambut, kumis, jenggot, topi, pegang, badan, postur, kebiasaan, jalan (`docs/gaya-visual.md`).
+- **Kamera satu bidikan** diatur mesin: jalur kontinu lintas kalimat dan pindah dunia lewat gerak kamera (sambung atau tembus). Aset
+  cukup menyediakan dunia yang lebar (gambar sampai x -600..1320 untuk lapisan jauh/depan) supaya kamera bebas menjelajah.
+
 ## Aturan
 - Jangan memanggil API berbayar (ElevenLabs, generator gambar) tanpa izin pengguna di sesi itu; suara dibuat pengguna.
 - Semua visual digambar sendiri dengan SVG di `aset.js`; jangan memakai gambar dari internet.

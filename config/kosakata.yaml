@@ -34,6 +34,27 @@ peran:            # aktor stickman; aksesori membedakan peran
   anak: badan kecil
   teman: topi terbalik
   petugas: topi petugas
+  # arketipe: profesi dikenali dari siluet, atribut, postur, dan cara jalan (desain generik, bukan orang tertentu)
+  ilmuwan: rambut putih mekar, kumis tebal, jas lab di atas kardigan, kapur, tangan di belakang, jalan pelan
+  profesor: botak beruban di samping, jenggot pendek, kacamata, jas wol cokelat, map, jalan pelan
+  hakim: jubah hitam, rambut kelabu, kacamata, palu, berdiri tegap
+  detektif: jas hujan panjang, topi fedora, kaca pembesar, tangan di saku
+  polisi: seragam biru gelap, topi polisi, rambut cepak, tegap
+  tentara: seragam hijau zaitun, helm, rambut cepak, jalan tegap
+  koki: baju putih, topi koki tinggi, kumis tipis
+  nelayan: kemeja biru laut, caping, pancing
+  tukang: rompi oranye, helm proyek, kunci
+  kakek: botak beruban, kumis tipis, tongkat, bungkuk, jalan pelan
+  nenek: sanggul putih, tongkat, bungkuk, jalan pelan
+  konglomerat: badan gemuk, jas hitam, dasi emas, topi tinggi, kumis tebal, tegap
+  pejabat: badan gemuk, jas biru tua, dasi merah, peci, tegap
+  wartawan: rambut gondrong, kamera, jalan tergesa
+  pelukis: badan kurus, baret merah, kumis tipis, kuas
+  pilot: seragam biru tua, topi pilot, tegap
+  perawat: seragam biru muda, rambut sanggul
+  montir: baju terusan biru, kunci
+  penyiar: jas abu, dasi merah, rambut klimis, tegap
+  wisudawan: toga hitam, topi wisuda
 ekspresi: [datar, senang, sedih, kaget, marah, bingung, takut, bangga, malu, capek, licik]
 aksi:             # gerak stickman; durasi bawaan 0,8 dtk kecuali berulang
   diam: berdiri bernapas

@@ -17,6 +17,8 @@ from scripts import tag as tag_mod
 
 ROOT = Path(__file__).resolve().parents[1]
 SKEMA = json.loads((ROOT / "schemas/naskah.schema.json").read_text(encoding="utf-8"))
+UKURAN = {"mini": .45, "kecil": .7, "besar": 1.5, "raksasa": 2.6}   # skala tokoh bermakna (raksasa lawan mini)
+TINGKAT = {"panggung": 260, "tinggi": 480, "lantai": 0}            # naik dari lantai, piksel dunia
 LABEL = ("UCAP", "LATAR", "AKTOR", "AKSI", "EKSPRESI", "PROPS", "TEKS", "DATA", "KARTU", "ATA", "KAMERA", "KELUAR", "FAKTA", "SISIPAN", "SUASANA")
 TEMPAT = ("jauh_kiri", "kiri", "tengah", "kanan", "jauh_kanan", "atas")
 
@@ -190,14 +192,20 @@ class _Urai:
                 pemeran = set()
             elif lab == "AKTOR":
                 for a in [x.strip() for x in isi.split(";") if x.strip()]:
-                    mm = re.match(r"^(\w+)\s*=\s*(\w+)((?:\s+\w+){0,3})$", a)
+                    mm = re.match(r"^(\w+)\s*=\s*(\w+)((?:\s+\w+){0,5})$", a)
                     if not mm:
-                        self.err(no, f"AKTOR harus: id=peran [posisi] [ekspresi] [xJUMLAH], bukan '{a}'")
+                        self.err(no, f"AKTOR harus: id=peran [posisi] [ekspresi] [xJUMLAH] [ukuran] [tingkat], bukan '{a}'")
                         continue
-                    i, peran, pos, eks, jumlah = mm.group(1), mm.group(2), "tengah", "datar", 1
+                    i, peran, pos, eks, jumlah, ukuran, naik = mm.group(1), mm.group(2), "tengah", "datar", 1, None, 0
                     for tok in mm.group(3).split():
                         if re.fullmatch(r"x\d+", tok):
                             jumlah = int(tok[1:])
+                        elif tok in UKURAN:
+                            ukuran = tok
+                        elif tok in TINGKAT:
+                            naik = TINGKAT[tok]
+                        elif re.fullmatch(r"naik\d{1,3}", tok):
+                            naik = min(700, int(tok[4:]))
                         elif tok in self.k["posisi"]:
                             pos = tok
                         else:
@@ -211,7 +219,8 @@ class _Urai:
                     if eks not in self.k["ekspresi"]:
                         self.err(no, f"ekspresi tidak dikenal: {eks}. Ekspresi: {', '.join(self.k['ekspresi'])}")
                     pemeran.add(i)
-                    kt["aktor"].append({"id": i, "peran": peran, "posisi": pos, "ekspresi": eks, **({"jumlah": jumlah} if jumlah > 1 else {})})
+                    kt["aktor"].append({"id": i, "peran": peran, "posisi": pos, "ekspresi": eks, **({"jumlah": jumlah} if jumlah > 1 else {}),
+                                       **({"ukuran": ukuran} if ukuran else {}), **({"naik": naik} if naik else {})})
             elif lab == "AKSI":
                 for a in [x.strip() for x in isi.split(";") if x.strip()]:
                     a, kata = self.isyarat(no, a, kt)
