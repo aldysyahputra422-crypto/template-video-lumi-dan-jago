@@ -11,7 +11,7 @@ from pathlib import Path
 
 import yaml
 
-from scripts import campur, lembar, lint_naskah, linimasa, naskah_format, qa, render, selaras
+from scripts import campur, caption, lembar, lint_naskah, linimasa, naskah_format, qa, render, selaras
 
 
 def _baru(a: Path, b: Path) -> bool:
@@ -54,8 +54,10 @@ def maju(folder: Path, transkrip_fn=None, fps: int = 30) -> dict:
     except Exception as e:  # noqa: BLE001
         return {"kode": 1, "berhenti_di": "render", "alasan": str(e)[:400], "instruksi": "Render gagal; lihat alasan."}
     h = qa.periksa(f)
+    if h["lulus"]:
+        caption.main([str(f)])
     return {"kode": 0 if h["lulus"] else 1, "berhenti_di": "selesai" if h["lulus"] else "qa", "qa": h,
-            "instruksi": f"Tonton {f}/video.mp4 (Approval 2). Angka QA: {h.get('lufs')} LUFS, puncak {h.get('puncak_dbfs')} dBFS, {h.get('durasi')} dtk."}
+            "instruksi": f"Tonton {f}/video.mp4 (Approval 2); caption di {f}/caption.txt (Collab @mentoringsobatambis diatur saat unggah). Angka QA: {h.get('lufs')} LUFS, puncak {h.get('puncak_dbfs')} dBFS, {h.get('durasi')} dtk."}
 
 
 def main(argv: list[str]) -> int:

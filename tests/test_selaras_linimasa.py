@@ -117,3 +117,9 @@ def test_musik_mengikuti_suasana(tmp_path):
 def test_sfx_sisipan_tidak_tertelan_whoosh():
     from scripts.linimasa import SFX_SISIPAN, JARAK_SFX
     assert all(jeda >= JARAK_SFX for _, jeda, _, _ in SFX_SISIPAN.values())
+
+
+def test_watermark_nama_akun_di_linimasa(tmp_path):
+    n = _naskah(tmp_path)
+    L = linimasa.susun(n, selaras.selaraskan(n, _transkrip_palsu(n)), None)
+    assert L["watermark"] == "@ata.ngulik"

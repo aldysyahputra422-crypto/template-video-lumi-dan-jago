@@ -86,3 +86,7 @@ def test_suasana_sama_dengan_mesin():
     a = MESIN.index("const SUASANA = {")
     di_mesin = set(re.findall(r"^\s{2}(\w+):", MESIN[a:MESIN.index("\n};", a)], re.M))
     assert set(K["suasana"]) == di_mesin
+
+
+def test_watermark_digambar_dan_berpindah():
+    assert "TL.watermark" in MESIN and "POS_WATERMARK" in MESIN

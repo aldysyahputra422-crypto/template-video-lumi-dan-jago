@@ -140,7 +140,9 @@ def susun(n: dict, kj: dict, kartu: dict | None) -> dict:
         if musik:
             musik[-1]["selesai"] = k["mulai"]
         musik.append({"suasana": k["suasana"], "mulai": k["mulai"], "selesai": durasi})
+    akun = yaml.safe_load((Path(__file__).resolve().parents[1] / "config/tokoh.yaml").read_text(encoding="utf-8"))["akun"]
     return {"id": n["id"], "judul": n["judul"], "fps": 30, "durasi": durasi, "ketukan": out, "kata": kata, "musik": musik,
+            "watermark": akun.get("nama_akun", ""),
             "sfx": rapikan_sfx(sfx)}
 
 

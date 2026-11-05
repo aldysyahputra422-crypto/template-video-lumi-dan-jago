@@ -534,6 +534,9 @@ window.render = function (t) {
   }
   const ataA = KT.slice(0, i + 1).reverse().find(x => x.ata && t >= x.ata.mulai && t <= x.ata.selesai)?.ata || (KT[i + 1]?.ata && KT[i + 1].ata.masuk === 'sapuan' && t >= KT[i + 1].ata.mulai ? KT[i + 1].ata : null);
   const SIS = gambarSisipan(k, t);
+  // Watermark nama akun: kecil, semi-transparan, berpindah posisi tiap 9 dtk (gaya video referensi 03).
+  const POS_WATERMARK = [[360, 92], [210, 118], [510, 118]], iw = Math.floor(t / 9) % 3, aw = cl(((t % 9) - 0) / .4) * cl((9 - (t % 9)) / .4);
+  const watermark = TL.watermark ? `<text x="${POS_WATERMARK[iw][0]}" y="${POS_WATERMARK[iw][1]}" text-anchor="middle" font-size="24" font-weight="700" fill="#FFFFFF" opacity="${.5 * aw}" stroke="rgba(0,0,0,.35)" stroke-width="3" paint-order="stroke" font-family="Mont">${TL.watermark}</text>` : '';
   const lapisSuasana = (S0, op) => { if (op <= 0) return ''; let s = '';
     if (S0.warna) s += `<rect width="720" height="1280" fill="${S0.warna}" opacity="${S0.kuat * op}"/>`;
     if (S0.gelap) s += `<rect width="720" height="1280" fill="url(#vinyet)" opacity="${S0.gelap * op * 3}"/>`;
@@ -555,7 +558,7 @@ window.render = function (t) {
     <radialGradient id="kabutDingin"><stop offset="0" stop-color="#9AB4BA" stop-opacity=".3"/><stop offset="1" stop-color="#9AB4BA" stop-opacity="0"/></radialGradient>
     <radialGradient id="kabutUngu"><stop offset="0" stop-color="#B49ACB" stop-opacity=".3"/><stop offset="1" stop-color="#B49ACB" stop-opacity="0"/></radialGradient>
     <radialGradient id="vinyet" cx=".5" cy=".45" r=".75"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".75"/></radialGradient></defs>
-    ${dunia}${debu(t)}<rect width="720" height="1280" fill="url(#vinyet)"/><rect width="720" height="1280" fill="#000" opacity="${pindahLatar}"/>${suasanaSvg}${SIS.svg}${atas}${cap}${src}`;
+    ${dunia}${debu(t)}<rect width="720" height="1280" fill="url(#vinyet)"/><rect width="720" height="1280" fill="#000" opacity="${pindahLatar}"/>${suasanaSvg}${SIS.svg}${atas}${cap}${src}${watermark}`;
   // Ata
   const e = $('ata'), a = ataA;
   if (!a || SIS.aktif || adaPanel) { e.style.opacity = 0; return; }   // Ata tidak menumpuk di adegan ramai

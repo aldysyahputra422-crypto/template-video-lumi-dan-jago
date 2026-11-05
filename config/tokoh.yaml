@@ -11,7 +11,8 @@ akun:
   # jadi topik harus aman untuk merek: tanpa politik, agama, tuduhan, atau orang sungguhan).
   cta: false
   kolaborasi: "@mentoringsobatambis"
-  usulan_nama_akun: [ata.ngulik, si.ata, ata.pandamerah]   # ketersediaan dicek pemilik
+  nama_akun: "@ata.ngulik"   # ditetapkan pemilik 2026-11-05; dipakai watermark video dan caption
+  tagar: ["#atangulik", "#belajarefektif", "#pelajar", "#mahasiswa"]   # dasar caption; kartu riset boleh menambah lewat `tagar`
 lore:
   gapura: gerbang prestasi di ujung perjalanan belajar (lomba, SNBT, ujian, mimpi masing-masing)
   pelintas: para murid yang sedang berjalan menuju gapura
