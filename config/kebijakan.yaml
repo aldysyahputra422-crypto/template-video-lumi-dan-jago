@@ -1,0 +1,4 @@
+# Kebijakan pemasangan skill (dibaca scripts/pasang_otomatis.py).
+# eksplorasi: belum komersial → lisensi tidak membatasi; yang berbayar atau ber-API-key tetap ditolak.
+# komersial: ganti ke ini saat akun mulai menghasilkan uang → hanya lisensi bebas komersial.
+mode: eksplorasi

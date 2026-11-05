@@ -16,4 +16,5 @@ Bahasa kerja: Indonesia. Merek: Sobat Ambis (mentoring lomba dan les privat, htt
 - Tag ekspresi ElevenLabs hanya ditandai berfungsi setelah pemilik mengujinya.
 
 ## Kerja
+- Skill dari katalog Sobat Ambis yang dipakai di sini dicatat di `katalog/skill.yaml` (terkunci ke commit, gratis, tanpa API key) dan dipasang sendiri tiap sesi oleh hook SessionStart (`scripts/hook_mulai.sh`). Semua bisa diambil kapan saja: `python -m scripts.pasang_otomatis --wajib`, atau satu per satu `--id <id>`. Pin hanya diganti pemilik. Mode lisensi di `config/kebijakan.yaml` (eksplorasi sampai menghasilkan uang).
 - TDD dengan pytest. Satu tugas, satu commit kecil. Tanpa tanda pisah panjang (—) di teks yang diucapkan atau ditampilkan.

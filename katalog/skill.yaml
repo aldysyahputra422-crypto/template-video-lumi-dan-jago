@@ -1,0 +1,87 @@
+# Katalog skill untuk repo ini. Disalin dan disaring dari katalog Sobat Ambis: hanya yang dipakai di sini.
+# otomatis: true  → dipasang setiap sesi oleh hook SessionStart (scripts/hook_mulai.sh)
+# wajib: true     → ikut diambil oleh `python -m scripts.pasang_otomatis --wajib`
+# Semua terkunci ke commit (pin). Pin hanya diganti pemilik setelah membaca perubahan di repo asal.
+- id: claude-screenwriting
+  sumber: https://github.com/e06084/claude-screenwriting
+  fungsi: teori struktur cerita (Save the Cat, McKee), beat, dan lint kesehatan struktur naskah
+  alasan_dipakai: menilai naskah ChatGPT di titik persetujuan naskah (putaran, petunjuk yang ditanam, eskalasi) supaya setara standar profesional
+  lisensi: MIT
+  biaya: gratis
+  butuh_key: null
+  ukuran: kecil
+  otomatis: true
+  wajib: true
+  catatan: teks skill berbahasa Mandarin dan mengandaikan vault Obsidian; pakai teori dan lint-nya saja
+  pasang: {jenis: git_subskill, url: "https://github.com/e06084/claude-screenwriting", paths: [skills/screenwriting, skills/screenwriting-beats, skills/screenwriting-lint], skills: [screenwriting, screenwriting-beats, screenwriting-lint], pin: "17e63120cd85dcf029d4ae8607b06c980fa668b5"}
+- id: humanizer
+  sumber: https://github.com/blader/humanizer
+  fungsi: menulis ulang teks yang terdengar buatan AI tanpa mengubah isi
+  alasan_dipakai: kalimat UCAP dari ChatGPT sering kaku; dipakai saat menilai naskah dan menulis contoh di prompt
+  lisensi: MIT
+  biaya: gratis
+  butuh_key: null
+  ukuran: kecil
+  otomatis: true
+  wajib: true
+  pasang: {jenis: git_skill, url: "https://github.com/blader/humanizer", pin: "0ef9fe5bc3572734fd3ae6c448fe00a30cd5dcf0"}
+- id: marketing-video
+  sumber: https://github.com/coreyhaines31/marketingskills
+  fungsi: skill produksi video (membedah dan meniru gaya video referensi) dan psikologi perhatian (rasa ingin tahu, framing)
+  alasan_dipakai: marketing-psychology menguji premis dan hook di /naskah; video dipakai saat membedah video referensi baru; hanya 2 dari 50+ skill paket itu
+  lisensi: MIT
+  biaya: gratis
+  butuh_key: null
+  ukuran: kecil
+  otomatis: true
+  wajib: true
+  pasang: {jenis: git_subskill, url: "https://github.com/coreyhaines31/marketingskills", paths: [skills/video, skills/marketing-psychology], skills: [video, marketing-psychology], pin: "88c79f6528a9347420e57ceb1fff9a60de651768"}
+- id: motion-design-skill
+  sumber: https://github.com/LottieFiles/motion-design-skill
+  fungsi: prinsip motion design, timing, easing, koreografi gerak
+  alasan_dipakai: memperbaiki gerak kaku di render/mesin.html (aksi, sisipan, transisi)
+  lisensi: MIT
+  biaya: gratis
+  butuh_key: null
+  ukuran: kecil
+  otomatis: true
+  wajib: true
+  pasang: {jenis: git_subskill, url: "https://github.com/LottieFiles/motion-design-skill", paths: [skills/motion-design], skills: [motion-design], pin: "f9a8a041b85185ee4881b3471d3415e939aac772"}
+- id: design-dna
+  sumber: https://github.com/zanwei/design-dna
+  fungsi: mengekstrak identitas visual menjadi design token
+  alasan_dipakai: mengunci gaya video referensi 03 (warna, ukuran, jarak) menjadi token saat menambah latar atau sisipan baru
+  lisensi: MIT
+  biaya: gratis
+  butuh_key: null
+  ukuran: kecil
+  otomatis: false
+  wajib: true
+  pasang: {jenis: git_skill, url: "https://github.com/zanwei/design-dna", pin: "593e39bc9e3652734653bd75544a333d7d43615e"}
+- id: claude-animation-base
+  sumber: https://github.com/JohnHeibel/ClaudeAnimationBase
+  fungsi: contoh animasi karakter buatan tangan dengan storyboard per shot
+  alasan_dipakai: rujukan akting tokoh (antisipasi, follow-through) untuk aksi stickman; dibaca, tidak dimuat utuh
+  lisensi: MIT
+  biaya: gratis
+  butuh_key: null
+  ukuran: 16 MB
+  otomatis: false
+  wajib: true
+  pasang: {jenis: rujukan, url: "https://github.com/JohnHeibel/ClaudeAnimationBase", pin: "0ac8bf2b31942376cb6b8c4074715595d512acd2"}
+- id: genjutsu
+  sumber: https://github.com/AThevon/genjutsu
+  fungsi: creative coding untuk animasi web (canvas, SVG)
+  alasan_dipakai: rujukan teknik saat membuat sisipan baru di mesin SVG
+  lisensi: MIT
+  biaya: gratis
+  butuh_key: null
+  ukuran: sedang
+  otomatis: false
+  wajib: true
+  pasang: {jenis: rujukan, url: "https://github.com/AThevon/genjutsu", pin: "ac9ca74156946be8e449f0d6acc8043a105a38f3"}
+# Sengaja TIDAK diambil dari katalog Sobat Ambis:
+# remotion, gsap, threejs, hyperframes (mesin render kita SVG sendiri); elevenlabs, gbro-collage-broll, higgsfield,
+# open-generative-ai (berbayar/API key); edge-tts (proxy tanpa WebSocket); lemo-opuscar, onetake (gaya sudah dikunci ke
+# video 03); ecc (1.068 skill membebani konteks); karpathy-skills (tanpa lisensi); youmind (prompt Opus, naskah kita
+# ditulis ChatGPT); caveman, ponytail, canvas-design, skill-creator, agent-reach (tidak dipakai alur repo ini).

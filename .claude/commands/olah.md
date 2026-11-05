@@ -12,4 +12,6 @@ Jalankan `.venv/bin/python -m scripts.olah video/$ARGUMENTS` (Bash `run_in_backg
 | 0 | `video.mp4` jadi dan lulus QA (**Approval 2**) | tonton |
 | 1 | gagal teknis | baca `alasan`; perbaiki mesin, bukan naskah |
 
+Saat kode 4 (Approval 1), sebelum menyampaikan ke pemilik: nilai naskah dengan bagian "Cara bercerita" di skill `standar-naskah`, teori skill `screenwriting-lint` (putaran, petunjuk yang ditanam, eskalasi; abaikan bagian vault Obsidian), dan skill `humanizer` untuk kalimat UCAP. Tulis maksimal 5 temuan konkret ke `video/<nama>/ulasan-naskah.md` dalam bentuk permintaan koreksi yang bisa ditempel ke ChatGPT, lalu sebutkan jumlah temuannya ke pemilik. Tidak ada temuan = tulis "tidak ada".
+
 Aturan: jangan memanggil API ElevenLabs; jangan mengubah naskah secara kreatif (perbaikan naskah lewat ChatGPT memakai `koreksi-chatgpt.md`); jangan menandai `disetujui` atas nama pemilik.
