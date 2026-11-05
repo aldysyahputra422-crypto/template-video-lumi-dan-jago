@@ -17,7 +17,7 @@ from scripts import tag as tag_mod
 
 ROOT = Path(__file__).resolve().parents[1]
 SKEMA = json.loads((ROOT / "schemas/naskah.schema.json").read_text(encoding="utf-8"))
-LABEL = ("UCAP", "LATAR", "AKTOR", "AKSI", "EKSPRESI", "PROPS", "TEKS", "DATA", "KARTU", "ATA", "KAMERA", "KELUAR", "FAKTA", "SISIPAN")
+LABEL = ("UCAP", "LATAR", "AKTOR", "AKSI", "EKSPRESI", "PROPS", "TEKS", "DATA", "KARTU", "ATA", "KAMERA", "KELUAR", "FAKTA", "SISIPAN", "SUASANA")
 TEMPAT = ("jauh_kiri", "kiri", "tengah", "kanan", "jauh_kanan", "atas")
 
 
@@ -83,6 +83,7 @@ class _Urai:
         kt = None
         pemeran: set[str] = set()
         latar = None
+        suasana = "normal"
         selesai = False
         for no, mentah in enumerate(self.mentah, 1):
             s = _bersih(mentah)
@@ -102,7 +103,7 @@ class _Urai:
             m = re.match(r"^#{1,3}\s*KETUKAN\s*(\d+)", s, re.I)
             if m:
                 kt = {"no": len(self.ketukan) + 1, "baris": no, "ucap": "", "ucap_el": "", "tag": [], "latar": latar, "aktor": [], "aksi": [],
-                      "ekspresi": [], "props": [], "teks": [], "data": [], "kartu": None, "ata": None, "kamera": None, "keluar": [], "fakta": False, "sisipan": None}
+                      "ekspresi": [], "props": [], "teks": [], "data": [], "kartu": None, "ata": None, "kamera": None, "keluar": [], "fakta": False, "sisipan": None, "suasana": suasana}
                 self.ketukan.append(kt)
                 continue
             if kt is None:
@@ -233,6 +234,11 @@ class _Urai:
                 if b[0] == "dekat" and (len(b) < 2 or b[1] not in pemeran):
                     self.err(no, "KAMERA dekat harus menyebut id aktor yang ada")
                 kt["kamera"] = {"jenis": b[0], "target": b[1] if len(b) > 1 else None}
+            elif lab == "SUASANA":
+                if isi not in self.k["suasana"]:
+                    self.err(no, f"suasana tidak dikenal: {isi}. Suasana: {', '.join(self.k['suasana'])}")
+                    continue
+                suasana = kt["suasana"] = isi
             elif lab == "SISIPAN":
                 s_isi, kata = self.isyarat(no, isi, kt)
                 b = s_isi.split()

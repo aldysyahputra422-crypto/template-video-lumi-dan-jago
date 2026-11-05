@@ -129,9 +129,18 @@ def susun(n: dict, kj: dict, kartu: dict | None) -> dict:
         if k["kamera"] and k["kamera"]["jenis"] == "goyang":
             sfx.append({"nama": "brak", "t": round(m0 + 0.1, 3)})
         out.append({"no": k["no"], "mulai": m0, "selesai": m1, "latar": k["latar"], "pemeran": awal_pemeran, "aksi": aksi, "ekspresi": ekspresi,
-                    "props": props, "teks": teks, "data": [dict(d) for d in data_aktif], "kartu": kt, "ata": ata, "kamera": k["kamera"], "fakta": k["fakta"], "sisipan": sis})
+                    "props": props, "teks": teks, "data": [dict(d) for d in data_aktif], "kartu": kt, "ata": ata, "kamera": k["kamera"], "fakta": k["fakta"], "sisipan": sis,
+                    "suasana": k.get("suasana", "normal")})
     kata = [dict(w, ketukan=K["no"]) for K in KJ for w in K["kata"]]
-    return {"id": n["id"], "judul": n["judul"], "fps": 30, "durasi": round(akhir + 0.3, 3), "ketukan": out, "kata": kata,
+    durasi = round(akhir + 0.3, 3)
+    musik: list[dict] = []          # bagian musik latar per suasana (bersambung, tanpa celah)
+    for k in out:
+        if musik and musik[-1]["suasana"] == k["suasana"]:
+            continue
+        if musik:
+            musik[-1]["selesai"] = k["mulai"]
+        musik.append({"suasana": k["suasana"], "mulai": k["mulai"], "selesai": durasi})
+    return {"id": n["id"], "judul": n["judul"], "fps": 30, "durasi": durasi, "ketukan": out, "kata": kata, "musik": musik,
             "sfx": rapikan_sfx(sfx)}
 
 

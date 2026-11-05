@@ -86,6 +86,14 @@ props:            # ikon benda
 gerak_props: [muncul, jatuh, membesar, berputar, melayang, hilang]
 tempat_props: "kiri | tengah | kanan | atas | tangan:<id> | kepala:<id>"
 kamera: [lebar, dekat, dorong, goyang, geser]
+# SUASANA: berlaku sampai diganti. Mengatur warna, cahaya, kamera, gerak tokoh, dan musik latar sekaligus.
+suasana:
+  normal: {arti: biasa, musik: musik_tegang}
+  tegang: {arti: "vinyet merah berdenyut, musik tegang", musik: musik_tegang}
+  horor: {arti: "warna dingin, lampu berkedip, kabut, kamera bergetar halus, tokoh menggigil, dengung dan detak jantung", musik: musik_horor}
+  ceria: {arti: "cahaya hangat, kilau, tokoh memantul, musik ceria", musik: musik_ceria}
+  sedih: {arti: "warna pudar kebiruan, tokoh menunduk dan melambat, pad minor", musik: musik_sedih}
+  misterius: {arti: "rona ungu, kabut, denting misterius", musik: musik_misterius}
 # SISIPAN: potongan layar penuh yang memvisualkan kata secara harfiah (benda besar, bergerak), dari @kata sampai akhir ketukan.
 sisipan:
   hp_scroll: {arti: "HP muncul dari bawah, jempol menggulir feed ke atas", isi: [kucing, video, belanja]}

@@ -342,6 +342,17 @@ function gambarSisipan(k, t) {
     <g transform="translate(360 ${y}) rotate(${-7 * (1 - masuk)}) scale(${.92 + .08 * masuk})">${obj}</g>`};
 }
 
+// ---------- SUASANA: warna, cahaya, kamera, dan gerak tokoh sekaligus (berlaku sampai diganti) ----------
+const SUASANA = {
+  normal: {},
+  tegang: {vinyetMerah: 1},
+  horor: {warna: '#06222A', kuat: .42, kedip: 1, kabut: 'kabutDingin', getar: 1.4, menggigil: 1, gelap: .18},
+  ceria: {warna: '#F2B33D', kuat: .08, kilau: 1, mantul: 1},
+  sedih: {warna: '#1C2A44', kuat: .25, pudar: 1, tunduk: 1},
+  misterius: {warna: '#3A1F55', kuat: .3, kabut: 'kabutUngu'},
+};
+const suasanaDi = k => SUASANA[k.suasana] || SUASANA.normal;
+
 // ---------- LETAK ALAMI props (masukan pemilik: buku jangan di bawah meja) ----------
 // lantai = berdiri di lantai; meja = di atas meja (meja kecil muncul sendiri bila tidak ada), atau di tangan tokoh yang membaca/mengetik;
 // dinding = setinggi dinding; ikon = di atas kepala tokoh terdekat.
@@ -400,7 +411,10 @@ function posisiAktor(k, id, t) {
 }
 function poseAktor(k, id, t) {
   const q = {...IDLE, dy: Math.sin(t * 2.2 + id.length) * 3, miring: 2 * Math.sin(t * 1.3 + id.length), kepala: 3 * Math.sin(t * 1.7 + id.length)};
-  const utama = k.kamera?.target || Object.keys(k.pemeran)[0];
+  const utama = k.kamera?.target || Object.keys(k.pemeran)[0], S = suasanaDi(k);
+  if (S.menggigil || ekspresiAktor(k, id, t) === 'takut') { q.dx += 2.4 * Math.sin(t * 47 + id.length); q.kepala += 1.6 * Math.sin(t * 39 + id.length); q.lA += 3 * Math.sin(t * 43); }   // menggigil
+  if (S.mantul) q.dy -= 6 * Math.abs(Math.sin(t * 4 + id.length));
+  if (S.tunduk) { q.angguk = 7; q.dy *= .4; q.miring *= .4; q.lA -= 6; q.rA -= 6; }
   if (id !== utama) {                                      // tokoh lain bereaksi kecil (mengangguk, bergeser berat badan)
     const w = TL.kata.filter(x => x.a <= t && x.a >= k.mulai).pop();
     if (w && TL.kata.indexOf(w) % 3 === 0) { const gk = Math.exp(-(t - w.a) / .3); q.kepala += 5 * gk; q.dy -= 2 * gk; q.lA += 10 * gk; }
@@ -484,8 +498,10 @@ function bangunDunia(k, t, i) {
   const cam = kamera(k, t, posAktor), camLalu = sebelum ? kamera(sebelum, k.mulai, posAktor) : cam, m = ez(cl(lokal / .35));
   let z = camLalu.z + (cam.z - camLalu.z) * m, fx = camLalu.fx + (cam.fx - camLalu.fx) * m, fy = camLalu.fy + (cam.fy - camLalu.fy) * m, r = camLalu.r + (cam.r - camLalu.r) * m;
   for (const e of [...k.aksi, ...k.props, ...k.teks, ...k.ekspresi, ...k.data]) { const u = t - e.t; if (u >= 0 && u < .4) z *= 1 + .06 * Math.sin(Math.PI * u / .4); }   // hentakan di kata kunci
+  const S = suasanaDi(k);
+  if (S.getar) { cam.gx += S.getar * Math.sin(t * 37); cam.gy += S.getar * Math.cos(t * 29); }
   const cahaya = sorot(360 + 260 * Math.sin(t * .35 + i), 380 + 120 * Math.cos(t * .27), 420, .16);   // cahaya pelan menyapu latar
-  const dunia = `<g transform="translate(${360 + cam.gx} ${640 + cam.gy}) rotate(${r}) scale(${z}) translate(${-fx} ${-fy})">${(LATAR[k.latar] || LATAR.kosong)(t)}${cahaya}${figuran(k.latar, t)}${props}${gambarAktor.map(a => a.svg).join('')}${depan}</g>`;
+  const dunia = `<g${S.pudar ? ' filter="url(#pudar)"' : ''} transform="translate(${360 + cam.gx} ${640 + cam.gy}) rotate(${r}) scale(${z}) translate(${-fx} ${-fy})">${(LATAR[k.latar] || LATAR.kosong)(t)}${cahaya}${figuran(k.latar, t)}${props}${gambarAktor.map(a => a.svg).join('')}${depan}</g>`;
   return {dunia, posAktor};
 }
 window.render = function (t) {
@@ -518,14 +534,28 @@ window.render = function (t) {
   }
   const ataA = KT.slice(0, i + 1).reverse().find(x => x.ata && t >= x.ata.mulai && t <= x.ata.selesai)?.ata || (KT[i + 1]?.ata && KT[i + 1].ata.masuk === 'sapuan' && t >= KT[i + 1].ata.mulai ? KT[i + 1].ata : null);
   const SIS = gambarSisipan(k, t);
+  const lapisSuasana = (S0, op) => { if (op <= 0) return ''; let s = '';
+    if (S0.warna) s += `<rect width="720" height="1280" fill="${S0.warna}" opacity="${S0.kuat * op}"/>`;
+    if (S0.gelap) s += `<rect width="720" height="1280" fill="url(#vinyet)" opacity="${S0.gelap * op * 3}"/>`;
+    if (S0.vinyetMerah) s += `<rect width="720" height="1280" fill="url(#merah)" opacity="${op * (.35 + .2 * Math.sin(t * 2 * Math.PI * 1.2))}"/>`;
+    if (S0.kabut) for (let n = 0; n < 3; n++) s += `<ellipse cx="${(n * 300 + t * (18 + n * 6)) % 1100 - 190}" cy="${820 + n * 150}" rx="420" ry="140" fill="url(#${S0.kabut})" opacity="${.6 * op}"/>`;
+    if (S0.kedip) { const f = (Math.sin(t * 13) + Math.sin(t * 31.7) + Math.sin(t * 7.3)) / 3; s += `<rect width="720" height="1280" fill="#000" opacity="${(f > .62 ? .5 : .03) * op}"/>`; }
+    if (S0.kilau) { ACAK = 99; for (let n = 0; n < 14; n++) { const x = acak() * 720, y = acak() * 1100, fz = acak() * 6; s += `<path transform="translate(${x} ${y}) scale(${.5 + .5 * Math.max(0, Math.sin(t * 3 + fz))})" d="M0,-10 L3,-3 L10,0 L3,3 L0,10 L-3,3 L-10,0 L-3,-3 Z" fill="${C.cahaya2}" opacity="${.7 * op}"/>`; } }
+    return s; };
+  const Sl = sebelum ? suasanaDi(sebelum) : SUASANA.normal, bS = sebelum && sebelum.suasana !== k.suasana ? ez(cl(lokal / .5)) : 1;
+  const suasanaSvg = lapisSuasana(suasanaDi(k), bS) + (bS < 1 ? lapisSuasana(Sl, 1 - bS) : '');
   const capX = 360, capY = SIS.aktif ? 455 : 565;
   const w = kataKini(t);
   const skCap = w ? pantul((t - w.a) / .16) : 1;
   const cap = w ? `<text transform="translate(${capX} ${capY}) scale(${skCap}) translate(${-capX} ${-capY})" x="${capX}" y="${capY}" text-anchor="middle" font-size="31" font-weight="700" fill="#FFFFFF" stroke="rgba(0,0,0,.55)" stroke-width="5" paint-order="stroke" font-family="Mont">${w.w}</text>` : '';
   const src = '';  // sumber tidak ditampilkan di video (pemilik); tetap di kartu-riset.yaml
   $('layar').innerHTML = `<defs><radialGradient id="cahaya"><stop offset="0" stop-color="${C.cahaya}" stop-opacity=".9"/><stop offset="1" stop-color="${C.cahaya}" stop-opacity="0"/></radialGradient>
+    <filter id="pudar"><feColorMatrix type="saturate" values=".3"/></filter>
+    <radialGradient id="merah" cx=".5" cy=".5" r=".75"><stop offset=".55" stop-color="#8A0F14" stop-opacity="0"/><stop offset="1" stop-color="#8A0F14" stop-opacity=".9"/></radialGradient>
+    <radialGradient id="kabutDingin"><stop offset="0" stop-color="#9AB4BA" stop-opacity=".3"/><stop offset="1" stop-color="#9AB4BA" stop-opacity="0"/></radialGradient>
+    <radialGradient id="kabutUngu"><stop offset="0" stop-color="#B49ACB" stop-opacity=".3"/><stop offset="1" stop-color="#B49ACB" stop-opacity="0"/></radialGradient>
     <radialGradient id="vinyet" cx=".5" cy=".45" r=".75"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".75"/></radialGradient></defs>
-    ${dunia}${debu(t)}<rect width="720" height="1280" fill="url(#vinyet)"/><rect width="720" height="1280" fill="#000" opacity="${pindahLatar}"/>${SIS.svg}${atas}${cap}${src}`;
+    ${dunia}${debu(t)}<rect width="720" height="1280" fill="url(#vinyet)"/><rect width="720" height="1280" fill="#000" opacity="${pindahLatar}"/>${suasanaSvg}${SIS.svg}${atas}${cap}${src}`;
   // Ata
   const e = $('ata'), a = ataA;
   if (!a || SIS.aktif || adaPanel) { e.style.opacity = 0; return; }   // Ata tidak menumpuk di adegan ramai

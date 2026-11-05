@@ -18,6 +18,6 @@
     "data": {"type": "array", "items": {"type": "object", "required": ["label", "nilai"]}},
     "kartu": {"type": ["object", "null"]}, "ata": {"type": ["object", "null"]}, "kamera": {"type": ["object", "null"]},
     "keluar": {"type": "array", "items": {"type": "string"}}, "fakta": {"type": "boolean"},
-    "sisipan": {"type": ["object", "null"], "required": ["nama"]}}}}
+    "sisipan": {"type": ["object", "null"], "required": ["nama"]}, "suasana": {"type": "string"}}}}
  }
 }

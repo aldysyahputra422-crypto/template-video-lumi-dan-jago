@@ -101,3 +101,14 @@ def test_sfx_otomatis_mengikuti_kejadian_visual(tmp_path):
     assert "ketik" in nama                                    # SISIPAN layar_laptop ketik
     t = sorted(s["t"] for s in L["sfx"])
     assert all(b - a >= 0.08 for a, b in zip(t, t[1:]))       # tidak bertumpuk
+
+
+def test_musik_mengikuti_suasana(tmp_path):
+    n = _naskah(tmp_path)
+    for k in n["ketukan"]:
+        k["suasana"] = "horor" if 4 <= k["no"] <= 6 else "normal"
+    L = linimasa.susun(n, selaras.selaraskan(n, _transkrip_palsu(n)), None)
+    seg = L["musik"]
+    assert [s["suasana"] for s in seg] == ["normal", "horor", "normal"]
+    assert seg[0]["mulai"] == 0 and seg[-1]["selesai"] == L["durasi"] and all(a["selesai"] == b["mulai"] for a, b in zip(seg, seg[1:]))
+    assert L["ketukan"][4]["suasana"] == "horor"

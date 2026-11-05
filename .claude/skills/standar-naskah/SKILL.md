@@ -20,6 +20,8 @@ Sebagian besar diperiksa otomatis oleh `scripts/lint_naskah.py`. Skill ini untuk
 10. Ata hanya di ketukan lapang (maksimal 1 aktor, tanpa SISIPAN/KARTU/DATA), maksimal 3 kali; mesin juga menyembunyikannya otomatis di adegan ramai.
 11. Tidak mudah ditebak: nama konsep (`nama_konsep` di kartu riset) baru disebut sesudah 40% naskah; 4 ketukan berturut dengan kata pembuka sama ditolak.
 
+12. SUASANA membangun rasa (misterius saat penonton dibuat curiga, tegang menjelang putaran, ceria sesudah trik); SFX otomatis dari isyarat visual, tidak ditulis.
+
 ## Cara bercerita (pola video referensi 03, dinilai manusia)
 - Penonton harus ikut tertipu seperti tokohnya. Tanam petunjuk sejak awal (benda di layar, detail sambil lalu), lalu satu putaran sederhana membalik arti kejadian sebelumnya. Contoh baik: kerumunan di hook lewat saat kedai belum buka; jam di layar sudah menunjukkan pukul tujuh.
 - Jangan memperagakan teori sebelum putaran. "Kenapa?" lima kali untuk menjelaskan 5 Whys = penonton yang paham sudah tahu jawabannya.

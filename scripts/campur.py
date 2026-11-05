@@ -17,7 +17,6 @@ ROOT = Path(__file__).resolve().parents[1]
 SR = 44100
 SFX_DB, MUSIK_DB = -13.0, -27.0
 SASARAN_LUFS, PUNCAK_TP = -14.0, -1.5
-MUSIK = ROOT / "aset/audio/musik_tegang.mp3"
 
 
 def _baca(p: Path) -> np.ndarray:
@@ -50,7 +49,35 @@ def normalkan(masuk: Path, keluar: Path) -> None:
     tengah.unlink()
 
 
-def jalankan(folder: Path, musik: Path | None = MUSIK) -> Path:
+def _musik(tl: dict, n: int, paksa: Path | None) -> np.ndarray:
+    """Musik latar per bagian SUASANA (timeline 'musik'), crossfade 0,8 dtk antar bagian, fade-out 1,2 dtk di akhir.
+    paksa: satu file untuk seluruh video (kompatibel lama)."""
+    import yaml
+    peta = yaml.safe_load((ROOT / "config/kosakata.yaml").read_text(encoding="utf-8"))["suasana"]
+    bagian = tl.get("musik") or [{"suasana": "normal", "mulai": 0, "selesai": n / SR}]
+    out, X = np.zeros(n, dtype=np.float32), int(.4 * SR)
+    for j, b in enumerate(bagian):
+        nama = peta.get(b["suasana"], peta["normal"])["musik"]
+        p = Path(paksa) if paksa else pustaka.cari(nama)
+        if not p or not Path(p).exists():
+            continue
+        m = _baca(p) * 10 ** ((MUSIK_DB + (0 if paksa else pustaka.gain(nama))) / 20)
+        a, z = max(0, int(b["mulai"] * SR) - (X if j else 0)), min(n, int(b["selesai"] * SR) + (X if j < len(bagian) - 1 else 0))
+        if z <= a:
+            continue
+        seg = np.tile(m, int(np.ceil((z - a) / len(m))))[: z - a].copy()
+        f = np.ones(z - a, dtype=np.float32)
+        if j:
+            f[: 2 * X] = np.linspace(0, 1, min(2 * X, z - a))[: len(f[: 2 * X])]
+        if j < len(bagian) - 1:
+            f[-2 * X:] = np.minimum(f[-2 * X:], np.linspace(1, 0, len(f[-2 * X:])))
+        out[a:z] += seg * f
+    h = min(n, int(1.2 * SR))
+    out[-h:] *= np.linspace(1, 0, h)
+    return out
+
+
+def jalankan(folder: Path, musik: Path | None = None) -> Path:
     folder = Path(folder)
     tl = json.loads((folder / "timeline.json").read_text(encoding="utf-8"))
     n = int(tl["durasi"] * SR)
@@ -70,13 +97,7 @@ def jalankan(folder: Path, musik: Path | None = MUSIK) -> Path:
         i = int(s["t"] * SR)
         k = max(0, min(len(x), n - i))
         mix[i:i + k] += x[:k]
-    if musik and Path(musik).exists():
-        m = _baca(musik) * 10 ** (MUSIK_DB / 20)
-        m = np.tile(m, int(np.ceil(n / len(m))))[:n]
-        f = np.ones(n, dtype=np.float32)
-        h = min(n, int(1.2 * SR))
-        f[-h:] = np.linspace(1, 0, h)
-        mix += m * f
+    mix += _musik(tl, n, musik)
     mentah = folder / "_campur_mentah.wav"
     sf.write(mentah, mix, SR)
     keluar = folder / "campur.wav"

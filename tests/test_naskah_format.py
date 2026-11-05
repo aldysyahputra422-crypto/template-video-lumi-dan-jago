@@ -121,3 +121,10 @@ def test_sisipan_tangan_memakai_nama_props():
     assert k["sisipan"]["isi"] == "kucing"
     assert any("isi sisipan" in str(g) for g in nf.urai(_ubah("SISIPAN: hp_scroll kucing @nonton", "SISIPAN: tangan_ambil naga @nonton")).galat)
     assert nf.urai(_ubah("SISIPAN: hp_scroll kucing @nonton", "SISIPAN: tangan_tulis @nonton")).galat == []
+
+
+def test_suasana_dibawa_sampai_diganti():
+    t = _ubah("##KETUKAN 02\n", "##KETUKAN 02\nSUASANA: tegang\n")
+    ks = nf.urai(t).naskah["ketukan"]
+    assert ks[0]["suasana"] == "normal" and ks[1]["suasana"] == "tegang" and ks[2]["suasana"] == "tegang"
+    assert any("suasana tidak dikenal" in str(g) for g in nf.urai(_ubah("##KETUKAN 02\n", "##KETUKAN 02\nSUASANA: galau\n")).galat)

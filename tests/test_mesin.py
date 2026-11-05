@@ -80,3 +80,9 @@ def test_figuran_hanya_di_tempat_ramai():
     a = MESIN.index("const FIGURAN = {")
     tempat = set(re.findall(r"(\w+):", MESIN[a:MESIN.index("};", a)]))
     assert tempat <= {"pasar", "kota", "jalan"}, tempat
+
+
+def test_suasana_sama_dengan_mesin():
+    a = MESIN.index("const SUASANA = {")
+    di_mesin = set(re.findall(r"^\s{2}(\w+):", MESIN[a:MESIN.index("\n};", a)], re.M))
+    assert set(K["suasana"]) == di_mesin

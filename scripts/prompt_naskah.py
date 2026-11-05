@@ -68,6 +68,8 @@ JANGAN memperagakan teorinya terang-terangan sebelum putaran (mis. bertanya "ken
    "begadang" → `SISIPAN: jam_cepat @begadang`; "tagihan listrik naik" → `SISIPAN: tagihan @listrik`. Sumber jurnal tidak ditulis di layar.
 10. Ata hanya muncul di ketukan lapang (maksimal 1 aktor, tanpa SISIPAN/KARTU/DATA), maksimal 3 kali. Jangan memaksanya tampil di atas adegan yang sudah ramai.
 11. Nama konsep tidak boleh disebut sebelum 40% naskah; 4 ketukan berturut dengan kata pembuka sama ditolak (pola mudah ditebak).
+12. Pakai SUASANA untuk membangun rasa: misterius saat penonton dibuat curiga, tegang menjelang putaran, ceria sesudah trik, horor hanya bila ceritanya menakutkan. Ganti paling banyak tiap 2 ketukan. SFX dipasang otomatis oleh mesin dari isyarat visual, jangan ditulis.
+13. Cutaway tangan (`SISIPAN: tangan_ambil <props>`, `tangan_beri <props>`, `tangan_tulis`) untuk aksi tangan yang diucapkan; tokoh yang mewakili penonton ("kamu") memakai peran `kamu`.
 UCAP adalah teks yang langsung dibacakan suara: tulis seperti diucapkan ("Larsen dan rekan-rekannya, tahun 2009", "39 persen"), tanpa kurung, singkatan (dkk., et al.), garis miring, atau garis bawah.
 Tanpa tanda pisah panjang. Tanpa kata kasar. Tanpa politik, agama, tuduhan, atau orang sungguhan. Tanpa ajakan daftar, harga, atau "follow".
 
@@ -91,6 +93,7 @@ KARTU: judul | langkah 1 [@kata] | langkah 2 [@kata] | langkah 3 [@kata]
 ATA: pose [kiri|tengah|kanan] [intip|pop|sapuan]
 KAMERA: lebar | dekat id | dorong | goyang | geser
 SISIPAN: nama [isi] [@kata]          (potongan layar penuh: benda besar bergerak, dari @kata sampai akhir ketukan; maksimal satu per ketukan)
+SUASANA: nama                        (berlaku sampai diganti; mengatur warna, cahaya, gerak tokoh, dan musik)
 KELUAR: id
 FAKTA: ya
 ##KETUKAN 02
@@ -109,6 +112,8 @@ AKSI:
 POSISI: {', '.join(k['posisi'])}
 PROPS: {', '.join(k['props'])}
 GERAK PROPS: {', '.join(k['gerak_props'])}
+SUASANA:
+{chr(10).join(f"- `{n}`: {v['arti']}" for n, v in k['suasana'].items())}
 SISIPAN:
 {chr(10).join(f"- `{n}`: {v['arti']}" + (" (isi: nama props mana pun)" if v['isi'] == 'props' else f" (isi: {' | '.join(v['isi'])})" if v['isi'] else '') for n, v in k['sisipan'].items())}
 POSE ATA: {', '.join(ata['pose'])} (pemetaan: {', '.join(f'{m}={p}' for m, p in ata['pemetaan_momen'].items())})
