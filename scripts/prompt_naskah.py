@@ -61,7 +61,10 @@ Patokan alur: cerita kegagalan konkret → pertanyaan berlapis atau kejadian yan
 5. Alat yang berguna: tepat satu `KARTU` berisi maksimal 3 langkah konkret yang bisa dipakai hari ini. JANGAN menyuruh penonton menyimpan, membagikan, follow, atau komen (terasa jualan); cukup tunjukkan alatnya. Judul KARTU netral, mis. "Triknya".
 6. Penutup = callback ke lelucon atau hook awal, bukan moral umum. Pola "bukan X, tapi Y" maksimal sekali.
 7. Durasi 40 sampai 55 detik (±2,6 kata per detik). Satu ketukan = satu kalimat pendek (maksimal 16 kata) supaya visual berganti tiap 2 sampai 5 detik.
-   Ganti komposisi minimal tiap 2 ketukan (KAMERA dekat untuk wajah atau reaksi, lalu kembali lebar; atau LATAR/AKTOR baru), seperti gaya video referensi.
+   Ganti komposisi minimal tiap 2 ketukan (KAMERA dekat/geser/dorong, aktor pindah `ke <posisi>`, LATAR/AKTOR baru, atau SISIPAN). Program menolak 3 ketukan berturut yang komposisinya sama.
+8. Hook diam ditolak: detik pertama wajib gerak besar, yaitu SISIPAN atau aktor masuk/pindah (`AKSI: id lari ke tengah @kata`, jalan ke, lompat), bukan aktor berdiri.
+9. Visualkan secara harfiah benda atau kegiatan yang diucapkan dengan SISIPAN (minimal 2 per video). Contoh: "malah nonton video kucing" → `SISIPAN: hp_scroll kucing @nonton` (HP naik, jempol menggulir feed kucing);
+   "begadang" → `SISIPAN: jam_cepat @begadang`; "tagihan listrik naik" → `SISIPAN: tagihan @listrik`. Sumber jurnal tidak ditulis di layar.
 Tanpa tanda pisah panjang. Tanpa kata kasar. Tanpa politik, agama, tuduhan, atau orang sungguhan. Tanpa ajakan daftar, harga, atau "follow".
 
 ## 5. Format keluaran (blok bertanda, BUKAN JSON, BUKAN tabel)
@@ -82,7 +85,8 @@ TEKS: tulisan besar maks 32 huruf [@kata]
 DATA: label=angka satuan [@kata]; ...      (grafik batang; angka dari kartu riset)
 KARTU: judul | langkah 1 [@kata] | langkah 2 [@kata] | langkah 3 [@kata]
 ATA: pose [kiri|tengah|kanan] [intip|pop|sapuan]
-KAMERA: lebar | dekat id | dorong | goyang
+KAMERA: lebar | dekat id | dorong | goyang | geser
+SISIPAN: nama [isi] [@kata]          (potongan layar penuh: benda besar bergerak, dari @kata sampai akhir ketukan; maksimal satu per ketukan)
 KELUAR: id
 FAKTA: ya
 ##KETUKAN 02
@@ -101,6 +105,8 @@ AKSI:
 POSISI: {', '.join(k['posisi'])}
 PROPS: {', '.join(k['props'])}
 GERAK PROPS: {', '.join(k['gerak_props'])}
+SISIPAN:
+{chr(10).join(f"- `{n}`: {v['arti']}" + (f" (isi: {' | '.join(v['isi'])})" if v['isi'] else '') for n, v in k['sisipan'].items())}
 POSE ATA: {', '.join(ata['pose'])} (pemetaan: {', '.join(f'{m}={p}' for m, p in ata['pemetaan_momen'].items())})
 TAG SUARA (di depan kalimat UCAP, boleh lebih dari satu: [tense, slowly]):
 {tags}
@@ -111,7 +117,7 @@ TAG SUARA (di depan kalimat UCAP, boleh lebih dari satu: [tense, slowly]):
 ```
 
 ## 6. Sebelum mengirim, periksa sendiri
-Hook maksimal 10 kata; setiap @kata ada di UCAP-nya; setiap ketukan punya minimal satu isyarat visual; angka riset sama dengan kartu;
+Hook maksimal 10 kata dan tidak diam; tiap 2 ketukan komposisi berganti; minimal 2 SISIPAN; setiap @kata ada di UCAP-nya; setiap ketukan punya minimal satu isyarat visual; angka riset sama dengan kartu;
 satu KARTU maksimal 3 langkah; penutup callback; semua nama dari kosakata. Kirim hanya blok dari ##VIDEO sampai ##AKHIR.
 Bila nanti kuberi daftar galat, perbaiki hanya baris yang disebut dan kirim ulang seluruh naskah.
 """

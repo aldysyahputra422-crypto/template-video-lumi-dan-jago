@@ -77,6 +77,15 @@ props:            # ikon benda
   panah: panah
 gerak_props: [muncul, jatuh, membesar, berputar, melayang, hilang]
 tempat_props: "kiri | tengah | kanan | atas | tangan:<id> | kepala:<id>"
-kamera: [lebar, dekat, dorong, goyang]
+kamera: [lebar, dekat, dorong, goyang, geser]
+# SISIPAN: potongan layar penuh yang memvisualkan kata secara harfiah (benda besar, bergerak), dari @kata sampai akhir ketukan.
+sisipan:
+  hp_scroll: {arti: "HP muncul dari bawah, jempol menggulir feed ke atas", isi: [kucing, video, belanja]}
+  chat: {arti: "layar chat, gelembung pesan muncul bergantian", isi: [tanya, biasa]}
+  jam_cepat: {arti: "jam besar, jarum berputar kencang (waktu lewat)", isi: []}
+  kalender_sobek: {arti: "kalender, lembar hari tersobek satu per satu", isi: []}
+  layar_laptop: {arti: "layar laptop dekat: kursor berkedip atau baris terketik", isi: [kosong, ketik]}
+  tagihan: {arti: "struk tagihan keluar memanjang, angka total naik", isi: []}
+  akar: {arti: "tanaman kecil, akarnya tumbuh ke bawah sampai titik terdalam menyala", isi: []}
 ata_masuk: [intip, pop, sapuan]
 ata_tempat: [kiri, tengah, kanan]

@@ -23,6 +23,7 @@ def test_prompt_memuat_semua_bahan(tmp_path):
     for bagian in ("latar", "peran", "aksi", "props"):
         assert all(n in p for n in k[bagian]), bagian
     assert all(e in p for e in k["ekspresi"])
+    assert all(f"`{s}`" in p for s in k["sisipan"]) and "SISIPAN:" in p and "geser" in p and "hook diam" in p.lower() or False
     assert "33.9" in p and "Buehler" in p and "tenggat tugas" in p and "ep02" in p
     assert "Ata" in p and "plester" in p
     for frasa in ("hook", "KARTU", "callback", "FAKTA", "@kata"):

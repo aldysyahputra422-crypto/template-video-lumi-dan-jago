@@ -61,7 +61,7 @@ def test_linimasa_isyarat_ke_waktu_kata(tmp_path):
     L = linimasa.susun(n, kj, kartu)
     k1 = L["ketukan"][0]
     t_kelar = next(w["a"] for w in kj["ketukan"][0]["kata"] if w["w"] == "kelar")
-    assert k1["aksi"][0]["t"] == t_kelar
+    assert k1["aksi"][1]["t"] == t_kelar and k1["aksi"][0]["ke"] == "tengah"
     assert all(a["selesai"] == b["mulai"] for a, b in zip(L["ketukan"], L["ketukan"][1:]))   # ketukan bersambung
     kartu_k = next(k for k in L["ketukan"] if k["kartu"])
     t_items = [b["t"] for b in kartu_k["kartu"]["butir"]]
@@ -77,3 +77,13 @@ def test_cli_selaras_dengan_transkrip_palsu(tmp_path):
     assert (tmp_path / "kata.json").exists()
     assert linimasa.main([str(tmp_path)]) == 0
     assert json.loads((tmp_path / "timeline.json").read_text())["ketukan"][0]["latar"] == "kamar"
+
+
+def test_linimasa_sisipan_punya_waktu(tmp_path):
+    n = _naskah(tmp_path)
+    kj = selaras.selaraskan(n, _transkrip_palsu(n))
+    L = linimasa.susun(n, kj, None)
+    s = next(x for x in L["ketukan"] if (x["sisipan"] or {}).get("nama") == "hp_scroll")
+    t_nonton = next(w["a"] for K in kj["ketukan"] for w in K["kata"] if w["w"] == "nonton")
+    assert s["sisipan"]["t"] == t_nonton and s["sisipan"]["selesai"] == s["selesai"]
+    assert any(x["nama"] == "whoosh" and abs(x["t"] - t_nonton) < 0.01 for x in L["sfx"])

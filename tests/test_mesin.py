@@ -16,11 +16,13 @@ def _kunci(nama_obj: str) -> set[str]:
     return set(re.findall(r"^\s{2}(\w+):", MESIN[a:b], re.M)) | set(re.findall(r"[{,]\s*(\w+):\s*(?:\{|r =>|t =>|\(|\(\))", MESIN[a:b]))
 
 
-@pytest.mark.parametrize("bagian,obj", [("latar", "LATAR"), ("peran", "PERAN"), ("ekspresi", "EKSPRESI"), ("aksi", "AKSI"), ("props", "PROPS")])
+@pytest.mark.parametrize("bagian,obj", [("latar", "LATAR"), ("peran", "PERAN"), ("ekspresi", "EKSPRESI"), ("aksi", "AKSI"), ("props", "PROPS"), ("sisipan", "SISIPAN")])
 def test_kosakata_sama_dengan_mesin(bagian, obj):
     nama = set(K[bagian]) if isinstance(K[bagian], dict) else set(K[bagian])
     di_mesin = _kunci(obj)
     assert nama <= di_mesin, f"belum ada di mesin: {sorted(nama - di_mesin)}"
+    if bagian == "sisipan":
+        assert di_mesin <= nama, f"di mesin tapi tidak di kosakata: {sorted(di_mesin - nama)}"
 
 
 def test_posisi_dan_pose_ata():

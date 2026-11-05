@@ -33,7 +33,8 @@ def test_ucap_bersih_tag_terpisah():
     k = nf.urai(TEKS).naskah["ketukan"][0]
     assert k["ucap"] == "Kamu bilang tugas ini kelar tiga hari."
     assert k["tag"] == ["curious"] and k["ucap_el"] == "[curious] Kamu bilang tugas ini kelar tiga hari." and k["latar"] == "kamar"
-    assert k["aktor"] == [{"id": "kamu", "peran": "pelajar", "posisi": "tengah", "ekspresi": "senang"}]
+    assert k["aktor"] == [{"id": "kamu", "peran": "pelajar", "posisi": "jauh_kiri", "ekspresi": "senang"}]
+    assert k["aksi"][0] == {"id": "kamu", "aksi": "lari", "ke": "tengah", "kata": "bilang"}
     assert k["ata"] == {"pose": "mengintip", "tempat": "kanan", "masuk": "intip"}
 
 
@@ -51,11 +52,11 @@ def test_latar_mewarisi_ketukan_sebelumnya():
 
 @pytest.mark.parametrize("lama,baru,cari,potongan", [
     ("LATAR: kamar", "LATAR: planet_mars", "latar tidak dikenal", "planet_mars"),
-    ("AKSI: kamu sorak @kelar", "AKSI: kamu terbang @kelar", "aksi tidak dikenal", "terbang"),
-    ("PROPS: laptop kiri muncul @judul", "PROPS: roket kiri muncul @judul", "props tidak dikenal", "roket"),
+    ("kamu sorak @kelar", "kamu terbang @kelar", "aksi tidak dikenal", "terbang"),
+    ("PROPS: laptop tengah muncul @bikin", "PROPS: roket tengah muncul @bikin", "props tidak dikenal", "roket"),
     ("EKSPRESI: kamu kaget @bohong", "EKSPRESI: kamu histeris @bohong", "ekspresi tidak dikenal", "histeris"),
     ("UCAP: [curious] Kamu", "UCAP: [terrified] Kamu", "tag tidak dikenal", "terrified"),
-    ("AKSI: kamu sorak @kelar", "AKSI: kamu sorak @libur", "@libur tidak ada", "@libur"),
+    ("kamu sorak @kelar", "kamu sorak @libur", "@libur tidak ada", "@libur"),
     ("EKSPRESI: m3 takut @merinding", "EKSPRESI: siapa takut @merinding", "aktor belum ada", "siapa takut"),
     ("ATA: kaget kanan pop", "ATA: kayang kanan pop", "pose ata tidak dikenal", "kayang"),
     ("Kamu nggak malas.", "Kamu nggak malas — sumpah.", "tanda pisah panjang", "sumpah"),
@@ -96,3 +97,13 @@ def test_tidak_menimpa_naskah_disetujui(tmp_path):
     n["disetujui"] = True
     (tmp_path / "naskah.json").write_text(json.dumps(n))
     assert nf.main([str(tmp_path)]) == 7
+
+
+def test_sisipan_dibaca_dan_divalidasi():
+    h = nf.urai(TEKS)
+    assert h.galat == [], [str(g) for g in h.galat]
+    k = next(k for k in h.naskah["ketukan"] if (k["sisipan"] or {}).get("nama") == "hp_scroll")
+    assert k["sisipan"] == {"nama": "hp_scroll", "isi": "kucing", "kata": "nonton"}
+    jsonschema.validate(h.naskah, nf.SKEMA)
+    assert any("sisipan tidak dikenal" in str(g) for g in nf.urai(_ubah("SISIPAN: hp_scroll kucing @nonton", "SISIPAN: hp_terbang")).galat)
+    assert any("isi sisipan" in str(g) for g in nf.urai(_ubah("SISIPAN: hp_scroll kucing @nonton", "SISIPAN: hp_scroll naga")).galat)

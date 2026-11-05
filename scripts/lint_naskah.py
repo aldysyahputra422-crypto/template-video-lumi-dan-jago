@@ -122,6 +122,20 @@ def periksa(n: dict, kartu: dict | None) -> dict:
             G(k, f"judul KARTU berisi ajakan: \"{k['kartu']['judul']}\". Pakai judul netral, mis. 'Triknya'")
         if TERLARANG.search(k["ucap"]):
             G(k, f"kata kasar atau terlarang: {TERLARANG.search(k['ucap']).group(0)}")
+    # 3b gerak: hook tidak boleh diam, komposisi tidak boleh sama 3 ketukan berturut
+    besar = lambda k: bool(k.get("sisipan")) or any(a.get("ke") or a["aksi"] in ("lari", "lompat") for a in k["aksi"])
+    if not besar(ks[0]):
+        G(ks[0], "hook diam: detik pertama wajib gerak besar (SISIPAN, atau AKSI ... ke <posisi> / lari / lompat), bukan aktor berdiri")
+    def berubah(k, lalu):
+        return (besar(k) or bool(k["aktor"]) or k["latar"] != lalu["latar"] or k["kamera"] != lalu["kamera"]
+                or bool(k["kartu"]) or (bool(k["data"]) and not lalu["data"]))
+    statis = [False] + [not berubah(k, ks[i]) for i, k in enumerate(ks[1:])]
+    for i in range(2, len(ks)):
+        if statis[i] and statis[i - 1]:
+            G(ks[i], f"adegan kaku: ketukan {ks[i - 2]['no']} sampai {ks[i]['no']} komposisinya sama. Ganti KAMERA, pindahkan aktor (ke <posisi>), atau pakai SISIPAN")
+            statis[i] = False
+    if sum(1 for k in ks if k.get("sisipan")) < 2:
+        P(None, "SISIPAN kurang dari 2; benda atau kegiatan yang disebut (scroll HP, jam, tagihan) lebih hidup bila divisualkan harfiah")
     # 4 alat yang disimpan
     if not any(k["kartu"] for k in ks):
         G(None, "tidak ada KARTU (alat maksimal 3 langkah yang membuat penonton menyimpan video)")

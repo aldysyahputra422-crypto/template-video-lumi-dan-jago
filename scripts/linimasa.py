@@ -81,10 +81,14 @@ def susun(n: dict, kj: dict, kartu: dict | None) -> dict:
         if k["ata"]:
             ata = dict(k["ata"], mulai=round(m0 - (0.35 if k["ata"]["masuk"] == "sapuan" else 0), 3), selesai=m1)
             sfx.append({"nama": "whoosh" if k["ata"]["masuk"] == "sapuan" else "pop", "t": ata["mulai"]})
+        sis = None
+        if k.get("sisipan"):
+            sis = dict(k["sisipan"], t=_t(kata, k["sisipan"]["kata"], m0 + 0.05), selesai=m1)
+            sfx.append({"nama": "whoosh", "t": sis["t"]})
         if k["kamera"] and k["kamera"]["jenis"] == "goyang":
             sfx.append({"nama": "brak", "t": round(m0 + 0.1, 3)})
         out.append({"no": k["no"], "mulai": m0, "selesai": m1, "latar": k["latar"], "pemeran": awal_pemeran, "aksi": aksi, "ekspresi": ekspresi,
-                    "props": props, "teks": teks, "data": [dict(d) for d in data_aktif], "kartu": kt, "ata": ata, "kamera": k["kamera"], "fakta": k["fakta"]})
+                    "props": props, "teks": teks, "data": [dict(d) for d in data_aktif], "kartu": kt, "ata": ata, "kamera": k["kamera"], "fakta": k["fakta"], "sisipan": sis})
     kata = [dict(w, ketukan=K["no"]) for K in KJ for w in K["kata"]]
     return {"id": n["id"], "judul": n["judul"], "fps": 30, "durasi": round(akhir + 0.3, 3), "ketukan": out, "kata": kata,
             "sfx": sorted(sfx, key=lambda s: s["t"])}

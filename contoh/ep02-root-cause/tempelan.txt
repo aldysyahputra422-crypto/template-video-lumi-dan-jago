@@ -4,7 +4,8 @@
 ##KETUKAN 01
 UCAP: [curious] Kedai kopi Raka ramai dilewati. Sebulan, nol pembeli.
 LATAR: kampus
-AKTOR: raka=mahasiswa tengah senang
+AKTOR: raka=mahasiswa tengah senang; w1=pelajar jauh_kiri datar; w2=mahasiswa jauh_kanan datar
+AKSI: w1 jalan ke jauh_kanan @Kedai; w2 jalan ke jauh_kiri @Raka
 PROPS: meja kanan muncul @kedai
 TEKS: 0 PEMBELI @nol
 ATA: mengintip kanan intip
@@ -12,6 +13,7 @@ KAMERA: dorong
 
 ##KETUKAN 02
 UCAP: [sighs] Ganti nama kedai. Tetap sepi.
+KELUAR: w1; w2
 PROPS: papan kiri muncul @nama
 EKSPRESI: raka sedih @sepi
 
@@ -23,7 +25,8 @@ KAMERA: dekat raka
 
 ##KETUKAN 04
 UCAP: [tense] Lampu warna-warni. Listrik naik, pembeli tetap nol.
-PROPS: lampu atas melayang @lampu; grafik_naik kiri muncul @listrik
+PROPS: lampu atas melayang @lampu
+SISIPAN: tagihan @Listrik
 AKSI: raka panik @nol
 KAMERA: goyang
 
@@ -37,7 +40,7 @@ KAMERA: lebar
 UCAP: Kenapa nggak ada yang beli? Nggak ada yang mampir.
 TEKS: KENAPA #1 @Kenapa
 AKSI: sasa menunjuk @Kenapa
-KAMERA: dekat sasa
+SISIPAN: chat tanya @beli
 
 ##KETUKAN 07
 UCAP: Kenapa nggak mampir? Mahasiswa lewat jam tujuh, kedai buka jam sepuluh.
@@ -51,7 +54,7 @@ UCAP: Kenapa buka jam sepuluh? Raka begadang tiap malam.
 LATAR: kamar
 AKTOR: raka=mahasiswa tengah capek
 TEKS: KENAPA #3 @Kenapa
-PROPS: laptop kiri muncul @begadang
+SISIPAN: jam_cepat @begadang
 
 ##KETUKAN 09
 UCAP: Kenapa begadang? Kedai tutup jam satu, kampus sepi jam sembilan.
@@ -78,6 +81,7 @@ UCAP: Ini namanya 5 Whys, pencari akar masalah dari Toyota.
 LATAR: kantor
 AKTOR: ohno=petugas tengah bangga
 TEKS: 5 WHYS @Whys
+SISIPAN: akar @akar
 ATA: berpikir kanan sapuan
 FAKTA: ya
 
@@ -110,10 +114,12 @@ FAKTA: ya
 ##KETUKAN 17
 UCAP: Kenapa terjadi, kenapa orangnya begitu, kenapa sistemnya membiarkan.
 AKSI: raka berpikir @orangnya
+KAMERA: dekat raka
 
 ##KETUKAN 18
 UCAP: [laughs] Sekarang kedai Raka buka jam tujuh. Lampunya? Dimatikan.
 PROPS: lampu atas hilang @Dimatikan
 EKSPRESI: raka bangga @tujuh
+KAMERA: lebar
 ATA: tertawa kanan pop
 ##AKHIR

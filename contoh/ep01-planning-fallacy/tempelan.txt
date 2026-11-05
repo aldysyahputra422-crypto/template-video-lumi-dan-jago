@@ -6,8 +6,8 @@ Tentu, ini naskahnya:
 ##KETUKAN 01
 UCAP: [curious] Kamu bilang tugas ini kelar tiga hari.
 LATAR: kamar
-AKTOR: kamu=pelajar tengah senang
-AKSI: kamu sorak @kelar
+AKTOR: kamu=pelajar jauh_kiri senang
+AKSI: kamu lari ke tengah @bilang; kamu sorak @kelar
 TEKS: 3 HARI @tiga
 ATA: mengintip kanan intip
 KAMERA: dorong
@@ -20,15 +20,14 @@ KAMERA: dekat kamu
 
 ##KETUKAN 03
 UCAP: [excited] Hari pertama, kamu bikin judul. Mantap.
-AKSI: kamu mengetik @bikin
-PROPS: laptop kiri muncul @judul
-EKSPRESI: kamu bangga @Mantap
+AKSI: kamu jalan ke kiri @pertama; kamu mengetik @bikin
+PROPS: laptop tengah muncul @bikin
+SISIPAN: layar_laptop ketik @judul
 TEKS: HARI 1 @pertama
 
 ##KETUKAN 04
 UCAP: [sighs] Hari ketiga, cari referensi, malah nonton video kucing.
-PROPS: kucing kiri membesar @kucing
-EKSPRESI: kamu senang @kucing
+SISIPAN: hp_scroll kucing @nonton
 TEKS: HARI 3 @ketiga
 
 ##KETUKAN 05
@@ -36,6 +35,7 @@ UCAP: Hari ketujuh, file-mu namanya final.
 PROPS: dokumen tangan:kamu muncul @file-mu
 TEKS: final.docx @final
 EKSPRESI: kamu datar @ketujuh
+KAMERA: dekat kamu
 
 ##KETUKAN 06
 UCAP: [tense] Hari kesepuluh, final beneran.
@@ -100,10 +100,12 @@ ATA: sombong kanan pop
 UCAP: Satu, tulis tebakanmu. Dua, cek tugas mirip terakhir kali, beneran selesai berapa hari.
 AKSI: kamu membaca @cek
 PROPS: buku tangan:kamu muncul @cek
+KAMERA: dekat kamu
 
 ##KETUKAN 16
 UCAP: Tiga, pakai angka yang lebih besar. Di studi itu, kenyataannya 1,6 kali tebakan.
 PROPS: grafik_naik tengah muncul @besar
+KAMERA: dorong
 FAKTA: ya
 
 ##KETUKAN 17

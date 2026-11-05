@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 import pytest
@@ -92,3 +93,19 @@ def test_patokan_root_cause_lolos_tanpa_peringatan():
     n = nf.urai((d / "tempelan.txt").read_text(encoding="utf-8")).naskah
     r = ln.periksa(n, yaml.safe_load((d / "kartu-riset.yaml").read_text(encoding="utf-8")))
     assert r["galat"] == [] and r["peringatan"] == []
+
+
+def _statis(t):
+    """Buang semua penanda perubahan komposisi dari naskah contoh."""
+    t = re.sub(r"^(KAMERA|SISIPAN):.*\n", "", t, flags=re.M)
+    return re.sub(r" (lari|lompat)\b", " sorak", re.sub(r" ke \w+", "", t))
+
+
+def test_hook_wajib_gerak_besar_atau_sisipan():
+    r = _lint(_statis(TEKS))
+    assert any("hook diam" in g["pesan"] for g in r["galat"])
+
+
+def test_tiga_ketukan_berturut_komposisi_sama_ditolak():
+    r = _lint(_statis(TEKS))
+    assert any("kaku" in g["pesan"] for g in r["galat"])

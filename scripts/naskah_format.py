@@ -17,7 +17,7 @@ from scripts import tag as tag_mod
 
 ROOT = Path(__file__).resolve().parents[1]
 SKEMA = json.loads((ROOT / "schemas/naskah.schema.json").read_text(encoding="utf-8"))
-LABEL = ("UCAP", "LATAR", "AKTOR", "AKSI", "EKSPRESI", "PROPS", "TEKS", "DATA", "KARTU", "ATA", "KAMERA", "KELUAR", "FAKTA")
+LABEL = ("UCAP", "LATAR", "AKTOR", "AKSI", "EKSPRESI", "PROPS", "TEKS", "DATA", "KARTU", "ATA", "KAMERA", "KELUAR", "FAKTA", "SISIPAN")
 TEMPAT = ("jauh_kiri", "kiri", "tengah", "kanan", "jauh_kanan", "atas")
 
 
@@ -102,7 +102,7 @@ class _Urai:
             m = re.match(r"^#{1,3}\s*KETUKAN\s*(\d+)", s, re.I)
             if m:
                 kt = {"no": len(self.ketukan) + 1, "baris": no, "ucap": "", "ucap_el": "", "tag": [], "latar": latar, "aktor": [], "aksi": [],
-                      "ekspresi": [], "props": [], "teks": [], "data": [], "kartu": None, "ata": None, "kamera": None, "keluar": [], "fakta": False}
+                      "ekspresi": [], "props": [], "teks": [], "data": [], "kartu": None, "ata": None, "kamera": None, "keluar": [], "fakta": False, "sisipan": None}
                 self.ketukan.append(kt)
                 continue
             if kt is None:
@@ -233,6 +233,20 @@ class _Urai:
                 if b[0] == "dekat" and (len(b) < 2 or b[1] not in pemeran):
                     self.err(no, "KAMERA dekat harus menyebut id aktor yang ada")
                 kt["kamera"] = {"jenis": b[0], "target": b[1] if len(b) > 1 else None}
+            elif lab == "SISIPAN":
+                s_isi, kata = self.isyarat(no, isi, kt)
+                b = s_isi.split()
+                S = self.k["sisipan"]
+                if not b or b[0] not in S:
+                    self.err(no, f"sisipan tidak dikenal: {b[0] if b else ''}. Sisipan: {', '.join(S)}")
+                    continue
+                pilihan = S[b[0]]["isi"]
+                isi_s = b[1] if len(b) > 1 else (pilihan[0] if pilihan else None)
+                if len(b) > 1 and isi_s not in pilihan:
+                    self.err(no, f"isi sisipan {b[0]} tidak dikenal: {isi_s}. Isi: {', '.join(pilihan) or '(tanpa isi)'}")
+                if kt["sisipan"]:
+                    self.err(no, "satu ketukan maksimal satu SISIPAN")
+                kt["sisipan"] = {"nama": b[0], "isi": isi_s, "kata": kata}
             elif lab == "KELUAR":
                 for i in [x.strip() for x in isi.split(";") if x.strip()]:
                     pemeran.discard(i)

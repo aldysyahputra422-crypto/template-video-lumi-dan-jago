@@ -7,7 +7,7 @@ description: Standar naskah video Ata (berguna sampai disimpan, tapi tidak membo
 
 Sebagian besar diperiksa otomatis oleh `scripts/lint_naskah.py`. Skill ini untuk penilaian yang tidak bisa dihitung.
 
-## Tujuh syarat (diperiksa program)
+## Sembilan syarat (diperiksa program)
 1. Hook di ketukan pertama, maksimal 10 kata, menyapa "kamu" atau membalik dugaan; premis lengkap di kalimat pertama.
 2. Cerita orang kedua yang dekat dengan pelajar (atau alegori singkat untuk konsep abstrak), minimal dua detail spesifik yang lucu, dan meningkat.
 3. Momen penamaan konsep sesudah cerita, definisi satu kalimat.
@@ -15,6 +15,8 @@ Sebagian besar diperiksa otomatis oleh `scripts/lint_naskah.py`. Skill ini untuk
 5. Tepat satu `KARTU`, maksimal 3 langkah konkret yang bisa dipakai hari ini. Tanpa ajakan simpan, bagikan, follow, atau komen (terasa jualan); judul KARTU netral.
 6. Penutup callback ke lelucon atau hook awal; pola "bukan X, tapi Y" maksimal sekali.
 7. 40 sampai 55 detik; satu ketukan maksimal 16 kata supaya visual berganti tiap 2 sampai 5 detik.
+8. Tidak kaku: detik pertama wajib gerak besar (SISIPAN, atau aktor masuk/pindah/lari/lompat); komposisi berganti paling lambat tiap 2 ketukan (kamera dekat/geser/dorong, aktor pindah, latar, SISIPAN). Aktor yang berdiri di satu tempat lama dengan gerak sederhana = ditolak.
+9. Kata yang bisa digambar, digambar harfiah dengan SISIPAN (minimal 2): "scroll video kucing" berarti HP muncul dan feed kucing benar-benar digulir, bukan ikon kucing kecil. Sumber jurnal tidak tampil di layar.
 
 ## Topik
 Pilar: skill yang tidak diajarkan di sekolah atau kampus, dan komponen lomba. Uji perhatian: klaim provokatif atau menyalahi dugaan, kegagalan yang dekat dengan penonton, tidak bisa ditebak dari judul. Lihat `docs/strategi-topik.md`.

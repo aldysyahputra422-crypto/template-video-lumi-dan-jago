@@ -176,6 +176,102 @@ const PROPS = {
   panah: () => `<path d="M-44,0 L30,0 M14,-18 L36,0 L14,18" ${ST(10, C.cahaya)} fill="none"/>`,
 };
 
+// ---------- SISIPAN: potongan layar penuh, benda besar yang bergerak (koordinat relatif pusat objek) ----------
+const hpBingkai = (isi, id) => `<defs><clipPath id="${id}"><rect x="-150" y="-305" width="300" height="610" rx="30"/></clipPath></defs>
+  <rect x="-172" y="-332" width="344" height="664" rx="46" fill="#1B1B1F" stroke="#3A3A40" stroke-width="6"/><rect x="-150" y="-305" width="300" height="610" rx="30" fill="#0E0E10"/>
+  <g clip-path="url(#${id})">${isi}</g><rect x="-40" y="-318" width="80" height="8" rx="4" fill="#2C2C30"/>`;
+const kucingBesar = (warna, t, tidur) => `<g><ellipse cx="10" cy="40" rx="78" ry="52" fill="${warna}" ${ST(6)}/><circle cx="-40" cy="-22" r="50" fill="${warna}" ${ST(6)}/>
+  <path d="M-84,-48 L-76,-100 L-50,-64 M-28,-70 L-6,-104 L2,-60" fill="${warna}" ${ST(5)}/>
+  ${tidur ? `<path d="M-62,-24 q8,6 16,0 M-30,-24 q8,6 16,0" ${ST(4)} fill="none"/>` : `<circle cx="-56" cy="-26" r="7" fill="${C.tinta}"/><circle cx="-24" cy="-26" r="7" fill="${C.tinta}"/><circle cx="-53" cy="-29" r="2.5" fill="#fff"/><circle cx="-21" cy="-29" r="2.5" fill="#fff"/>`}
+  <path d="M-44,-6 l4,5 l4,-5 Z" fill="#E58A8A"/><path d="M-40,-1 q-6,8 -14,4 M-40,-1 q6,8 14,4" ${ST(3)} fill="none"/>
+  <path d="M84,30 q50,${-40 + 22 * Math.sin(t * 7)} 20,-84" ${ST(16, warna)} fill="none"/><path d="M84,30 q50,${-40 + 22 * Math.sin(t * 7)} 20,-84" stroke="${C.tinta}" stroke-width="3" fill="none" opacity=".3"/></g>`;
+function feed(u, isi, t) {
+  const KARTU = 300, PER = .55, n = Math.floor(u / PER), f = ez(cl((u - n * PER) / .3)), off = (n + f) * KARTU;
+  const BG = ['#3A2F45', '#2E4038', '#4A3A2A', '#2A3A4A', '#45302F'], KUC = ['#9A8A7A', '#E0A458', '#5A5A60', '#F0E6D8', '#C8783C'];
+  let s = '';
+  for (let i = Math.max(0, n - 1); i < n + 3; i++) {
+    const y = -305 + i * KARTU - off + 10;
+    let isiK = isi === 'video' ? `<circle cx="0" cy="110" r="52" fill="#000" opacity=".5"/><path d="M-16,84 L28,110 L-16,136 Z" fill="#fff"/><rect x="-120" y="240" width="240" height="6" rx="3" fill="#555"/><rect x="-120" y="240" width="${(u * 60 + i * 50) % 240}" height="6" rx="3" fill="${C.kar}"/>`
+      : isi === 'belanja' ? `<g transform="translate(0 115)"><rect x="-70" y="-60" width="140" height="120" rx="10" fill="${C.krem}" ${ST(5)}/><path d="M-70,-20 L70,-20" ${ST(4)}/><path d="M40,40 l50,-20 l10,26 l-50,20 Z" fill="${C.cahaya}" ${ST(4)}/></g>`
+      : `<g transform="translate(0 ${118 + 4 * Math.sin(t * 3 + i)}) scale(.95)">${kucingBesar(KUC[i % 5], t + i, i % 3 === 2)}</g>`;
+    s += `<g transform="translate(0 ${y})"><rect x="-140" y="0" width="280" height="${KARTU - 16}" rx="18" fill="${BG[i % 5]}"/>${isiK}
+      <circle cx="-112" cy="24" r="12" fill="#888"/><rect x="-92" y="18" width="${70 + (i * 37) % 50}" height="11" rx="5" fill="#777"/>
+      <path d="M100,252 l-14,-14 q-8,-10 2,-16 q8,-4 12,4 q4,-8 12,-4 q10,6 2,16 Z" fill="${i < n ? '#E5484D' : '#CCC'}"/></g>`;
+  }
+  // hati beterbangan tiap usapan
+  for (let j = Math.max(0, n - 2); j <= n; j++) { const v = u - j * PER; if (v > 0 && v < 1.1) s += `<path transform="translate(${90 - 20 * Math.sin(v * 6 + j)} ${160 - v * 300}) scale(${1.4 - v * .6})" d="M0,10 l-14,-14 q-8,-10 2,-16 q8,-4 12,4 q4,-8 12,-4 q10,6 2,16 Z" fill="#E5484D" opacity="${1 - v / 1.1}"/>`; }
+  return s;
+}
+function jempol(u) {
+  const PER = .55, n = Math.floor(u / PER), p = u - n * PER;
+  const y = p < .3 ? 250 - 230 * ez(p / .3) : 20 + 230 * ez(cl((p - .3) / .25));
+  return `<g transform="translate(118 ${y}) rotate(-24)"><rect x="-36" y="-10" width="72" height="250" rx="36" fill="${C.kulit}" stroke="${C.tepi}" stroke-width="5"/><rect x="-22" y="4" width="44" height="40" rx="14" fill="#F8E4C8" opacity=".9"/></g>`;
+}
+const SISIPAN = {
+  hp_scroll: (u, isi, t) => hpBingkai(feed(u, isi, t), 'klipHp') + jempol(u),
+  chat: (u, isi, t) => {
+    const n = Math.floor(u / .45) + 1, gel = [];
+    for (let i = 0; i < n; i++) { const kanan = i % 2 === 1, sb = pantul((u - i * .45) / .25); gel.push({kanan, sb}); }
+    const isiC = gel.map((g, i) => { const y = 180 - (gel.length - 1 - i) * 92; const w = g.kanan ? 150 : 190;
+      const tx = isi === 'tanya' ? `<text x="${g.kanan ? 120 - w / 2 : -130 + w / 2}" y="${y + 50}" text-anchor="middle" font-size="44" font-weight="800" font-family="Mont" fill="${g.kanan ? C.tinta : C.cahaya}">?</text>`
+        : `<rect x="${g.kanan ? 120 - w + 18 : -112}" y="${y + 24}" width="${w - 50}" height="10" rx="5" fill="${g.kanan ? '#5A3E10' : '#666'}"/><rect x="${g.kanan ? 120 - w + 18 : -112}" y="${y + 44}" width="${w - 90}" height="10" rx="5" fill="${g.kanan ? '#5A3E10' : '#666'}"/>`;
+      return `<g transform="translate(${g.kanan ? 120 : -130} ${y + 35}) scale(${g.sb}) translate(${g.kanan ? -120 : 130} ${-y - 35})"><rect x="${g.kanan ? 120 - w : -130}" y="${y}" width="${w}" height="74" rx="24" fill="${g.kanan ? C.cahaya : '#2C2C30'}"/>${tx}</g>`; }).join('');
+    const ketik = [0, 1, 2].map(i => `<circle cx="${-100 + i * 22}" cy="${282 - 6 * Math.abs(Math.sin(t * 8 + i))}" r="7" fill="#888"/>`).join('');
+    return hpBingkai(`<rect x="-150" y="-305" width="300" height="70" fill="#1A1A1E"/><circle cx="-110" cy="-270" r="18" fill="#3D7FD9"/><rect x="-82" y="-278" width="90" height="14" rx="7" fill="#888"/>${isiC}${ketik}`, 'klipChat');
+  },
+  jam_cepat: (u, isi, t) => {
+    const m = u * 900, j = u * 75;
+    let s = `<circle r="250" fill="${C.krem}" stroke="${C.tinta}" stroke-width="14"/>${[...Array(12)].map((_, i) => `<path d="M0,-226 L0,${i % 3 ? -206 : -190}" ${ST(i % 3 ? 6 : 12)} transform="rotate(${i * 30})"/>`).join('')}`;
+    for (let k = 5; k >= 1; k--) s += `<path d="M0,0 L0,-190" ${ST(14, C.kar)} opacity="${.12 * (6 - k) / 5}" transform="rotate(${m - k * 9})"/>`;
+    s += `<path d="M0,0 L0,-130" ${ST(20)} transform="rotate(${j})"/><path d="M0,0 L0,-190" ${ST(14, C.kar)} transform="rotate(${m})"/><circle r="18" fill="${C.tinta}"/>`;
+    return `<g transform="rotate(${3 * Math.sin(u * 40)})">${s}</g><path d="M-170,-300 l-50,-50 M170,-300 l50,-50" ${ST(16)}/><circle cx="-235" cy="-365" r="40" fill="${C.cahaya}" ${ST(8)}/><circle cx="235" cy="-365" r="40" fill="${C.cahaya}" ${ST(8)}/>`;
+  },
+  kalender_sobek: (u, isi, t) => {
+    const PER = .38, n = Math.floor(u / PER), p = (u - n * PER) / PER;
+    const hal = (d) => `<rect x="-200" y="-150" width="400" height="360" rx="14" fill="${C.krem}" ${ST(8)}/><text x="0" y="120" text-anchor="middle" font-size="230" font-weight="800" font-family="Mont" fill="${C.tinta}">${d}</text>`;
+    const terbang = `<g transform="translate(${300 * ez(p)} ${-260 * ez(p)}) rotate(${50 * ez(p)})" opacity="${1 - p}">${hal(n + 1)}</g>`;
+    return `<rect x="-210" y="-250" width="420" height="120" rx="14" fill="${C.kar}" ${ST(8)}/>${[-120, 0, 120].map(x => `<rect x="${x - 10}" y="-280" width="20" height="60" rx="10" fill="${C.s4}" ${ST(5)}/>`).join('')}${hal(n + 2)}${terbang}`;
+  },
+  layar_laptop: (u, isi, t) => {
+    const kur = Math.floor(t * 2.5) % 2 ? 1 : 0;
+    let doc = '', y = -120, cx = -230;
+    if (isi === 'ketik') { const lebar = [300, 420, 380, 400, 260], cps = 260; let sisa = u * cps;
+      for (let i = 0; i < lebar.length && sisa > 0; i++) { const w = Math.min(lebar[i], sisa); sisa -= lebar[i]; y = -120 + i * 52; doc += `<rect x="-230" y="${y}" width="${w}" height="${i ? 18 : 30}" rx="6" fill="${i ? '#9A9AA2' : C.tinta}"/>`; cx = -230 + w + 6; } }
+    else y = -120;
+    return `<rect x="-310" y="-240" width="620" height="420" rx="22" fill="#2C3550" ${ST(8)}/><rect x="-280" y="-210" width="560" height="360" rx="8" fill="#EDEDED"/><rect x="-280" y="-210" width="560" height="40" fill="#CFCFD4"/>${[0, 1, 2].map(i => `<circle cx="${-256 + i * 22}" cy="-190" r="7" fill="${['#E5484D', '#E8A847', '#5FA86A'][i]}"/>`).join('')}
+      ${doc}<rect x="${cx}" y="${y - 4}" width="5" height="${isi === 'ketik' && y > -120 ? 26 : 38}" fill="${C.tinta}" opacity="${kur}"/>
+      <path d="M-380,180 L380,180 L340,240 L-340,240 Z" fill="${C.s4}" ${ST(8)}/><rect x="-60" y="196" width="120" height="14" rx="7" fill="#1E1E20"/>`;
+  },
+  tagihan: (u, isi, t) => {
+    const pj = 120 + 500 * keluar(u / 1.3), nilai = Math.round((150 + 1100 * keluar(u / 1.3)) * 1000);
+    const angka = String(nilai).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    let baris = ''; for (let y = 40; y < pj - 120; y += 44) baris += `<rect x="-150" y="${y - 290}" width="${120 + (y * 7) % 90}" height="12" rx="6" fill="#B8B0A4"/><rect x="70" y="${y - 290}" width="80" height="12" rx="6" fill="#B8B0A4"/>`;
+    const zig = [...Array(13)].map((_, i) => `${-190 + i * 31.7},${pj - 300 + (i % 2 ? 14 : 0)}`).join(' ');
+    return `<rect x="-240" y="-340" width="480" height="70" rx="16" fill="${C.s4}" ${ST(8)}/><polygon points="-190,-300 190,-300 ${zig.split(' ').reverse().join(' ')}" fill="${C.krem}" ${ST(5)}/>${baris}
+      <text x="0" y="${pj - 340}" text-anchor="middle" font-size="58" font-weight="800" font-family="Mont" fill="#C94A4A">${angka}</text>
+      <path d="M230,${pj - 330} l0,-120 m-34,40 l34,-40 l34,40" ${ST(16, '#C94A4A')} fill="none" transform="translate(0 ${-10 * Math.abs(Math.sin(t * 6))})"/>`;
+  },
+  akar: (u, isi, t) => {
+    const p = cl(u / 1.6);
+    const segmen = [[0, -120, 0, 40, 0], [0, 40, -10, 170, .15], [-10, 170, 15, 320, .35], [0, 40, -120, 120, .2], [-120, 120, -190, 230, .4], [0, 40, 130, 110, .25], [130, 110, 200, 210, .45],
+      [-10, 170, -100, 260, .45], [15, 320, -5, 430, .6], [130, 110, 90, 250, .5], [-120, 120, -90, 300, .55]];
+    let s = `<rect x="-330" y="-120" width="660" height="620" fill="#1A1410"/><path d="M-330,-120 L330,-120" ${ST(8, '#4A3A2A')}/>`;
+    ACAK = 21; for (let i = 0; i < 16; i++) s += `<ellipse cx="${-300 + acak() * 600}" cy="${-80 + acak() * 560}" rx="${8 + acak() * 14}" ry="${6 + acak() * 8}" fill="#2A221C"/>`;
+    s += `<path d="M0,-120 Q-6,-200 0,-260" ${ST(12, '#4E8A4A')} fill="none"/><path d="M0,-220 q-60,-30 -80,-10 q30,30 80,10 M0,-245 q60,-30 80,-10 q-30,30 -80,10" fill="#5FA86A" ${ST(4)}/>`;
+    for (const [x1, y1, x2, y2, a] of segmen) { const g = cl((p - a) / .35); if (g <= 0) continue; const w = y2 > 300 ? 7 : 11;
+      s += `<path d="M${x1},${y1} L${x1 + (x2 - x1) * g},${y1 + (y2 - y1) * g}" ${ST(w, '#C9A877')}/>`; }
+    if (p >= .95) s += `<circle cx="-5" cy="430" r="${26 + 6 * Math.sin(t * 8)}" fill="${C.cahaya}" opacity=".9"/>${sorot(-5, 430, 120, .6)}`;
+    return `<g transform="translate(0 -170)">${s}</g>`;
+  },
+};
+function gambarSisipan(k, t) {
+  const S = k.sisipan; if (!S || t < S.t || t > S.selesai + .05) return {svg: '', aktif: false};
+  const u = t - S.t, masuk = keluar(u / .32), habis = cl((S.selesai - t) / .18), y = 860 + 900 * (1 - masuk) + 700 * (1 - habis);
+  const obj = (SISIPAN[S.nama] || SISIPAN.jam_cepat)(u, S.isi, t);
+  return {aktif: true, svg: `<rect width="720" height="1280" fill="#050506" opacity="${.88 * Math.min(masuk, habis)}"/>${sorot(360, 860, 460, .25 * masuk)}
+    <g transform="translate(360 ${y}) rotate(${-7 * (1 - masuk)}) scale(${.92 + .08 * masuk})">${obj}</g>`};
+}
+
 // ---------- Ata (pose PNG/SVG dari aset/maskot/panda/pose) ----------
 const POSE_ATA = ['bicara', 'kaget', 'sombong', 'menatap', 'duduk-samping', 'marah', 'tertawa', 'berpikir', 'mengintip'];
 await Promise.all(POSE_ATA.map(p => new Promise(r => { const i = new Image(); i.onload = r; i.onerror = r; i.src = `/aset/maskot/panda/pose/${p}.svg`; })));
@@ -188,8 +284,11 @@ const idx = k => KT.indexOf(k);
 function kamera(k, t, posAktor) {
   const lokal = t - k.mulai, d = Math.max(.5, k.selesai - k.mulai), j = k.kamera?.jenis || 'lebar';
   let z = 1, fx = 360, fy = 640, gx = 0, gy = 0;
-  if (j === 'dorong') z = 1 + .1 * ez(cl(lokal / d));
-  if (j === 'dekat' && posAktor[k.kamera.target]) { z = 2.2; fx = posAktor[k.kamera.target][0]; fy = posAktor[k.kamera.target][1] + 60; }
+  const arah = k.no % 2 ? 1 : -1, p = ez(cl(lokal / d));
+  if (j === 'lebar') { z = 1.02 + .045 * p; fx = 360 + 22 * arah * p; }          // tidak pernah diam: dorong pelan bergantian arah
+  if (j === 'dorong') z = 1 + .1 * p;
+  if (j === 'geser') { z = 1.12; fx = 360 + 70 * arah * (2 * p - 1); }
+  if (j === 'dekat' && posAktor[k.kamera.target]) { z = 2.2; fx = posAktor[k.kamera.target][0]; fy = posAktor[k.kamera.target][1] - 40; }   // wajah di bawah caption
   if (j === 'goyang' && lokal < .5) { const a = 9 * (1 - lokal / .5); gx = a * Math.sin(lokal * 70); gy = a * Math.cos(lokal * 55); }
   z += .012 * Math.sin(t * .8);                       // napas kamera, selalu bergerak
   return {z, fx, fy, gx, gy};
@@ -277,13 +376,14 @@ window.render = function (t) {
     atas += `<g transform="translate(360 150) scale(${1 - cl((t - (kk.kartu.selesai - .25)) / .25)})"><rect x="-300" y="0" width="600" height="${86 + kk.kartu.butir.length * 92}" rx="22" fill="#141416" fill-opacity=".94" stroke="#E8A847" stroke-width="3"/><text x="0" y="56" text-anchor="middle" font-size="32" font-weight="800" fill="#E8A847" font-family="Mont">${kk.kartu.judul}</text>${kk.kartu.butir.map((b, j) => `<g transform="translate(-270 ${96 + j * 92})"><rect width="54" height="54" rx="12" fill="${t >= b.t ? C.cahaya : 'none'}" stroke="#E8A847" stroke-width="3"/>${t >= b.t ? `<path d="M12,28 L24,40 L44,14" ${ST(8, '#fff')} fill="none"/>` : ''}${teksButir(b.teks, t >= b.t ? '#FFFFFF' : '#7A7A7A')}</g>`).join('')}</g>`;
   }
   const ataA = KT.slice(0, i + 1).reverse().find(x => x.ata && t >= x.ata.mulai && t <= x.ata.selesai)?.ata || (KT[i + 1]?.ata && KT[i + 1].ata.masuk === 'sapuan' && t >= KT[i + 1].ata.mulai ? KT[i + 1].ata : null);
-  const capX = 360;
+  const SIS = gambarSisipan(k, t);
+  const capX = 360, capY = SIS.aktif ? 455 : 565;
   const w = kataKini(t);
-  const cap = w ? `<text x="${capX}" y="565" text-anchor="middle" font-size="31" font-weight="700" fill="#FFFFFF" stroke="rgba(0,0,0,.55)" stroke-width="5" paint-order="stroke" font-family="Mont">${w.w}</text>` : '';
+  const cap = w ? `<text x="${capX}" y="${capY}" text-anchor="middle" font-size="31" font-weight="700" fill="#FFFFFF" stroke="rgba(0,0,0,.55)" stroke-width="5" paint-order="stroke" font-family="Mont">${w.w}</text>` : '';
   const src = '';  // sumber tidak ditampilkan di video (pemilik); tetap di kartu-riset.yaml
   $('layar').innerHTML = `<defs><radialGradient id="cahaya"><stop offset="0" stop-color="${C.cahaya}" stop-opacity=".9"/><stop offset="1" stop-color="${C.cahaya}" stop-opacity="0"/></radialGradient>
     <radialGradient id="vinyet" cx=".5" cy=".45" r=".75"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".75"/></radialGradient></defs>
-    ${dunia}${debu(t)}<rect width="720" height="1280" fill="url(#vinyet)"/><rect width="720" height="1280" fill="#000" opacity="${pindahLatar}"/>${atas}${cap}${src}`;
+    ${dunia}${debu(t)}<rect width="720" height="1280" fill="url(#vinyet)"/><rect width="720" height="1280" fill="#000" opacity="${pindahLatar}"/>${SIS.svg}${atas}${cap}${src}`;
   // Ata
   const e = $('ata'), a = ataA;
   if (!a) { e.style.opacity = 0; return; }
@@ -297,6 +397,6 @@ window.render = function (t) {
   e.style.width = lebarA + 'px'; e.style.left = x + 'px'; e.style.top = y + 'px'; e.style.opacity = op * habis;
   e.style.transform = `rotate(${rot}deg) scale(${sc * (sisi < 0 && a.pose !== 'mengintip' ? -1 : 1)}, ${sc})`;
 };
-window.KOSAKATA = {latar: Object.keys(LATAR), peran: Object.keys(PERAN), ekspresi: Object.keys(EKSPRESI), aksi: Object.keys(AKSI), props: Object.keys(PROPS)};
+window.KOSAKATA = {latar: Object.keys(LATAR), peran: Object.keys(PERAN), ekspresi: Object.keys(EKSPRESI), aksi: Object.keys(AKSI), props: Object.keys(PROPS), sisipan: Object.keys(SISIPAN)};
 window.render(0); window.READY = true;
 </script></body></html>

@@ -18,7 +18,7 @@ Butuh `ffmpeg`, Node, dan Chromium Playwright (sudah ada di Claude Code web).
 Semua langkah mekanis deterministik, tanpa LLM dan tanpa API berbayar. Contoh lengkap: `contoh/ep01-planning-fallacy/`.
 
 ## Visual
-Figur gaya video referensi 03 (kepala bulat besar, badan kotak berwarna, lengan dan kaki tabung, wajah garis tipis) di latar hitam sesuai tempat cerita dengan cahaya amber, caption kecil putih, close-up, dan transisi double exposure (`config/kosakata.yaml`: 12 latar, 12 peran, 11 ekspresi, 19 aksi, 26 props), isyarat visual per kata (`@kata`), grafik data, kartu simpan, dan Ata (9 pose) muncul di momen tertentu. Mesin: `render/mesin.html`.
+Figur gaya video referensi 03 (kepala bulat besar, badan kotak berwarna, lengan dan kaki tabung, wajah garis tipis) di latar hitam sesuai tempat cerita dengan cahaya amber, caption kecil putih, close-up, dan transisi double exposure (`config/kosakata.yaml`: 12 latar, 12 peran, 11 ekspresi, 19 aksi, 26 props), isyarat visual per kata (`@kata`), SISIPAN layar penuh yang memvisualkan kata secara harfiah (HP yang feed-nya digulir, jam berputar kencang, kalender tersobek, layar laptop, chat, struk tagihan, akar tumbuh), kamera yang tidak pernah diam, grafik data, kartu simpan, dan Ata (9 pose) muncul di momen tertentu. Mesin: `render/mesin.html`.
 
 ## Sudah ada
 - `aset/maskot/asli/`: SVG asli Lumi dan Jago (tidak diubah).
