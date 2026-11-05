@@ -7,6 +7,7 @@ Bahasa kerja: Indonesia. Merek: Sobat Ambis (mentoring lomba dan les privat, htt
 - Aturan keras Ata (`config/tokoh.yaml`): hanya meledek situasi, berhenti bercanda bila topiknya menyangkut orang yang down, trik hanya yang legal, klaim riset wajib bersumber dan dicek.
 - Naskah: jurnal internasional dibungkus alegori (referensi 03): hook paradoks, alegori, putaran, nama konsep, data nyata bersumber, trik legal, kalimat penutup. Pilih temuan yang sudah direplikasi. Ata muncul hanya di momen tertentu (referensi 06), satu suara per video.
 - Semua visual dibuat Claude (latar, grafik, kartu); gaya animasi mengikuti `referensi/ringkasan.md`.
+- **Latar wajib sesuai tempat cerita** (kota ya kota, pasar ya pasar, sekolah ya sekolah, desa ya desa): langit, bangunan, benda, dan warna alaminya. Bidang krem/peach polos BUKAN latar adegan; hanya untuk kartu, judul, dan grafik data.
 - Jangan memanggil API ElevenLabs atau layanan berbayar lain tanpa izin pemilik di sesi itu. Suara dibuat pemilik sendiri; uji memakai fixture dan audio palsu.
 - Hemat token: pekerjaan mekanis (parse naskah, lembar tempel, potong audio, timeline, render, QA) lewat script Python deterministik, bukan LLM. LLM hanya untuk hal kreatif (prompt naskah, analisis gaya).
 - Aset sumber di `aset/maskot/asli/` dan `aset/maskot/panda/asli/` tidak boleh diubah. Pose Ata dibuat ulang dengan `python -m scripts.potong_pose`.
