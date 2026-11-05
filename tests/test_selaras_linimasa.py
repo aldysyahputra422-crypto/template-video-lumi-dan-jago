@@ -7,7 +7,7 @@ import pytest
 from scripts import linimasa, naskah_format as nf, selaras
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTOH = ROOT / "contoh/ep01-planning-fallacy"
+CONTOH = ROOT / "contoh/tenggat-planning-fallacy"
 
 
 def _naskah(tmp_path):

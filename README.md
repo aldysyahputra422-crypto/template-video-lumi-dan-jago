@@ -9,13 +9,13 @@ npm install --prefix render
 ```
 Butuh `ffmpeg`, Node, dan Chromium Playwright (sudah ada di Claude Code web).
 
-1. `/naskah <id> "<topik>"`: Claude meriset dan memverifikasi jurnal, menulis `episode/<id>/kartu-riset.yaml`, lalu `prompt-chatgpt.md`.
-2. Tempel prompt ke ChatGPT, simpan jawabannya sebagai `episode/<id>/tempelan.txt`.
-3. `/olah <id>`: impor format blok → lint standar naskah (angka riset dicek ke kartu) → **Approval 1** (`"disetujui": true`) → `lembar-elevenlabs.md`.
-4. Generate di ElevenLabs (satu suara Ata), simpan sebagai `episode/<id>/suara.mp3`.
-5. `/olah <id>` lagi: selaras per kata (Whisper lokal) → linimasa → campur (-14 LUFS) → render stickman → QA → `video.mp4` (**Approval 2**).
+1. `/naskah <nama> "<topik>"`: Claude meriset dan memverifikasi jurnal, menulis `video/<nama>/kartu-riset.yaml`, lalu `prompt-chatgpt.md`.
+2. Tempel prompt ke ChatGPT, simpan jawabannya sebagai `video/<nama>/tempelan.txt`.
+3. `/olah <nama>`: impor format blok → lint standar naskah (angka riset dicek ke kartu) → **Approval 1** (`"disetujui": true`) → `lembar-elevenlabs.md`.
+4. Generate di ElevenLabs (satu suara Ata), simpan sebagai `video/<nama>/suara.mp3`.
+5. `/olah <nama>` lagi: selaras per kata (Whisper lokal) → linimasa → campur (-14 LUFS) → render stickman → QA → `video.mp4` (**Approval 2**).
 
-Semua langkah mekanis deterministik, tanpa LLM dan tanpa API berbayar. Contoh lengkap: `contoh/ep01-planning-fallacy/`.
+Semua langkah mekanis deterministik, tanpa LLM dan tanpa API berbayar. Contoh lengkap: `contoh/tenggat-planning-fallacy/`.
 
 ## Visual
 Figur gaya video referensi 03 (kepala bulat besar, badan kotak berwarna, lengan dan kaki tabung, wajah garis tipis) di latar hitam sesuai tempat cerita dengan cahaya amber, caption kecil putih, close-up, dan transisi double exposure (`config/kosakata.yaml`: 12 latar, 12 peran, 11 ekspresi, 19 aksi, 26 props), isyarat visual per kata (`@kata`), SISIPAN layar penuh yang memvisualkan kata secara harfiah (HP yang feed-nya digulir, jam berputar kencang, kalender tersobek, layar laptop, chat, struk tagihan, akar tumbuh), kamera yang tidak pernah diam, grafik data, kartu simpan, dan Ata (9 pose) muncul di momen tertentu. Mesin: `render/mesin.html`.

@@ -7,7 +7,7 @@ import pytest
 from scripts import naskah_format as nf
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTOH = ROOT / "contoh/ep01-planning-fallacy"
+CONTOH = ROOT / "contoh/tenggat-planning-fallacy"
 TEKS = (CONTOH / "tempelan.txt").read_text(encoding="utf-8")
 
 
@@ -25,7 +25,7 @@ def test_contoh_lolos_dan_sesuai_skema():
     assert h.galat == [], [str(g) for g in h.galat]
     n = h.naskah
     jsonschema.validate(n, nf.SKEMA)
-    assert n["id"] == "ep01" and n["sumber"] == "buehler1994" and n["disetujui"] is False
+    assert n["id"] == "tenggat-tugas" and n["sumber"] == "buehler1994" and n["disetujui"] is False
     assert len(n["ketukan"]) == 17
 
 
@@ -84,7 +84,7 @@ def test_toleran_gaya_chatgpt():
 def test_cli_menulis_naskah_dan_koreksi(tmp_path, capsys):
     (tmp_path / "tempelan.txt").write_text(TEKS, encoding="utf-8")
     assert nf.main([str(tmp_path)]) == 0
-    assert json.loads((tmp_path / "naskah.json").read_text())["id"] == "ep01"
+    assert json.loads((tmp_path / "naskah.json").read_text())["id"] == "tenggat-tugas"
     (tmp_path / "tempelan.txt").write_text(_ubah("LATAR: kamar", "LATAR: planet_mars"), encoding="utf-8")
     assert nf.main([str(tmp_path)]) == 1
     assert "planet_mars" in (tmp_path / "koreksi-chatgpt.md").read_text()

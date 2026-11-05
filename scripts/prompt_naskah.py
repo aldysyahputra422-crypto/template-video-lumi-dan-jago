@@ -10,7 +10,7 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTOH = ROOT / "contoh/ep02-root-cause/tempelan.txt"
+CONTOH = ROOT / "contoh/kedai-5whys/tempelan.txt"
 
 
 def _y(p: Path) -> dict:

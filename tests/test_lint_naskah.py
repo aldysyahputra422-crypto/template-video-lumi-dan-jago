@@ -8,7 +8,7 @@ from scripts import lint_naskah as ln
 from scripts import naskah_format as nf
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTOH = ROOT / "contoh/ep01-planning-fallacy"
+CONTOH = ROOT / "contoh/tenggat-planning-fallacy"
 TEKS = (CONTOH / "tempelan.txt").read_text(encoding="utf-8")
 KARTU = yaml.safe_load((CONTOH / "kartu-riset.yaml").read_text(encoding="utf-8"))
 
@@ -89,7 +89,7 @@ def test_kartu_berjudul_ajakan_ditolak():
 
 
 def test_patokan_root_cause_lolos_tanpa_peringatan():
-    d = ROOT / "contoh/ep02-root-cause"
+    d = ROOT / "contoh/kedai-5whys"
     n = nf.urai((d / "tempelan.txt").read_text(encoding="utf-8")).naskah
     r = ln.periksa(n, yaml.safe_load((d / "kartu-riset.yaml").read_text(encoding="utf-8")))
     assert r["galat"] == [] and r["peringatan"] == []

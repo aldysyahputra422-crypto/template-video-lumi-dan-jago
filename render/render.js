@@ -1,5 +1,5 @@
-// Render frame demi frame (deterministik) dari <folder_episode>/timeline.json memakai render/mesin.html.
-// Pakai: node render/render.js <folder_episode> <folder_frame> [fps] [t1,t2,...]   (daftar t = hanya frame cek, PNG)
+// Render frame demi frame (deterministik) dari <folder_video>/timeline.json memakai render/mesin.html.
+// Pakai: node render/render.js <folder_video> <folder_frame> [fps] [t1,t2,...]   (daftar t = hanya frame cek, PNG)
 const http = require('http'), fs = require('fs'), path = require('path'); const { chromium } = require('playwright');
 const ROOT = path.resolve(__dirname, '..'), EP = path.resolve(process.argv[2]), OUT = path.resolve(process.argv[3]), FPS = +(process.argv[4] || 30);
 const CEK = process.argv[5] ? process.argv[5].split(',').map(Number) : null;

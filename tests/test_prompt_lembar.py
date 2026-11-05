@@ -7,11 +7,11 @@ import yaml
 from scripts import lembar, naskah_format as nf, prompt_naskah as pn
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTOH = ROOT / "contoh/ep01-planning-fallacy"
+CONTOH = ROOT / "contoh/tenggat-planning-fallacy"
 
 
 def _folder(tmp_path):
-    f = tmp_path / "ep02"
+    f = tmp_path / "rapat-bmc"
     f.mkdir()
     shutil.copy(CONTOH / "kartu-riset.yaml", f / "kartu-riset.yaml")
     return f
@@ -24,7 +24,7 @@ def test_prompt_memuat_semua_bahan(tmp_path):
         assert all(n in p for n in k[bagian]), bagian
     assert all(e in p for e in k["ekspresi"])
     assert all(f"`{s}`" in p for s in k["sisipan"]) and "SISIPAN:" in p and "geser" in p and "hook diam" in p.lower() or False
-    assert "33.9" in p and "Buehler" in p and "tenggat tugas" in p and "ep02" in p
+    assert "33.9" in p and "Buehler" in p and "tenggat tugas" in p and "rapat-bmc" in p
     assert "Ata" in p and "plester" in p
     for frasa in ("hook", "KARTU", "callback", "FAKTA", "@kata"):
         assert frasa in p, frasa

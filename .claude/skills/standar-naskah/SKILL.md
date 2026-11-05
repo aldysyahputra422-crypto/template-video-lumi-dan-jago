@@ -29,4 +29,4 @@ Pilar: skill yang tidak diajarkan di sekolah atau kampus, dan komponen lomba. Uj
 - Apakah klaim di cerita tidak melebihi temuan makalah (lihat `batas` di kartu riset)?
 
 ## Contoh yang lolos
-`contoh/ep02-root-cause/tempelan.txt` (patokan alur: cerita gagal, bertanya sampai akar, teori, kritik, trik, callback). Contoh lain: `contoh/ep01-planning-fallacy/tempelan.txt`.
+`contoh/kedai-5whys/tempelan.txt` (patokan alur: cerita gagal, bertanya sampai akar, teori, kritik, trik, callback). Contoh lain: `contoh/tenggat-planning-fallacy/tempelan.txt`.

@@ -1,4 +1,4 @@
-"""/olah: jalankan seluruh produksi satu episode dan berhenti di titik yang butuh pemilik.
+"""/olah: jalankan seluruh produksi satu video dan berhenti di titik yang butuh pemilik.
 
 python -m scripts.olah <folder>   → satu baris JSON {kode, berhenti_di, instruksi, ...}
 Kode: 0 video jadi dan lulus QA, 1 gagal teknis, 4 Approval 1 (naskah), 5 butuh suara / suara tidak cocok, 6 butuh tempelan atau koreksi.

@@ -10,7 +10,7 @@ import soundfile as sf
 from scripts import campur, naskah_format as nf, olah, qa
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTOH = ROOT / "contoh/ep01-planning-fallacy"
+CONTOH = ROOT / "contoh/tenggat-planning-fallacy"
 
 
 def _timeline_sederhana(f: Path, durasi=4.0):

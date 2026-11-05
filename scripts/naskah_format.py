@@ -2,7 +2,7 @@
 
 python -m scripts.naskah_format <folder> [tempelan.txt] [--timpa]
 Kode: 0 jadi, 1 ada galat (lihat <folder>/koreksi-chatgpt.md), 7 menolak menimpa naskah yang sudah disetujui.
-Format lengkap dan contoh: scripts/prompt_naskah.py dan contoh/ep01-planning-fallacy/tempelan.txt.
+Format lengkap dan contoh: scripts/prompt_naskah.py dan contoh/tenggat-planning-fallacy/tempelan.txt.
 """
 import functools
 import json
