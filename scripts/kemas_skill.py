@@ -29,7 +29,8 @@ def _kosakata() -> str:
     teruji = [n for n, v in tag.items() if v.get("terverifikasi") == "pemilik"]
     return "\n".join([
         "## Kosakata bawaan (nama lain dideklarasikan di ##ASET)",
-        f"- LATAR: {daftar(k['latar'])}",
+        "- LATAR: **selalu dunia khusus video ini**, dideklarasikan di ##ASET (istana di tepi laut, sumur tua, ruang kuliah bertingkat,"
+        " landasan pesawat senja, hutan malam). Satu-satunya latar bawaan: kosong (gelap polos, untuk penamaan konsep).",
         f"- PERAN: {daftar(k['peran'])}",
         f"- EKSPRESI: {', '.join(k['ekspresi'])}",
         f"- AKSI: {daftar(k['aksi'])}",
@@ -45,6 +46,22 @@ def _kosakata() -> str:
 def lembar_dari_teks(naskah: str) -> str:
     """Lembar ElevenLabs dari teks naskah blok: '[tag]\\nkalimat' per UCAP, dipisah baris kosong (format sama dengan scripts.lembar)."""
     return "\n\n".join(lembar._baris(m) for m in re.findall(r"^UCAP:\s*(.+)$", naskah, re.M))
+
+
+def bersihkan_mesin(m: Path) -> None:
+    """Paket olah-reels hanya membawa gaya referensi: tanpa kode maskot, tanpa latar bawaan era lama, tanpa skrip naga atau pose."""
+    h = m / "render/mesin.html"
+    s = h.read_text(encoding="utf-8")
+    s = re.sub(r"[ \t]*/\*<(ATA|LATAR_BAWAAN)>\*/.*?/\*</\1>\*/\n?", "", s, flags=re.S)
+    s = s.replace('<img id="ata">', "").replace("// ---------- Ata (pose PNG/SVG dari aset/maskot/panda/pose) ----------\n", "")
+    h.write_text(s, encoding="utf-8")
+    k = yaml.safe_load((m / "config/kosakata.yaml").read_text(encoding="utf-8"))
+    k["latar"] = {n: v for n, v in k["latar"].items() if n == "kosong"} if isinstance(k["latar"], dict) else ["kosong"]
+    for kunci in ("ata_tempat", "ata_masuk"):
+        k.pop(kunci, None)
+    (m / "config/kosakata.yaml").write_text(yaml.safe_dump(k, allow_unicode=True, sort_keys=False), encoding="utf-8")
+    for f in ("scripts/gambar_jago_datar.py", "scripts/potong_pose.py"):
+        (m / f).unlink(missing_ok=True)
 
 
 def _zip(folder: Path, keluar: Path) -> Path:
@@ -92,6 +109,7 @@ def kemas(keluar: Path) -> dict:
                                              + yaml.safe_dump({"akun": akun}, allow_unicode=True, sort_keys=False), encoding="utf-8")
         tag = m / "config/tag_ekspresi.yaml"
         tag.write_text(tag.read_text(encoding="utf-8").replace("suara Ata", "suara narator"), encoding="utf-8")
+        bersihkan_mesin(m)
         (m / "video").mkdir()
         hasil["olah-reels"] = _zip(o, keluar / "olah-reels.zip")
     return hasil

@@ -6,6 +6,7 @@ AKTOR raja: raja bermahkota emas, jubah merah, kumis, tubuh pendek
 AKTOR pekerja: pekerja bertopi caping, kemeja abu, membawa balok kayu
 PROPS jembatan: jembatan kayu panjang dari tiang-tiang, setengah jadi
 PROPS emas: tumpukan koin emas di peti
+LATAR kota_malam: jalan kota malam, gedung kantor dan apartemen berjendela kuning, lampu jalan
 SISIPAN timbangan: timbangan besar, satu sisi peti emas, sisi lain jam pasir yang terus berkurang
 ##KETUKAN 01
 UCAP: [curious] Seorang raja membangun jembatan ke pulau kosong.
@@ -87,7 +88,7 @@ UCAP: [serious] Kita bertahan pada keputusan buruk hanya karena sudah terlanjur 
 SISIPAN: timbangan @berkorban
 ##KETUKAN 17
 UCAP: [serious] Dan manusia juga begitu.
-LATAR: kota
+LATAR: kota_malam
 AKTOR: k=kamu tengah bingung
 KAMERA: dorong
 ##KETUKAN 18

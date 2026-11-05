@@ -46,3 +46,13 @@ def test_parser_abaikan_lembar_sesudah_akhir(tmp_path):
     (tmp_path / "tempelan.txt").write_text(contoh + "\n\n" + ks.lembar_dari_teks(contoh) + "\n", encoding="utf-8")
     kode, galat, _ = nf.proses(tmp_path)
     assert kode == 0, galat
+
+
+def test_mesin_paket_tanpa_maskot_dan_latar_lama(tmp_path):
+    o = zipfile.ZipFile(ks.kemas(tmp_path)["olah-reels"])
+    html = o.read("olah-reels/mesin/render/mesin.html").decode()
+    assert not re.search(r"panda|POSE_ATA|ataA|id=\"ata\"|perpustakaan:|kamar:|kelas:", html)
+    assert "kosong: t =>" in html and "function stickman" in html
+    kos = yaml.safe_load(o.read("olah-reels/mesin/config/kosakata.yaml"))
+    assert list(kos["latar"]) == ["kosong"] and "ata_tempat" not in kos
+    assert not any(x.endswith(("gambar_jago_datar.py", "potong_pose.py")) for x in o.namelist())

@@ -50,3 +50,7 @@ export default (GAYA) => {
 - Watermark: Roboto Bold ±40 px, abu-abu ±42% transparan, berpindah di pita atas (7 sampai 11% tinggi) tiap 9 dtk.
 - Vinyet tepi kuat, tengah terang; grain film saat encode (`scripts/render.py` GRAIN).
 - Rentang referensi: terang 11 sampai 49, sudut/tengah 0,03 sampai 0,34, grain 1,8 sampai 4,8 (`config/gaya.yaml` target_visual).
+- Figur dasar (2026-11-05): kepala ±22% tinggi figur, kaki panjang bercelana gelap, badan blok bahu kotak, lengan batang tipis, garis
+  tepi tipis, wajah kecil (mata titik, mulut garis). Proporsi diukur dari referensi; desain tokoh tetap milik sendiri.
+- TEKS tampil sebagai papan tulisan di dalam adegan (kayu gelap, bingkai emas tipis), bukan judul besar melayang.
+- Profil filosofi: setiap LATAR wajib dideklarasikan di ##ASET (dunia khusus per video); hanya `kosong` yang bawaan.

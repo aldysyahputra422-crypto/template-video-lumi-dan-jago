@@ -189,3 +189,13 @@ def test_profil_ata_tetap_periksa_pose(monkeypatch):
     monkeypatch.setattr(nf, "profil", lambda: {"wajib_kartu": True, "maskot": "Ata"})
     monkeypatch.setattr(nf, "pose_ata", lambda: {})
     assert any("pose ata" in g.pesan for g in nf.urai(TEKS).galat)
+
+
+def test_profil_filosofi_wajib_latar_dari_aset(monkeypatch):
+    monkeypatch.setattr(nf, "profil", lambda: {"wajib_kartu": False, "maskot": None, "kartu": False, "latar_bawaan": False})
+    dasar = "##VIDEO uji | Uji\n##SUMBER x\n##KETUKAN 01\nUCAP: [serious] Seorang raja berdiri di menara.\nLATAR: {}\nAKTOR: r=raja tengah datar\n##AKHIR\n"
+    assert any("##ASET" in g.pesan for g in nf.urai(dasar.format("perpustakaan")).galat)
+    latar_galat = lambda teks: [g for g in nf.urai(teks).galat if "latar" in g.pesan]
+    assert not latar_galat(dasar.format("kosong"))
+    dengan = dasar.format("menara_batu").replace("##KETUKAN 01", "##ASET\nLATAR menara_batu: menara batu di bukit malam\n##KETUKAN 01")
+    assert not latar_galat(dengan)

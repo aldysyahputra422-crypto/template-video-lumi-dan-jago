@@ -28,7 +28,8 @@ itu dan mulai dari langkah 5; bila belum ada topik, jalankan metode `topik-reels
    satu kalimat tanya (putaran). Sekitar 1 dari 4 kalimat dibuka kata sambung (Dan, Tapi, Lalu, Jadi, Padahal). Satu kalimat per ketukan;
    kalimat pukulan boleh digabung dengan kalimat sebelumnya dalam satu ketukan.
 7. **Visual per ketukan** (format di bawah): setiap kalimat diberi isyarat visual; aset yang tidak ada di kosakata bawaan dideklarasikan di
-   `##ASET` dengan deskripsi singkat (ilustrator menggambarnya dengan gaya yang sama). Tokoh penonton di bagian pemetaan memakai peran `kamu`
+   `##ASET` dengan deskripsi singkat (ilustrator menggambarnya dengan gaya yang sama). **Setiap latar wajib dideklarasikan di ##ASET**
+   (dunia khusus per video, seperti akun referensi); hanya `kosong` yang bawaan. Tokoh penonton di bagian pemetaan memakai peran `kamu`
    (tokoh kuning). Kerumunan: `xJUMLAH`.
 8. **Tag suara**: satu tag ElevenLabs di depan setiap kalimat UCAP.
 9. **Caption**: baris pertama = penutup paralel; lalu sumber (Penulis, Tahun, Judul).

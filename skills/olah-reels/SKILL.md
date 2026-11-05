@@ -19,7 +19,7 @@ Butuh Python 3.11+, Node 18+, dan ffmpeg (macOS: `brew install ffmpeg`; Windows:
 `config/tokoh.yaml` (`akun.nama_akun`). Cek kesiapan: `.venv/bin/python -m scripts.periksa_siap --tanpa-test`.
 
 ## Alur satu video
-1. Buat `mesin/video/<nama>/`, simpan naskah apa adanya sebagai `tempelan.txt` (garis miring sisa salin dibuang otomatis).
+1. Buat folder `mesin/video/<nama>/` (folder `video/` dibuat sendiri bila belum ada), simpan naskah apa adanya sebagai `tempelan.txt` (garis miring sisa salin dibuang otomatis).
    Bila ada angka riset, tulis `kartu-riset.yaml` (contoh: `mesin/docs/`), atau hapus baris `FAKTA: ya`.
 2. Jalankan `.venv/bin/python -m scripts.olah video/<nama>`. Hasilnya satu baris JSON; ikuti `kode`:
 
@@ -45,6 +45,8 @@ Butuh Python 3.11+, Node 18+, dan ffmpeg (macOS: `brew install ffmpeg`; Windows:
 - Caption satu kata, Roboto Bold ±27 px, putih dengan bayangan lembut, di tengah pada 43% tinggi layar.
 - Watermark Roboto Bold ±40 px, abu-abu setengah transparan, berpindah di pita atas tiap 9 dtk sambil bergeser pelan.
 - Vinyet kuat di tepi, tengah tetap terang (sorot); grain film halus saat encode; kamera selalu bergerak; pergantian komposisi ±3 dtk.
+- Figur dasar: kepala ±22% tinggi, kaki panjang, badan blok, garis tipis. TEKS jadi papan tulisan di dalam adegan.
+- Setiap latar adalah dunia khusus video ini (dari ##ASET, digambar di aset.js); hanya `kosong` yang bawaan.
 - Palet hitam hangat, cokelat, krem, emas (`config/gaya.yaml` palet). Tokoh, latar, dan benda digambar baru per video; jangan meniru
   tokoh kreator lain.
 

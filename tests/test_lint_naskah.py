@@ -162,8 +162,9 @@ def test_profil_filosofi_tanpa_kartu_dan_tanpa_ata(monkeypatch):
     t = re.sub(r"^ATA:.*\n", "", t, flags=re.M)
     monkeypatch.setattr(ln, "_profil", lambda: PROFIL_ATA)
     assert any("KARTU" in g["pesan"] for g in _lint(t)["galat"])                    # profil ata (lama)
-    monkeypatch.undo()
-    r = _lint(t)                                                                     # profil filosofi (bawaan sekarang)
+    monkeypatch.setattr(nf, "profil", lambda: {"wajib_kartu": False, "maskot": None, "latar_bawaan": True})   # filosofi; fixture memakai latar bawaan
+    monkeypatch.setattr(ln, "_profil", lambda: {"wajib_kartu": False, "maskot": None})
+    r = _lint(t)
     assert not any("KARTU" in g["pesan"] for g in r["galat"]) and not any("Ata" in p["pesan"] for p in r["peringatan"])
 
 

@@ -182,7 +182,9 @@ class _Urai:
                 if not kt["ucap"]:
                     self.err(no, "UCAP kosong")
             elif lab == "LATAR":
-                if not self.ada("latar", isi):
+                if self.profil.get("latar_bawaan", True) is False and isi != "kosong" and isi not in self.ext["latar"]:
+                    self.err(no, f"latar '{isi}' belum dideklarasikan: profil ini memakai dunia khusus per video, tulis LATAR {isi}: <deskripsi tempat> di ##ASET (atau pakai kosong)")
+                elif not self.ada("latar", isi):
                     self.err(no, f"latar tidak dikenal: {isi}. Latar: {', '.join(self.k['latar'])}.{self.saran('latar')}")
                 latar = kt["latar"] = isi
                 pemeran = set()
