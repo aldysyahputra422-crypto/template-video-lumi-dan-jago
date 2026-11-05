@@ -1,0 +1,197 @@
+# Kosakata tag ekspresi suara (disalin dan digeneralkan dari repo sobatambis-marketing). Dibaca prompt ChatGPT, parser, dan lembar ElevenLabs.
+# Tag di luar daftar DITOLAK oleh scripts/senggang/impor.py (tidak ditebak).
+#
+# terverifikasi:
+#   dokumentasi = tag tertulis di dokumentasi resmi ElevenLabs (best-practices, diperiksa 2026-11-05).
+#   belum       = BELUM terbukti. Dokumentasi hanya bilang v3 boleh menerima tag deskriptif bebas dan hasilnya
+#                 bergantung suara. Pemilik menguji setelah berlangganan, lalu mengubah nilai ini.
+# Berkas ini TIDAK mengklaim tag berfungsi untuk bahasa Indonesia (dokumentasi tidak menyebut dukungan bahasa).
+# cadangan = tag terverifikasi yang dipakai pemilik bila tag aslinya tidak berpengaruh saat diuji.
+#
+# emosi harus salah satu enum skema naskah2 dan selaras dengan tabel sistem emosi di skills/sa-cerita/references/story-bible.md.
+versi: 1
+sumber_dokumentasi: https://elevenlabs.io/docs/overview/capabilities/text-to-speech/best-practices
+diperiksa: 2026-11-05
+
+# Awalan khusus di dalam kurung siku pada baris dialog. Tidak pernah dikirim ke ElevenLabs.
+non_suara:
+  aksi: "[aksi: banting]  -> aksi tokoh penutur (nama aksi dari pustaka template), jatuh di kata berikutnya"
+  sfx: "[sfx: bel]       -> efek bunyi di kata berikutnya"
+  narasi: "[narasi: ...]   -> catatan penulis, dibuang dari dialog dan lembar ElevenLabs"
+
+tag:
+  # --- usulan pemilik ---
+  tense:
+    jenis: suara
+    emosi: tertekan
+    intensitas: 6
+    elevenlabs: "[tense]"
+    terverifikasi: belum
+    cadangan: "[whispers]"
+  curious:
+    jenis: suara
+    emosi: semangat
+    intensitas: 4
+    elevenlabs: "[curious]"
+    terverifikasi: dokumentasi
+  ominous:
+    jenis: suara
+    emosi: misterius
+    intensitas: 7
+    elevenlabs: "[ominous]"
+    terverifikasi: belum
+    cadangan: "[whispers]"
+  confused:
+    jenis: suara
+    emosi: kaget
+    intensitas: 3
+    elevenlabs: "[confused]"
+    terverifikasi: belum
+    cadangan: "[curious]"
+  slowly:
+    jenis: pengubah
+    delta: 0
+    elevenlabs: "[slowly]"
+    terverifikasi: belum
+    cadangan: "[long pause]"
+  # --- dari TAG_KUAT (scripts/suara/produksi.py) dan tabel emosi story-bible ---
+  excited:
+    jenis: suara
+    emosi: semangat
+    intensitas: 7
+    elevenlabs: "[excited]"
+    terverifikasi: dokumentasi
+  shouting:
+    jenis: suara
+    emosi: marah
+    intensitas: 9
+    elevenlabs: "[shouting]"
+    terverifikasi: belum   # dokumentasi hanya menyebutnya sebagai contoh tag yang mungkin tidak dilatih pada suara
+    cadangan: "[angry]"
+  frustrated:
+    jenis: suara
+    emosi: marah
+    intensitas: 6
+    elevenlabs: "[frustrated]"
+    terverifikasi: belum
+    cadangan: "[annoyed]"
+  angry:
+    jenis: suara
+    emosi: marah
+    intensitas: 7
+    elevenlabs: "[angry]"
+    terverifikasi: dokumentasi
+  annoyed:
+    jenis: suara
+    emosi: marah
+    intensitas: 5
+    elevenlabs: "[annoyed]"
+    terverifikasi: dokumentasi
+  sighs:
+    jenis: suara
+    emosi: tertekan
+    intensitas: 5
+    elevenlabs: "[sighs]"
+    terverifikasi: dokumentasi
+  tired:
+    jenis: suara
+    emosi: lelah
+    intensitas: 5
+    elevenlabs: "[tired]"
+    terverifikasi: belum
+    cadangan: "[sighs]"
+  quietly:
+    jenis: suara
+    emosi: hancur
+    intensitas: 6
+    elevenlabs: "[quietly]"
+    terverifikasi: belum
+    cadangan: "[whispers]"
+  sad:
+    jenis: suara
+    emosi: hancur
+    intensitas: 5
+    elevenlabs: "[sad]"
+    terverifikasi: dokumentasi
+  crying:
+    jenis: suara
+    emosi: hancur
+    intensitas: 8
+    elevenlabs: "[crying]"
+    terverifikasi: dokumentasi
+  gasps:
+    jenis: suara
+    emosi: kaget
+    intensitas: 8
+    elevenlabs: "[gasps]"
+    terverifikasi: belum   # dokumentasi hanya memuat [happy gasp]
+    cadangan: "[surprised]"
+  surprised:
+    jenis: suara
+    emosi: kaget
+    intensitas: 6
+    elevenlabs: "[surprised]"
+    terverifikasi: dokumentasi
+  whispers:
+    jenis: suara
+    emosi: misterius
+    intensitas: 6
+    elevenlabs: "[whispers]"
+    terverifikasi: dokumentasi
+  warm:
+    jenis: suara
+    emosi: hangat
+    intensitas: 4
+    elevenlabs: "[warm]"
+    terverifikasi: belum
+    cadangan: "[happy]"
+  happy:
+    jenis: suara
+    emosi: semangat
+    intensitas: 5
+    elevenlabs: "[happy]"
+    terverifikasi: dokumentasi
+  laughs:
+    jenis: suara
+    emosi: semangat
+    intensitas: 6
+    elevenlabs: "[laughs]"
+    terverifikasi: dokumentasi
+  sarcastic:
+    jenis: suara
+    emosi: datar
+    intensitas: 5
+    elevenlabs: "[sarcastic]"
+    terverifikasi: dokumentasi
+  deadpan:
+    jenis: suara
+    emosi: datar
+    intensitas: 3
+    elevenlabs: "[deadpan]"
+    terverifikasi: belum
+    cadangan: "[sarcastic]"
+  # --- pengubah (tidak mengubah emosi) ---
+  loudly:
+    jenis: pengubah
+    delta: 2
+    elevenlabs: "[loudly]"
+    terverifikasi: belum
+    cadangan: "[shouting]"
+  softly:
+    jenis: pengubah
+    delta: -2
+    elevenlabs: "[softly]"
+    terverifikasi: belum
+    cadangan: "[whispers]"
+  quickly:
+    jenis: pengubah
+    delta: 1
+    elevenlabs: "[quickly]"
+    terverifikasi: belum
+    cadangan: "[excited]"
+  pause:
+    jenis: pengubah
+    delta: 0
+    elevenlabs: "[short pause]"
+    terverifikasi: dokumentasi
+    cadangan: "[long pause]"

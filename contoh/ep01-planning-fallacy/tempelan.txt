@@ -1,0 +1,112 @@
+Tentu, ini naskahnya:
+
+##VIDEO ep01 | Otakmu bohong soal tenggat
+##SUMBER buehler1994
+
+##KETUKAN 01
+UCAP: [curious] Kamu bilang tugas ini kelar tiga hari.
+LATAR: kamar
+AKTOR: kamu=pelajar tengah senang
+AKSI: kamu sorak @kelar
+TEKS: 3 HARI @tiga
+ATA: mengintip kanan intip
+KAMERA: dorong
+
+##KETUKAN 02
+UCAP: [deadpan] Otakmu barusan bohong.
+EKSPRESI: kamu kaget @bohong
+PROPS: tanda_seru kepala:kamu muncul @bohong
+KAMERA: goyang
+
+##KETUKAN 03
+UCAP: [excited] Hari pertama, kamu bikin judul. Mantap.
+AKSI: kamu mengetik @bikin
+PROPS: laptop kiri muncul @judul
+EKSPRESI: kamu bangga @Mantap
+TEKS: HARI 1 @pertama
+
+##KETUKAN 04
+UCAP: [sighs] Hari ketiga, cari referensi, malah nonton video kucing.
+PROPS: kucing kiri membesar @kucing
+EKSPRESI: kamu senang @kucing
+TEKS: HARI 3 @ketiga
+
+##KETUKAN 05
+UCAP: Hari ketujuh, file-mu namanya final.
+PROPS: dokumen tangan:kamu muncul @file-mu
+TEKS: final.docx @final
+EKSPRESI: kamu datar @ketujuh
+
+##KETUKAN 06
+UCAP: [tense] Hari kesepuluh, final beneran.
+TEKS: final_beneran.docx @beneran
+EKSPRESI: kamu capek @kesepuluh
+
+##KETUKAN 07
+UCAP: [shouting] Malam tenggat, final beneran revisi fix!
+AKSI: kamu panik @Malam
+PROPS: jam kanan berputar @tenggat
+TEKS: final_beneran_revisi_fix.docx @fix
+KAMERA: goyang
+
+##KETUKAN 08
+UCAP: [warm] Kamu nggak malas.
+LATAR: kosong
+AKTOR: kamu=pelajar tengah sedih
+EKSPRESI: kamu malu @malas
+ATA: berpikir kanan sapuan
+
+##KETUKAN 09
+UCAP: Kamu kena planning fallacy, nebak waktu dari skenario paling lancar.
+TEKS: PLANNING FALLACY @planning
+AKSI: kamu garuk_kepala @nebak
+
+##KETUKAN 10
+UCAP: Tahun 1994, 37 mahasiswa disuruh nebak kapan skripsinya selesai.
+LATAR: perpustakaan
+AKTOR: m1=mahasiswa kiri bingung; m2=mahasiswa tengah datar; m3=mahasiswa kanan senang
+TEKS: 1994 @1994
+PROPS: kalender atas muncul @nebak
+FAKTA: ya
+
+##KETUKAN 11
+UCAP: Rata-rata nebak 34 hari.
+DATA: Tebakan rata-rata=33.9 hari @34
+AKSI: m2 menunjuk @34
+
+##KETUKAN 12
+UCAP: [surprised] Kenyataannya 55 setengah.
+DATA: Kenyataan=55.5 hari @55
+EKSPRESI: m1 kaget @Kenyataannya; m2 kaget @Kenyataannya; m3 kaget @Kenyataannya
+ATA: kaget kanan pop
+
+##KETUKAN 13
+UCAP: [whispers] Yang bikin merinding, tebakan paling pesimis mereka pun masih kecepetan.
+DATA: Tebakan terburuk=48.6 hari @pesimis
+EKSPRESI: m3 takut @merinding
+ATA: menatap kanan pop
+
+##KETUKAN 14
+UCAP: Jadi simpan ini.
+LATAR: kamar
+AKTOR: kamu=pelajar kiri senang
+KARTU: Simpan ini | Tulis tebakanmu @tulis | Cek tugas mirip, beneran selesai berapa hari @cek | Pakai angka yang lebih besar (1,6x) @pakai
+ATA: sombong kanan pop
+
+##KETUKAN 15
+UCAP: Satu, tulis tebakanmu. Dua, cek tugas mirip terakhir kali, beneran selesai berapa hari.
+AKSI: kamu membaca @cek
+PROPS: buku tangan:kamu muncul @cek
+
+##KETUKAN 16
+UCAP: Tiga, pakai angka yang lebih besar. Di studi itu, kenyataannya 1,6 kali tebakan.
+PROPS: grafik_naik tengah muncul @besar
+FAKTA: ya
+
+##KETUKAN 17
+UCAP: [laughs] Biar file-mu cukup satu nama, final.
+TEKS: final.docx @final
+PROPS: centang atas muncul @final
+EKSPRESI: kamu bangga @final
+ATA: tertawa kanan pop
+##AKHIR
