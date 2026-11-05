@@ -16,6 +16,7 @@ HOOK_MAKS_KATA = 10
 TERLARANG = re.compile(r"\b(bodoh|goblok|tolol|bego|idiot|iblis|setan)\b", re.I)
 SAPAAN = re.compile(r"\b(kamu|lu|lo|kau|anda)\b|\w+mu\b", re.I)
 KONTRADIKSI = re.compile(r"\b(ternyata|bukan|justru|padahal|bohong|salah|anehnya|nol)\b", re.I)
+TAK_TERUCAP = re.compile(r"[()\[\]/_%#&*]|\bdkk\b|\bet al\b", re.I)
 AJAKAN = re.compile(r"\b(simpan|save|share|bagikan|follow|ikuti|subscribe|komen|like|daftar|klik)\b", re.I)
 SATUAN = {"nol": 0, "satu": 1, "dua": 2, "tiga": 3, "empat": 4, "lima": 5, "enam": 6, "tujuh": 7, "delapan": 8, "sembilan": 9}
 KATA_ANGKA = set(SATUAN) | {"sepuluh", "sebelas", "belas", "puluh", "seratus", "ratus", "seribu", "ribu", "juta"}
@@ -116,6 +117,8 @@ def periksa(n: dict, kartu: dict | None) -> dict:
             G(k, f"ketukan {k['no']} tanpa isyarat visual (AKSI/EKSPRESI/PROPS/TEKS/DATA/KARTU/ATA/KAMERA)")
         if nk > 16:
             P(k, f"ketukan {k['no']} {nk} kata; pecah supaya visual berganti tiap 2 sampai 5 detik")
+        if TAK_TERUCAP.search(k["ucap"]):
+            G(k, f"UCAP harus bisa langsung diucapkan: \"{TAK_TERUCAP.search(k['ucap']).group(0)}\" ditemukan. Tulis seperti diucapkan (mis. 'Larsen dan rekan-rekannya, tahun 2009', '39 persen'), tanpa kurung, singkatan, garis miring, atau garis bawah")
         if AJAKAN.search(k["ucap"]):
             G(k, f"ajakan yang terasa jualan: \"{AJAKAN.search(k['ucap']).group(0)}\". Tunjukkan alatnya saja, jangan suruh simpan, bagikan, atau follow")
         if k["kartu"] and AJAKAN.search(k["kartu"]["judul"]):

@@ -125,3 +125,10 @@ def test_kalimat_pembuka_berulang_ditolak():
 def test_nama_konsep_terlalu_awal_ditolak():
     kartu = dict(KARTU, nama_konsep=["Otakmu"])
     assert any("nama konsep" in g["pesan"] for g in _lint(kartu=kartu)["galat"])
+
+
+@pytest.mark.parametrize("kalimat", ["Larsen dkk. (2009) menguji 40 orang.", "Hasilnya 39%/26% saja.", "Skor tes_berulang naik."])
+def test_ucap_yang_tidak_bisa_diucapkan_ditolak(kalimat):
+    t = TEKS.replace("UCAP: [deadpan] Otakmu barusan bohong.", f"UCAP: {kalimat}")
+    t = t.replace("@bohong", "@" + kalimat.split()[0].lower())
+    assert any("diucapkan" in g["pesan"] for g in _lint(t)["galat"])

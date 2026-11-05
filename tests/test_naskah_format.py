@@ -107,3 +107,9 @@ def test_sisipan_dibaca_dan_divalidasi():
     jsonschema.validate(h.naskah, nf.SKEMA)
     assert any("sisipan tidak dikenal" in str(g) for g in nf.urai(_ubah("SISIPAN: hp_scroll kucing @nonton", "SISIPAN: hp_terbang")).galat)
     assert any("isi sisipan" in str(g) for g in nf.urai(_ubah("SISIPAN: hp_scroll kucing @nonton", "SISIPAN: hp_scroll naga")).galat)
+
+
+def test_label_data_garis_bawah_jadi_spasi():
+    t = _ubah("DATA: Tebakan rata-rata=33.9 hari @34", "DATA: tebakan_rata_rata=33.9 hari @34")
+    k = next(k for k in nf.urai(t).naskah["ketukan"] if k["data"])
+    assert k["data"][0]["label"] == "tebakan rata rata"

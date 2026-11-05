@@ -68,6 +68,7 @@ JANGAN memperagakan teorinya terang-terangan sebelum putaran (mis. bertanya "ken
    "begadang" → `SISIPAN: jam_cepat @begadang`; "tagihan listrik naik" → `SISIPAN: tagihan @listrik`. Sumber jurnal tidak ditulis di layar.
 10. Ata hanya muncul di ketukan lapang (maksimal 1 aktor, tanpa SISIPAN/KARTU/DATA), maksimal 3 kali. Jangan memaksanya tampil di atas adegan yang sudah ramai.
 11. Nama konsep tidak boleh disebut sebelum 40% naskah; 4 ketukan berturut dengan kata pembuka sama ditolak (pola mudah ditebak).
+UCAP adalah teks yang langsung dibacakan suara: tulis seperti diucapkan ("Larsen dan rekan-rekannya, tahun 2009", "39 persen"), tanpa kurung, singkatan (dkk., et al.), garis miring, atau garis bawah.
 Tanpa tanda pisah panjang. Tanpa kata kasar. Tanpa politik, agama, tuduhan, atau orang sungguhan. Tanpa ajakan daftar, harga, atau "follow".
 
 ## 5. Format keluaran (blok bertanda, BUKAN JSON, BUKAN tabel)

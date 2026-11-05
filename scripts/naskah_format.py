@@ -201,7 +201,7 @@ class _Urai:
                     if not mm:
                         self.err(no, f"DATA harus: label=angka [satuan] [@kata], bukan '{a}'")
                         continue
-                    kt["data"].append({"label": mm.group(1).strip(), "nilai": float(mm.group(2).replace(",", ".")), "satuan": mm.group(3).strip(), "kata": kata})
+                    kt["data"].append({"label": mm.group(1).strip().replace("_", " "), "nilai": float(mm.group(2).replace(",", ".")), "satuan": mm.group(3).strip(), "kata": kata})
                     kt["fakta"] = True
             elif lab == "KARTU":
                 bag = [x.strip() for x in isi.split("|")]

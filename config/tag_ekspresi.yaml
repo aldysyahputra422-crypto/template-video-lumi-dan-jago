@@ -151,6 +151,20 @@ tag:
     intensitas: 5
     elevenlabs: "[happy]"
     terverifikasi: dokumentasi
+  confident:
+    jenis: suara
+    emosi: semangat
+    intensitas: 5
+    elevenlabs: "[confident]"
+    terverifikasi: belum   # dipakai pemilik 2026-11-05 (contekan-testing-effect); tandai setelah didengar
+    cadangan: "[happy]"
+  serious:
+    jenis: suara
+    emosi: datar
+    intensitas: 3
+    elevenlabs: "[serious]"
+    terverifikasi: belum   # dipakai pemilik 2026-11-05 (contekan-testing-effect); tandai setelah didengar
+    cadangan: "[deadpan]"
   laughs:
     jenis: suara
     emosi: semangat

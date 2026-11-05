@@ -49,11 +49,12 @@ def test_lembar_satu_suara_hanya_ucapan(tmp_path):
     assert nf.main([str(f)]) == 0
     teks = lembar.tulis(f).read_text(encoding="utf-8")
     blok = teks.split("```text\n", 1)[1].split("```", 1)[0]
-    assert blok.startswith("[curious] Kamu bilang tugas ini kelar tiga hari.")
-    assert "[shouting] Malam tenggat" in blok
+    assert blok.startswith("[curious]\nKamu bilang tugas ini kelar tiga hari.\n\n")   # tag di baris sendiri, siap tempel
+    assert "[shouting]\nMalam tenggat" in blok
+    assert (f / "lembar-elevenlabs.txt").read_text(encoding="utf-8") == blok   # versi teks polos untuk disalin
     for terlarang in ("LATAR", "AKSI", "@", "kamar", "TEKS"):
         assert terlarang not in blok, terlarang
-    assert blok.count("\n\n") == 16
+    assert blok.count("\n\n") == 16 and blok.count("[") == sum(1 for b in blok.split("\n\n") if b.startswith("["))
     assert "suara.mp3" in teks and "belum terverifikasi" in teks.lower()
 
 
