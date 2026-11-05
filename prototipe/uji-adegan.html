@@ -1,0 +1,101 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Uji adegan Diorama Gapura</title>
+<style>
+:root{--krem:#F6E9D8;--peach:#EFCBA7;--bata:#C8562B;--bara:#D8622B;--navy:#2B3245;--abu:#6B7391}
+*{box-sizing:border-box}html,body{margin:0;background:#000}
+#stage{position:relative;width:720px;height:1280px;overflow:hidden;font-family:'DejaVu Sans',Arial,sans-serif;background:linear-gradient(#F6E9D8 0%,#EFCBA7 62%)}
+#cam{position:absolute;inset:0;transform-origin:50% 70%;will-change:transform}
+.layer{position:absolute;left:0;top:0;width:1000px;height:1280px;will-change:transform}
+.abs{position:absolute}
+.chip{position:absolute;left:50%;top:70px;transform:translate(-50%,-200px);padding:14px 28px;border-radius:14px;background:var(--bata);color:var(--krem);font-weight:900;font-size:34px;white-space:nowrap;z-index:20;box-shadow:0 6px 0 #8f3c1c}
+.pil{position:absolute;bottom:420px;width:80px;transform-origin:50% 100%;transform:scaleY(0);background:var(--abu);border:4px solid var(--navy);border-radius:10px 10px 0 0;will-change:transform}
+.pnum{position:absolute;font-weight:900;font-size:30px;color:var(--navy);text-align:center;width:120px;opacity:0}
+.plab{position:absolute;font-weight:700;font-size:15px;line-height:1.1;color:var(--navy);text-align:center;width:116px;opacity:0}
+.char{position:absolute;width:340px;height:340px;will-change:transform}
+.char img{width:340px;height:340px;display:block}
+.glow{position:absolute;left:68%;top:44%;width:170px;height:170px;margin:-85px 0 0 -85px;border-radius:50%;background:radial-gradient(circle,rgba(255,190,90,.95),rgba(255,150,40,0) 68%);mix-blend-mode:screen;opacity:.15}
+.cap{position:absolute;left:50%;bottom:70px;width:640px;transform:translateX(-50%);padding:16px 20px;border-radius:16px;background:var(--navy);color:var(--krem);font-weight:800;font-size:36px;line-height:1.2;text-align:center;opacity:0;z-index:20}
+.cap b{color:var(--bara)}
+.tag{position:absolute;left:50%;bottom:222px;transform:translateX(-50%);padding:5px 16px;border-radius:10px;font-weight:900;font-size:20px;letter-spacing:2px;color:var(--krem);opacity:0;z-index:21}
+.stamp{position:absolute;right:46px;top:180px;padding:10px 20px;border:6px solid var(--bata);color:var(--bata);font-weight:900;font-size:36px;border-radius:10px;transform:rotate(-8deg) scale(3);opacity:0;z-index:22;background:rgba(246,233,216,.85)}
+.src{position:absolute;left:0;right:0;bottom:24px;text-align:center;font-size:14px;color:var(--navy);z-index:20}
+.sign{position:absolute;left:50%;top:210px;transform:translateX(-50%);opacity:0;z-index:22;text-align:center;color:var(--navy);font-weight:900;font-size:30px;width:600px}
+body.B .char,body.B .tag{display:none}
+</style></head><body>
+<div id="stage"><div id="cam">
+ <div class="layer" id="far"><svg width="1000" height="1280" class="abs">
+   <circle cx="560" cy="330" r="74" fill="#F2B84B" opacity=".75"/>
+   <path d="M0 820 L0 700 Q140 590 300 700 T620 690 T960 710 L1000 820Z" fill="#E4C9A8"/></svg></div>
+ <div class="layer" id="mid"><svg width="1000" height="1280" class="abs">
+   <path d="M0 840 L0 740 Q200 680 380 750 T760 740 T1000 760 L1000 840Z" fill="#D8B896"/>
+   <g fill="#8aa07a"><circle cx="60" cy="760" r="30"/><rect x="54" y="760" width="12" height="70"/><circle cx="660" cy="750" r="26"/><rect x="654" y="750" width="12" height="70"/></g></svg></div>
+ <div class="layer" id="gnd">
+  <svg width="1000" height="1280" class="abs">
+   <rect y="840" width="1000" height="440" fill="#EFCBA7"/>
+   <path d="M330 1280 L700 1280 L905 840 L850 840Z" fill="#F6E9D8"/>
+   <g id="gapura" transform="translate(790 690)"><rect x="0" y="60" width="26" height="90" fill="#C8562B" stroke="#2B3245" stroke-width="4"/><rect x="134" y="60" width="26" height="90" fill="#C8562B" stroke="#2B3245" stroke-width="4"/>
+     <rect x="-6" y="46" width="172" height="20" fill="#EFCBA7" stroke="#2B3245" stroke-width="4"/><path d="M-14 46 L80 -14 L174 46Z" fill="#C8562B" stroke="#2B3245" stroke-width="4"/><circle cx="80" cy="24" r="11" fill="#F2B84B" stroke="#2B3245" stroke-width="3"/></g>
+   
+  </svg>
+  <div class="pil" id="p1" style="left:95px"></div><div class="pil" id="p2" style="left:205px;background:var(--peach)"></div><div class="pil" id="p3" style="left:315px;background:var(--bara)"></div>
+  <div class="pnum" id="n1" style="left:75px;bottom:0"></div><div class="pnum" id="n2" style="left:185px;bottom:0"></div><div class="pnum" id="n3" style="left:295px;bottom:0"></div>
+  <div class="plab" id="l1" style="left:77px">Kurang pintar</div><div class="plab" id="l2" style="left:187px">Telat kumpul</div><div class="plab" id="l3" style="left:297px">Salah baca aturan</div>
+  <div class="char" id="lumi" style="left:-40px;top:731px"><img src="../aset/maskot/lumi.svg"><div class="glow" id="glowL"></div></div>
+  <div class="char" id="jago" style="left:780px;top:731px"><img src="../aset/maskot/jago.svg"></div>
+ </div>
+</div>
+<div class="chip" id="chip">FAKTA KEJUTAN #1</div>
+<div class="tag" id="tagJ" style="background:var(--bara)">JAGO</div><div class="tag" id="tagL" style="background:var(--bata)">LUMI</div>
+<div class="cap" id="c1">Tim lomba gugur di babak awal</div>
+<div class="cap" id="c2">bukan karena <b>kurang pintar.</b></div>
+<div class="cap" id="c3">Kok bisa?</div>
+<div class="cap" id="c4">Biasanya baru panik <b>pas H-3.</b></div>
+<div class="cap" id="c5">Jago... kita lihat datanya dulu.</div>
+<div class="cap" id="c6">Datanya (contoh):</div>
+<div class="cap" id="c7">salah baca aturan <b>paling banyak.</b></div>
+<div class="cap" id="c8">Trik legalnya: <b>baca aturan lomba dua kali.</b></div>
+<div class="cap" id="c9" style="background:var(--krem);color:var(--navy);box-shadow:0 0 0 5px var(--navy)">Jalan pintas boleh, jalan curang nggak.</div>
+<div class="stamp" id="stamp">TRIK LEGAL ✓</div>
+<div class="src">Contoh tata letak. Data fiktif, bukan data asli.</div>
+</div>
+<script>
+if (location.search.includes('v=B')) document.body.classList.add('B');
+const $=id=>document.getElementById(id), DUR=16;
+// fill:'forwards' (bukan 'both') supaya animasi yang belum mulai tidak menimpa yang sedang jalan
+const A=(el,kf,delay,dur,ease='ease-in-out')=>el.animate(kf,{delay:delay*1000,duration:dur*1000,easing:ease,fill:'forwards'});
+function vis(id,iv){const kf=[{opacity:0,offset:0}];iv.forEach(([a,b])=>{kf.push({opacity:0,offset:a/DUR},{opacity:1,offset:(a+.15)/DUR},{opacity:1,offset:(b-.1)/DUR},{opacity:0,offset:b/DUR})});kf.push({opacity:0,offset:1});$(id).animate(kf,{duration:DUR*1000,fill:'both'})}
+function pan(t0,t1,s0,s1){[['far',.3],['mid',.6],['gnd',1]].forEach(([id,k])=>A($(id),[{transform:`translateX(${s0*k}px)`},{transform:`translateX(${s1*k}px)`}],t0,t1-t0))}
+function bob(el,t0,t1,x,s=1){const n=Math.max(1,Math.round((t1-t0)/0.5));for(let i=0;i<n;i++)A(el,[{transform:`translate(${x}px,0) scale(${s})`},{transform:`translate(${x}px,-10px) scale(${s}) rotate(-1.5deg)`},{transform:`translate(${x}px,0) scale(${s})`}],t0+i*(t1-t0)/n,(t1-t0)/n)}
+function hop(el,x0,x1,t0,t1,h,s=1){A(el,[{transform:`translate(${x0}px,0) scale(${s})`},{transform:`translate(${(x0+x1)/2}px,${-h}px) scale(${s})`},{transform:`translate(${x1}px,0) scale(${s*1.06},${s*.92})`},{transform:`translate(${x1}px,0) scale(${s})`}],t0,t1-t0,'cubic-bezier(.3,.6,.4,1)')}
+function grow(id,h,t0,d){const e=$(id);e.style.height=h+'px';A(e,[{transform:'scaleY(0)'},{transform:'scaleY(1.08)',offset:.8},{transform:'scaleY(1)'}],t0,d,'ease-out')}
+function count(id,to,t0,d,bottom){const e=$(id);e.style.bottom=(bottom+8)+'px';(function f(){const t=(performance.now()-window.T0)/1000-t0;if(t<0){requestAnimationFrame(f);return}const k=Math.min(1,t/d);e.textContent=Math.round(to*k)+'%';e.style.opacity=1;if(k<1)requestAnimationFrame(f)})()}
+window.start=function(){
+ window.T0=performance.now();
+ A($('chip'),[{transform:'translate(-50%,-200px)'},{transform:'translate(-50%,10px)'},{transform:'translate(-50%,0)'}],0.2,0.5,'ease-out');
+ vis('c1',[[0.4,2.0]]);vis('c2',[[2.0,3.5]]);vis('c3',[[3.5,4.5]]);vis('c4',[[4.5,6.2]]);vis('c5',[[6.2,7.5]]);vis('c6',[[7.6,8.8]]);vis('c7',[[8.8,11.0]]);vis('c8',[[11.0,13.3]]);vis('c9',[[13.8,16]]);
+ vis('tagJ',[[3.5,6.2],[11.0,13.3]]);vis('tagL',[[6.2,7.5]]);
+ // kamera (urut kronologis)
+ A($('cam'),[{transform:'scale(1)'},{transform:'scale(1.06)'}],0,3.5,'linear');
+ A($('cam'),[{transform:'scale(1.06)'},{transform:'scale(.95)'}],13.0,2.6);
+ pan(7.4,11.0,0,-20);pan(13.0,15.6,-20,-250);
+ // data
+ grow('p1',47,7.6,.6);grow('p2',141,8.3,.7);grow('p3',330,9.0,1.0);
+ count('n1',6,7.6,.6,420+47);count('n2',18,8.3,.7,420+141);count('n3',42,9.0,1.0,420+330);
+ [['l1',47],['l2',141],['l3',330]].forEach(([id,h],i)=>{$(id).style.bottom=(420+h+46)+'px';A($(id),[{opacity:0},{opacity:1}],7.6+i*.7,.4)});
+ A($('stamp'),[{opacity:0,transform:'rotate(-8deg) scale(3)',easing:'cubic-bezier(.2,1.4,.4,1)'},{opacity:1,transform:'rotate(-8deg) scale(1)',offset:.15},{opacity:1,transform:'rotate(-8deg) scale(1)',offset:.85},{opacity:0,transform:'rotate(-8deg) scale(1)'}],11.4,1.9,'linear');
+ // tokoh: urutan kronologis per elemen
+ const L=$('lumi'),J=$('jago');
+ bob(L,0,5.4,0);
+ A(L,[{transform:'translate(0,0)'},{transform:'translate(-14px,0)'},{transform:'translate(14px,0)'},{transform:'translate(-10px,0)'},{transform:'translate(0,0)'}],5.4,0.5);
+ A(L,[{transform:'translate(0,0) scale(1)'},{transform:'translate(60px,0) scale(1.04)'}],6.2,1.0);
+ A(L,[{transform:'translate(60px,0) scale(1.04)'},{transform:'translate(420px,-8px) scale(1.08)'},{transform:'translate(420px,0) scale(1.08)'}],8.0,1.3);
+ A($('glowL'),[{opacity:.15,transform:'scale(1)'},{opacity:1,transform:'scale(1.9)'},{opacity:.9,transform:'scale(1.7)'}],8.8,1.6);
+ A(L,[{transform:'translate(420px,0) scale(1.08)'},{transform:'translate(420px,-40px) scale(1.08)'},{transform:'translate(420px,0) scale(1.08)'}],11.6,.6);
+ A(L,[{transform:'translate(420px,0) scale(1.08)'},{transform:'translate(540px,0) scale(.92)'}],13.3,2.3);
+ hop(J,0,-400,1.2,2.0,140);
+ bob(J,2.0,6.4,-400);
+ hop(J,-400,0,6.6,7.4,150);
+ hop(J,-1120,-700,11.0,11.8,150);   // Jago masuk dari kiri
+ bob(J,11.8,13.3,-700);
+ A(J,[{transform:'translate(-700px,0) scale(1)'},{transform:'translate(-470px,0) scale(.9)'}],13.3,2.3);
+};
+</script></body></html>
