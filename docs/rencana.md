@@ -10,7 +10,12 @@ Dua maskot sebagai narator video pendek. Hemat token dan konsisten: semua yang m
 4. **Mesin**: parser naskah (baris bertag tokoh), lembar tempel ElevenLabs per tokoh, pemotong audio per baris dari transkrip lokal, timeline, ganti pose mengikuti suara, caption per kata, render, QA. Disalin dan digeneralkan dari proyek lain yang sudah teruji.
 5. **Skill**: `/naskah` (prompt ChatGPT) dan `/olah` (naskah + audio jadi video).
 
+## Keputusan (5 November 2026)
+Topik opsi A, dialog dua tokoh dengan pola 3 ketukan setelah hook, semua visual oleh Claude, akun tanpa CTA dengan Collab ke @mentoringsobatambis. Rincian di `referensi/ringkasan.md` dan `CLAUDE.md`.
+
 ## Pose maskot (SVG terpisah per pose)
+Versi pertama (MVP) 3 pose per tokoh: Lumi (tenang-bicara, mikir, bangga) dan Jago (smirk, ngeledek, mode juri). Jago juga punya tiga posisi kacamata (turun, naik, di dahi). Percobaan pertama: mata dan mulut buatan di atas SVG untuk pose "bicara" (belum diuji).
+
 Hasil uji: SVG sekarang adalah hasil trace datar (±1.650 path, tanpa grup) dan tidak bisa dipotong per bagian dengan bersih. Jalan termurah: beberapa pose utuh yang ditukar mengikuti suara.
 
 Per maskot: `diam`, `bicara` (mulut terbuka), `senang`, `kaget`, `berpikir`. Opsional: `menunjuk`.

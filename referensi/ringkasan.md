@@ -27,16 +27,18 @@
 Kesimpulan sementara: **format sama dipakai oleh yang menang dan yang sepi; pembedanya premis** (kontradiksi, ketakutan atau rasa ingin tahu yang luas). Ini hipotesis dari beberapa kotak profil.
 
 ## Implikasi untuk pipeline (usulan)
-1. Elemen standar Remotion: chip judul, caption per kata/frasa, kartu data (batang, piktogram), kotak centang tindakan, stempel (mis. "MITOS", "DUGAAN", "ILUSTRASI"), kartu penutup, catatan sumber kecil di bawah layar.
+1. Elemen standar Remotion: chip judul, caption per kata/frasa, kartu data (batang, piktogram), kotak centang tindakan, stempel (mis. "MITOS", "ILUSTRASI"), catatan sumber kecil di bawah layar, dan kartu penutup berupa tanda tangan tokoh (TANPA CTA: akun ini murni personal branding).
 2. **Pemeriksa angka mekanis**: angka di naskah, di data layar, dan di caption harus sama (video 05 tidak konsisten).
 3. Mix target −14 LUFS dan puncak ≤ −1 dBTP.
 4. Premis diuji lebih dulu (daftar 5 sampai 10 judul, pilih yang memuat kontradiksi atau ketakutan luas) sebelum diproduksi.
-5. Hindari subjek orang sungguhan dan tuduhan; format "ILUSTRASI/DUGAAN" hanya untuk kasus fiktif atau anonim.
+5. Hindari subjek orang sungguhan, tuduhan, politik, dan agama (post Collab tampil di profil merek).
 
-## Keputusan yang menunggu pemilik
-- Arah topik (lihat opsi di pesan).
-- Satu narator atau dialog Lumi dan Jago (semua referensi memakai narator tunggal; dialog belum teruji).
-- Latar: ilustrasi 2D buatan Claude per topik (sudah diputuskan: semua visual oleh Claude).
+## Keputusan pemilik (5 November 2026)
+- Arah topik: opsi A (edukasi dibungkus data yang menyalahi dugaan), topik aman merek.
+- Dialog dua tokoh, pola 3 ketukan setelah hook (semua referensi memakai narator tunggal; dialog belum teruji, jadi dibandingkan nanti).
+- Latar: ilustrasi 2D buatan Claude per topik; semua visual oleh Claude.
+- Akun IG baru tanpa CTA sama sekali; Collab dengan @mentoringsobatambis sebagai jembatan.
+- Keberhasilan diukur dari penahanan penonton, bagikan, simpan, dan pertumbuhan pengikut, bukan konversi.
 
 ## Peringatan
 - Kita mengambil struktur dan gaya, bukan karakter, naskah, subjek, atau latar pihak lain.

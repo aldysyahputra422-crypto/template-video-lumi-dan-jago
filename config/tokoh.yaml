@@ -1,17 +1,73 @@
-# DRAF kepribadian dan suara, diturunkan dari tampilan SVG. Pemilik yang memutuskan; sunting bebas.
-# Isi file ini dibaca pembuat prompt /naskah (belum dibuat). Jangan memberi gender kecuali pemilik menetapkannya.
-lumi:
-  tampilan: anak naga kecil berbulu krem, tanduk cokelat, syal merah bermotif awan, tas selempang, api kecil di ujung ekor
-  peran: wakil penonton. Penasaran, polos, hangat; bertanya dan bereaksi.
-  gaya_bicara: kalimat pendek, nada naik saat heran, suka bertanya "kok bisa?", jujur mengaku belum tahu.
-  suara_elevenlabs: lebih tinggi dan ringan, hangat, tempo sedang. (voice id diisi pemilik)
-  tag_khas: [curious, excited, surprised, happy]
-jago:
-  tampilan: naga hitam berkacamata hitam dan bandana, alis tajam, taring kecil, api di ujung ekor
-  peran: yang menjelaskan. Santai, kering, percaya diri; jawaban singkat dan tepat.
-  gaya_bicara: datar-kering, sindiran ringan, jarang berseru; satu kalimat penutup yang menancap.
-  suara_elevenlabs: lebih rendah, santai, datar-kering. (voice id diisi pemilik)
-  tag_khas: [sarcastic, deadpan, whispers, laughs]
-catatan:
-  - Peran di atas usulan: Lumi bertanya, Jago menjelaskan. Boleh dibalik atau dicampur per episode.
-  - Tag bertanda belum terverifikasi (mis. deadpan) harus diuji pemilik di ElevenLabs.
+# Profil maskot Sobat Ambis (sumber: docs/profil-maskot.md, versi 1, 5 November 2026). Dibaca pembuat prompt /naskah.
+# Jangan memberi gender pada tokoh kecuali pemilik menetapkannya. Voice ElevenLabs diisi pemilik setelah audisi.
+merek:
+  nama: Sobat Ambis
+  jenis: mentoring lomba dan les privat (mentor mahasiswa PTN)
+  situs: https://sobatambis.netlify.app/
+akun:
+  # Akun IG baru: murni personal branding maskot. TIDAK ADA CTA, harga, klaim, atau ajakan daftar.
+  # Satu-satunya jembatan ke merek: post Collab dengan akun resmi (post tampil juga di profil resmi,
+  # jadi topik harus aman untuk merek: tanpa politik, agama, tuduhan, atau orang sungguhan).
+  cta: false
+  kolaborasi: "@mentoringsobatambis"
+  topik_aman_merek: true
+lore:
+  gapura: gerbang prestasi di ujung perjalanan belajar (lomba, SNBT, ujian, mimpi masing-masing)
+  pelintas: para murid yang sedang berjalan menuju gapura
+  naga: Naga Nusantara; naga yang BARU SAJA melewati gapura dan kembali menemani pelintas berikutnya
+falsafah_ki_hadjar:
+  ing_ngarsa_sung_tuladha: Lumi
+  ing_madya_mangun_karsa: Lumi dan Jago bergantian
+  tut_wuri_handayani: "Jago (versi jahil: mendorong dari belakang lewat ledekan)"
+tokoh:
+  lumi:
+    nama: Lumi
+    arti_nama: cahaya; yang menerangi dan menuntun
+    warna: krem
+    peran: Si Ramah, guru yang dipercaya
+    membawa: Pelita Ilmu (api hangat di ujung ekor; makin terang saat pelintas paham)
+    falsafah: Ing ngarsa sung tuladha
+    kepribadian: [sabar, teliti, serius soal belajar tapi hangat, tidak pernah menghakimi, menjelaskan pelan dan runtut]
+    kelemahan_lucu: [terlalu lurus dan sering tidak menangkap lelucon Jago, perfeksionis, panik kalau telat]
+    gaya_bicara: aku-kamu, kalimat pendek, runtut (pertama, kedua), jarang pakai slang
+    kalimat_khas: ["Pelan-pelan ya, kita pahami dulu."]
+    gestur_khas: [ekor menyala makin terang saat murid paham, satu tangan terangkat lembut seperti menjelaskan]
+    penampilan: badan bulat empuk seperti mochi, bulu krem, tanduk cokelat bercabang, kumis panjang melengkung, ekor besar berapi pelita, syal rajut oranye bata bermotif awan, tas selempang cokelat tua, tanpa baju dan celana
+    ciri_wajib: [syal oranye]
+    ekspresi: [tenang-hangat (bawaan), bangga, mikir, tegas, khawatir, selebrasi]
+    palet: {krem_bulu: "#F6E9D8", peach: "#EFCBA7", oranye_bata_syal: "#C8562B", cokelat_tanduk: "#7A5230"}
+    peran_di_merek: [menyambut dan menenangkan orang tua dan murid pemula, wajah laporan perkembangan belajar]
+    suara_elevenlabs: "(voice id diisi pemilik)"
+  jago:
+    nama: Jago
+    arti_nama: jagoan; ahlinya; si paling tahu trik
+    warna: navy
+    peran: Si Usil, partner Lumi, insider yang julid tapi peduli
+    membawa: Bara Semangat (api bara di ujung ekor)
+    falsafah: Tut wuri handayani
+    kepribadian: [cerdik, jahil, selalu selangkah di depan, kelihatan cuek tapi diam-diam peduli, hafal jalan tikus karena baru lewat gapura]
+    kelemahan_lucu: [gengsi mengaku peduli, kadang kelewat usil lalu dijewer Lumi]
+    gaya_bicara: gaul dan singkat (ga, dong, lho), suka pertanyaan retoris dan meledek situasi
+    kalimat_khas: ["Gitu doang? ...Eh, ini triknya.", "Jalan pintas boleh, jalan curang nggak."]
+    gestur_khas:
+      kacamata_turun_mata_mengintip: mode jahil
+      kacamata_naik_menutup_mata: mode juri, serius
+      kacamata_di_dahi: mode simpatik
+      lain: salam dua jari, satu tangan di pinggang
+    penampilan: lebih tinggi dan tegak dari Lumi, bulu navy berduri, topeng wajah/alis/dada/telapak krem, moncong pendek dengan senyum miring dan satu taring kecil, tanduk cokelat bercabang, kumis panjang gelap, ekor berapi bara oranye, bandana segitiga lurik navy-oranye bermotif awan, kacamata hitam, tanpa baju dan celana
+    ciri_wajib: [kacamata hitam, bandana lurik]
+    ekspresi: [smirk (bawaan), ngeledek, kaget, mode juri, ngambek, simpatik]
+    palet: {navy_bulu: "#2B3245", abu_biru: "#6B7391", oranye_bara: "#D8622B", krem: "#F6E9D8"}
+    peran_di_merek: [menantang murid dan mahasiswa yang mau ikut lomba, calon wajah fitur Ambis Juri dan pengecek kesiapan lomba]
+    aturan_keras:
+      - Hanya meledek SITUASI dan LUMI. Tidak pernah meledek nilai, kecerdasan, fisik, atau kegagalan murid.
+      - Kalau murid sedang down, Jago BERHENTI meledek dan ganti nada ("Udah, istirahat lima menit. Aku jaga.").
+      - Trik hanya yang legal. Tidak pernah menyontek, joki, atau curang.
+      - Tidak ada ikon atau istilah iblis atau setan di komunikasi publik.
+    suara_elevenlabs: "(voice id diisi pemilik)"
+dinamika:
+  pola: [Jago meledek, Lumi meluruskan, Jago membocorkan trik legal]
+  catatan: >
+    Dari referensi: hook memuat premis dalam kalimat pertama, jadi pola 3 ketukan dimulai SESUDAH hook
+    (klaim atau data lebih dulu, 0 sampai 5 detik), tidak dibuka dengan ledekan.
+latar_foto_profil: {lumi: "#EFCBA7", jago: "#F6E9D8"}
