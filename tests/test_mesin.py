@@ -119,5 +119,5 @@ def test_tanpa_getar_cepat_pada_tokoh():
     import re
     teks = (ROOT / "render/mesin.html").read_text(encoding="utf-8").splitlines()
     cepat = [(i + 1, b.strip()[:80]) for i, b in enumerate(teks)
-             for m in re.finditer(r"Math\.(?:sin|cos)\(([tu]) \* ([0-9.]+)", b) if float(m.group(2)) > 12 and not re.search(r"\blari\b|kedip", b)]
+             for m in re.finditer(r"Math\.(?:sin|cos)\(([a-zA-Z]+) \* ([0-9.]+)", b) if float(m.group(2)) > 12 and not re.search(r"\blari\b|kedip", b)]
     assert not cepat, cepat

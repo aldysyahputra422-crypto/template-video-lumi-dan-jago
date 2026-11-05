@@ -177,3 +177,24 @@ def test_sisipan_dihitung_sebagai_visual():
     k["aktor"] = []
     k["sisipan"] = {"nama": "jam_cepat", "isi": None, "kata": None}
     assert not any(f"ketukan {k['no']} tanpa isyarat visual" in g["pesan"] for g in ln.periksa(n, KARTU)["galat"])
+
+
+def _naskah_bidikan(latar_per_ketukan, sisipan=(), penamaan=None, isi_penamaan=False):
+    ks = []
+    for i, lt in enumerate(latar_per_ketukan, 1):
+        ucap = "Dalam psikologi, ini dikenal sebagai jebakan." if i == penamaan else f"Kalimat cerita nomor {i} berjalan terus."
+        ks.append({"no": i, "baris": i, "ucap": ucap, "latar": lt, "aktor": [], "aksi": [], "ekspresi": [], "props": [{"nama": "emas"}] if (i == penamaan and isi_penamaan) else [],
+                   "teks": [], "data": [], "kartu": None, "ata": None, "kamera": {"jenis": "lebar"}, "keluar": [], "fakta": False,
+                   "sisipan": {"nama": "timbangan"} if i in sisipan else None, "suasana": "normal", "tag": ["serious"]})
+    return {"id": "uji", "judul": "Uji", "ketukan": ks}
+
+
+def test_bidikan_ketat_latar_dan_penamaan(monkeypatch):
+    monkeypatch.setattr(ln, "_profil", lambda: {"wajib_kartu": False, "maskot": None, "bidikan_ketat": True})
+    pesan = lambda n: [g["pesan"] for g in ln.periksa(n, None)["galat"]]
+    terlalu_lama = pesan(_naskah_bidikan(["a"] * 6 + ["b", "c"]))
+    assert any("latar yang sama" in p for p in terlalu_lama)
+    assert not any("latar yang sama" in p for p in pesan(_naskah_bidikan(["a"] * 6 + ["b", "c"], sisipan={4})))
+    assert any("minimal 3 latar" in p for p in pesan(_naskah_bidikan(["a", "a", "b", "b"])))
+    assert any("metafora" in p for p in pesan(_naskah_bidikan(["a", "b", "c", "kosong"], penamaan=4)))
+    assert not any("metafora" in p for p in pesan(_naskah_bidikan(["a", "b", "c", "kosong"], penamaan=4, isi_penamaan=True)))

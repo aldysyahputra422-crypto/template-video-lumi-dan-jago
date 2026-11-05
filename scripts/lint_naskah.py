@@ -212,6 +212,21 @@ def periksa(n: dict, kartu: dict | None) -> dict:
         pertama = next((i for i, k in enumerate(ks) if any(x in k["ucap"].lower() for x in nama)), None)
         if pertama is not None and pertama < 0.4 * len(ks):
             G(ks[pertama], f"nama konsep muncul terlalu awal (ketukan {ks[pertama]['no']} dari {len(ks)}); sebut sesudah cerita berbalik, seperti video referensi")
+    if _profil().get("bidikan_ketat"):   # bahasa bidikan referensi: dunia berganti tiap 3 sampai 5 kalimat, penamaan bergambar
+        latar = {k.get("latar") for k in ks if k.get("latar") and k.get("latar") != "kosong"}
+        if len(latar) < 3:
+            G(None, f"minimal 3 latar berbeda per video (ada {len(latar)}): referensi berganti dunia tiap 3 sampai 5 kalimat; tambah LATAR di ##ASET")
+        run, awal = 0, None
+        for k in ks:
+            if k.get("sisipan") or k.get("latar") != (awal or {}).get("latar"):
+                run, awal = (0 if k.get("sisipan") else 1), k
+            else:
+                run += 1
+            if run == 5:
+                G(k, f"ketukan {awal['no']} sampai {k['no']} di latar yang sama tanpa sisipan: maksimal 4; ganti LATAR atau sisipkan SISIPAN")
+        for k in ks:
+            if re.search(r"dikenal sebagai|disebut|inilah yang", k["ucap"], re.I) and not (k.get("sisipan") or k.get("props") or k.get("data")):
+                G(k, f"ketukan {k['no']} (penamaan konsep) butuh gambar metafora: SISIPAN atau PROPS, bukan hanya TEKS di latar kosong")
     return {"galat": galat, "peringatan": peringatan, "perkiraan_durasi": durasi, "jumlah_ketukan": len(ks), "kata": sum(kata)}
 
 

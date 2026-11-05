@@ -122,7 +122,7 @@ const EKSPRESI = {
   kaget: r => [-1, 1].map(s => `<circle cx="${s * r * .32}" cy="${-r * .04}" r="${r * .13}" fill="#fff" ${GR(r, .06)}/><circle cx="${s * r * .32}" cy="${-r * .04}" r="${r * .05}" fill="#222"/>`).join('') + `<ellipse cx="0" cy="${r * .4}" rx="${r * .1}" ry="${r * .14}" fill="#222"/>` + alis2(r, -1.6, -1.6),
   marah: r => titik(r) + alis2(r, 1.4, 1.4) + `<path d="M${-r * .16},${r * .38} L${r * .16},${r * .38}" ${GR(r)}/>`,
   bingung: r => [-1, 1].map(s => `<circle cx="${s * r * .32}" cy="${-r * .04}" r="${r * (s < 0 ? .065 : .095)}" fill="#222"/>`).join('') + `<path d="M${-r * .5},${-r * .3} L${-r * .16},${-r * .3}" ${GR(r, .09)}/><path d="M${r * .14},${-r * .42} L${r * .5},${-r * .56}" ${GR(r, .09)}/><path d="M${-r * .22},${r * .4} q${r * .1},${-r * .12} ${r * .2},0 t${r * .22},${-r * .06}" ${GR(r)}/>`,
-  takut: r => [-1, 1].map(s => `<circle cx="${s * r * .32}" cy="${-r * .04}" r="${r * .11}" fill="#fff" ${GR(r, .06)}/><circle cx="${s * r * .32}" cy="${-r * .03}" r="${r * .04}" fill="#222"/>`).join('') + alis2(r, -1.2, -1.2) + `<path d="M${-r * .18},${r * .4} q${r * .09},${-r * .08} ${r * .18},0 t${r * .18},0" ${GR(r)}/><path d="M${r * .78},${-r * .3} q${r * .1},${r * .2} 0,${r * .26} q${-r * .1},${-r * .06} 0,${-r * .26}Z" fill="#8FC1E8"/>`,
+  takut: r => titik(r) + alis2(r, -1.2, -1.2) + `<path d="M${-r * .18},${r * .4} q${r * .06},${-r * .07} ${r * .12},0 q${r * .06},${r * .07} ${r * .12},0" fill="none" ${GR(r)}/>`,
   bangga: r => [-1, 1].map(s => `<path d="M${s * r * .32 - r * .1},${-r * .02} Q${s * r * .32},${-r * .14} ${s * r * .32 + r * .1},${-r * .02}" ${GR(r)}/>`).join('') + `<path d="M${-r * .28},${r * .22} Q0,${r * .52} ${r * .28},${r * .22} Z" fill="#222"/>`,
   malu: r => titik(r) + `<path d="M${-r * .1},${r * .36} L${r * .1},${r * .36}" ${GR(r)}/>` + [-1, 1].map(s => `<ellipse cx="${s * r * .52}" cy="${r * .16}" rx="${r * .14}" ry="${r * .07}" fill="#E58A8A" opacity=".75"/>`).join(''),
   capek: r => [-1, 1].map(s => `<path d="M${s * r * .32 - r * .11},${-r * .04} L${s * r * .32 + r * .11},${-r * .04}" ${GR(r)}/>`).join('') + `<path d="M${-r * .12},${r * .36} L${r * .12},${r * .36}" ${GR(r)}/>`,
@@ -191,7 +191,7 @@ function stickman(o) {
     <ellipse cx="${o.x}" cy="${o.y + 6}" rx="${40 * s}" ry="${8 * s}" fill="#000" opacity=".5"/>${kaki}${tasP}${badan}${dasi}
     ${tabung(bL, lS, lT, tl, P.jas || P.baju)}${tabung(bR, rS, rT, tl, P.jas || P.baju)}
     <circle cx="${lT[0]}" cy="${lT[1]}" r="${8 * s}" fill="${kulit}" stroke="${C.tepi}" stroke-width="${1.5 * s}"/><circle cx="${rT[0]}" cy="${rT[1]}" r="${8 * s}" fill="${kulit}" stroke="${C.tepi}" stroke-width="${1.5 * s}"/>
-    <g transform="translate(${kep[0]} ${kep[1]}) rotate(${q.kepala})">${rambutBelakang(P.rambut, r)}<circle r="${r}" fill="${kulit}" stroke="${C.tepi}" stroke-width="${1.8 * s}"/>${(EKSPRESI[o.ekspresi] || EKSPRESI.datar)(r)}${rambutDepan(P.rambut, r)}${P.aks(r)}${TANDA_EMOSI[o.ekspresi] ? TANDA_EMOSI[o.ekspresi](r, o.t || 0) : ''}</g></g>`,
+    <g transform="translate(${kep[0]} ${kep[1]}) rotate(${q.kepala})">${rambutBelakang(P.rambut, r)}<circle r="${r}" fill="${kulit}" stroke="${C.tepi}" stroke-width="${1.8 * s}"/>${(EKSPRESI[o.ekspresi] || EKSPRESI.datar)(r)}${rambutDepan(P.rambut, r)}${P.aks(r)}${''}</g></g>`,
     tangan: {l: lT, r: rT}, kepala: [kep[0], kep[1] - r]};
 }
 
@@ -357,11 +357,11 @@ function gambarSisipan(k, t, turun = 0) {
 // ---------- SUASANA: warna, cahaya, kamera, dan gerak tokoh sekaligus (berlaku sampai diganti) ----------
 const SUASANA = {
   normal: {},
-  tegang: {vinyetMerah: 1},
-  horor: {warna: '#06222A', kuat: .42, kedip: 1, kabut: 'kabutDingin', getar: 1.4, menggigil: 1, gelap: .18},
-  ceria: {warna: '#F2B33D', kuat: .08, kilau: 1, mantul: 1},
-  sedih: {warna: '#1C2A44', kuat: .25, pudar: 1, tunduk: 1},
-  misterius: {warna: '#3A1F55', kuat: .3, kabut: 'kabutUngu'},
+  tegang: {warna: '#2A120C', kuat: .16, gelap: .12},
+  horor: {warna: '#0B0907', kuat: .3, kedip: 1, getar: 1.4, gelap: .25},
+  ceria: {warna: '#F2B33D', kuat: .08, kilau: 1},
+  sedih: {warna: '#141210', kuat: .25, pudar: 1, tunduk: 1},
+  misterius: {warna: '#0E0B08', kuat: .3, gelap: .14},
 };
 const suasanaDi = k => SUASANA[k.suasana] || SUASANA.normal;
 
@@ -407,13 +407,12 @@ function bidikan(j, lokal, d, arah, utama, target, benda) {
   const p = ez(cl(lokal / d));
   const titik = [...(utama ? [utama[0]] : []), ...(benda || [])];   // tokoh utama dan benda yang dibicarakan tetap di dalam frame
   const pusat = titik.length ? (360 + titik.reduce((s, x) => s + x, 0) / titik.length) / 2 : 360;
-  if (j === 'lebar' || j === 'goyang') { z = 1.15 + .2 * p; fx = pusat + 60 * arah * p; r = 1.5 * arah * p; }   // gerak nyata, bukan napas 2%
-  if (j === 'dorong') { z = 1.02 + .3 * p; fy = 640 - 60 * p; r = -1.2 * arah * p; }
-  if (j === 'geser') { z = 1.2; fx = pusat + 100 * arah * (2 * p - 1); r = .8 * arah; }
+  if (j === 'lebar' || j === 'goyang') { z = 1.12 + .26 * p; fx = pusat + 110 * arah * (p - .5); r = 1.5 * arah * p; }   // gerak nyata, bukan napas 2%
+  if (j === 'dorong') { z = 1.0 + .42 * p; fy = 660 - 90 * p; r = -1.2 * arah * p; }
+  if (j === 'geser') { z = 1.22; fx = pusat + 150 * arah * (2 * p - 1); r = .8 * arah; }
   if (j === 'sedang') { z = 1.5 + .18 * p; fx = (utama ? utama[0] : 360) + 45 * arah * p; fy = utama ? utama[1] - 80 : 700; }   // wajah di bawah caption
   if (j === 'dekat' && target) { z = 2.1 + .2 * p; fx = target[0] + 25 * arah * p; fy = target[1] - 40; }   // wajah di bawah caption
-  if (j === 'goyang' && lokal < .5) { const a = 9 * (1 - lokal / .5); gx = a * Math.sin(lokal * 70); gy = a * Math.cos(lokal * 55); }
-  if (lokal < .3) gx += arah * 170 * (1 - ez(lokal / .3));   // sapuan singkat di awal setiap bidikan
+  // (dulu: sapuan 170 px dalam 0,3 dtk di awal tiap bidikan dan getar 11 Hz untuk 'goyang': terasa menghentak, referensi tidak begitu)
   return {z, fx, fy, gx, gy, r};
 }
 function kamera(k, t, posAktor) {
@@ -530,15 +529,15 @@ function bangunDunia(k, t, i) {
     if (p.gerak === 'melayang') { sk *= pantul(u / .3); y += Math.sin(u * 3) * 14; }
     if (p.gerak === 'hilang') op = t < p.t ? 1 : 1 - cl(u / .4);
     const fase = p.nama.length + x * .01;   // gerak sekunder: benda tidak pernah membeku
-    rot += 4 * Math.sin(t * 2.3 + fase); y += 5 * Math.sin(t * 1.9 + fase);
+    rot += .8 * Math.sin(t * .9 + fase); y += 1.2 * Math.sin(t * .8 + fase);   // benda nyaris diam seperti referensi
     const gb = `${mejaKecil}<g transform="translate(${x} ${y}) rotate(${p.nama === 'meja' || mejaKecil || letak === 'lantai' ? rot * .15 : rot}) scale(${sk})" opacity="${op}">${(PROPS[p.nama] || PROPS.tanda_tanya)(t)}</g>`;
     const dipegang = (pa && p.tempat.startsWith('tangan:')) || (pembaca && ['buku', 'laptop', 'dokumen', 'hp'].includes(p.nama));
     if (p.nama === 'meja' || mejaKecil || dipegang || (letak === 'meja' && !pa)) depan += gb; else props += gb;   // yang dipegang di depan badan
   }
   // kamera dan dunia
-  const cam = kamera(k, t, posAktor), camLalu = sebelum ? kamera(sebelum, k.mulai, posAktor) : cam, m = ez(cl(lokal / .35));
+  const cam = kamera(k, t, posAktor), camLalu = sebelum ? kamera(sebelum, k.mulai, posAktor) : cam, m = ez(cl(lokal / .6));   // perpindahan kamera antar-kalimat tenang
   let z = camLalu.z + (cam.z - camLalu.z) * m, fx = camLalu.fx + (cam.fx - camLalu.fx) * m, fy = camLalu.fy + (cam.fy - camLalu.fy) * m, r = camLalu.r + (cam.r - camLalu.r) * m;
-  for (const e of [...k.aksi, ...k.props, ...k.teks, ...k.ekspresi, ...k.data]) { const u = t - e.t; if (u >= 0 && u < .4) z *= 1 + .06 * Math.sin(Math.PI * u / .4); }   // hentakan di kata kunci
+  // (dulu: hentakan zoom 6% di tiap kata kunci; referensi memakai kamera tenang, jadi dihapus)
   const S = suasanaDi(k);
   if (S.getar) { cam.gx += 3 * S.getar * Math.sin(t * 1.7); cam.gy += 2 * S.getar * Math.cos(t * 1.3); }   // goyang pelan, bukan getar
   const cahaya = sorot(360 + 260 * Math.sin(t * .35 + i), 380 + 120 * Math.cos(t * .27), 420, .16);   // cahaya pelan menyapu latar

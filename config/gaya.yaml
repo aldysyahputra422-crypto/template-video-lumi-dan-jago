@@ -51,4 +51,4 @@ naskah:
   profil: filosofi
   profil_isi:
     ata: {wajib_kartu: true, maskot: Ata}
-    filosofi: {wajib_kartu: false, maskot: null, kartu: false, latar_bawaan: false}   # ATA/KARTU lama dilewati; latar wajib dari ##ASET
+    filosofi: {wajib_kartu: false, maskot: null, kartu: false, latar_bawaan: false, bidikan_ketat: true}   # ATA/KARTU lama dilewati; latar wajib dari ##ASET

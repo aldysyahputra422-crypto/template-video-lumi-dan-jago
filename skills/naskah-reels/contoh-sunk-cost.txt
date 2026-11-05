@@ -1,12 +1,13 @@
 ##VIDEO jembatan-raja | Jembatan ke pulau kosong
 ##SUMBER arkes1985
 ##ASET
-LATAR istana_pantai: istana batu di tepi laut malam, mercusuar kecil, pulau gelap di kejauhan
-AKTOR raja: raja bermahkota emas, jubah merah, kumis, tubuh pendek
-AKTOR pekerja: pekerja bertopi caping, kemeja abu, membawa balok kayu
-PROPS jembatan: jembatan kayu panjang dari tiang-tiang, setengah jadi
-PROPS emas: tumpukan koin emas di peti
+LATAR istana_pantai: istana batu di tepi laut malam, bulan, mercusuar kecil, pulau gelap di kejauhan
+LATAR laut_badai: laut malam berombak tinggi, tiang-tiang jembatan kayu dihantam ombak, langit tanpa bintang
+LATAR aula_istana: aula singgasana batu, tiang-tiang tinggi, obor di dinding, karpet merah ke singgasana emas
 LATAR kota_malam: jalan kota malam, gedung kantor dan apartemen berjendela kuning, lampu jalan
+AKTOR pekerja: pekerja bertopi caping, kemeja abu, celana gelap
+PROPS jembatan: jembatan kayu panjang dari tiang-tiang, setengah jadi
+PROPS emas: peti kayu penuh koin emas berkilau
 SISIPAN timbangan: timbangan besar, satu sisi peti emas, sisi lain jam pasir yang terus berkurang
 ##KETUKAN 01
 UCAP: [curious] Seorang raja membangun jembatan ke pulau kosong.
@@ -23,17 +24,20 @@ AKSI: p jalan ke kanan @cepat
 KAMERA: lebar
 ##KETUKAN 03
 UCAP: [serious] Tahun pertama, ratusan pekerja menancapkan tiang.
+KELUAR: r
+PROPS: jembatan kanan membesar @tiang
 TEKS: TAHUN 1 @pertama
 KAMERA: geser
 ##KETUKAN 04
 UCAP: [sad] Tahun kedua, ombak merobohkan separuhnya.
 SUASANA: tegang
-PROPS: jembatan kanan hilang @merobohkan
+LATAR: laut_badai
+PROPS: jembatan tengah hilang @merobohkan
 KAMERA: goyang
 ##KETUKAN 05
 UCAP: [whispers] Seorang penasihat berbisik, pulau itu tidak berpenghuni, Paduka.
-KELUAR: p
-AKTOR: n=guru kanan takut
+LATAR: aula_istana
+AKTOR: n=guru kanan takut; r=raja kiri datar
 EKSPRESI: n takut @berbisik
 KAMERA: dekat n
 ##KETUKAN 06
@@ -46,42 +50,51 @@ UCAP: [serious] Berhenti sekarang berarti emas itu terbuang.
 SISIPAN: timbangan @terbuang
 ##KETUKAN 08
 UCAP: [tense] Maka pajak dinaikkan. Pekerja ditambah. Ladang ditinggalkan.
+LATAR: istana_pantai
 AKTOR: p=pekerja jauh_kiri capek x20
 AKSI: p jalan ke kanan @ditambah
 KAMERA: lebar
 ##KETUKAN 09
 UCAP: [whispers] Sedikit lagi. Setelah selesai, semua pengorbanan ini akan terbayar.
+LATAR: aula_istana
+AKTOR: r=raja tengah bangga
 EKSPRESI: r bangga @terbayar
 KAMERA: dekat r
 ##KETUKAN 10
 UCAP: [serious] Tahun kelima, jembatan itu akhirnya selesai.
+LATAR: istana_pantai
 PROPS: jembatan kanan membesar @selesai
 TEKS: TAHUN 5 @kelima
 KAMERA: dorong
 ##KETUKAN 11
 UCAP: [surprised] Dan bagian paling ngeri?
 SUASANA: misterius
-KELUAR: p; n
-EKSPRESI: r bingung @ngeri
+LATAR: aula_istana
+AKTOR: r=raja tengah bingung
 KAMERA: dekat r
 ##KETUKAN 12
 UCAP: [serious] Di hari peresmian, tidak ada satu orang pun yang menyeberang ke pulau itu.
-PROPS: jembatan kanan melayang @menyeberang
+LATAR: laut_badai
+PROPS: jembatan tengah muncul @menyeberang
 KAMERA: geser
 ##KETUKAN 13
 UCAP: [serious] Yang menyeberang justru rakyatnya, pergi meninggalkan kerajaan yang bangkrut.
+LATAR: istana_pantai
 AKTOR: w=warga kanan sedih x15
 AKSI: w jalan ke jauh_kanan @pergi
 KAMERA: lebar
 ##KETUKAN 14
 UCAP: [whispers] Raja tidak sedang menyelamatkan emasnya. Ia hanya terus membayar agar tidak perlu mengaku salah.
-KELUAR: w
+LATAR: aula_istana
+AKTOR: r=raja tengah malu
+PROPS: emas kiri muncul @emasnya
 EKSPRESI: r malu @mengaku
 KAMERA: dekat r
 ##KETUKAN 15
 UCAP: [curious] Dalam psikologi, ini dikenal sebagai sunk cost fallacy, jebakan biaya hangus.
 SUASANA: normal
 LATAR: kosong
+PROPS: emas tengah muncul @jebakan
 TEKS: SUNK COST FALLACY @sunk
 ##KETUKAN 16
 UCAP: [serious] Kita bertahan pada keputusan buruk hanya karena sudah terlanjur berkorban banyak.
@@ -107,6 +120,7 @@ UCAP: [serious] Jadi ingat ini, jembatan yang salah tidak menjadi benar karena t
 SUASANA: normal
 LATAR: istana_pantai
 AKTOR: r=raja tengah sedih
+PROPS: jembatan kanan muncul @jembatan
 KAMERA: lebar
 ##KETUKAN 21
 UCAP: [serious] Yang masih bisa kamu selamatkan hanyalah waktu yang tersisa.
