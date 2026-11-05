@@ -1,4 +1,4 @@
-"""QA video jadi: resolusi, durasi vs linimasa, loudness, puncak. Angka, bukan klaim.
+"""QA video jadi: resolusi, durasi vs linimasa, loudness, puncak, dan gerak (target dari config/gaya.yaml). Angka, bukan klaim.
 
 python -m scripts.qa <folder>  → <folder>/qa.json. Kode 0 lulus, 1 ada masalah.
 """
@@ -7,6 +7,12 @@ import re
 import subprocess
 import sys
 from pathlib import Path
+
+import yaml
+
+from scripts import ukur_gerak
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def loudness(p: Path) -> dict:
@@ -36,6 +42,17 @@ def periksa(folder: Path) -> dict:
             masalah.append(f"loudness {h['lufs']} LUFS, harus -14 ±1")
         if h["puncak_dbfs"] > -1:
             masalah.append(f"puncak {h['puncak_dbfs']} dBFS, harus di bawah -1")
+    g = ukur_gerak.ukur(v)
+    h["gerak"] = g
+    T = yaml.safe_load((ROOT / "config/gaya.yaml").read_text(encoding="utf-8"))["target_gerak"]
+    if g["gerak_rata"] < T["gerak_rata_min"]:
+        masalah.append(f"gerak rata-rata {g['gerak_rata']}, minimal {T['gerak_rata_min']} (vt3 9,4): adegan kurang bergerak")
+    if g["persen_diam"] > T["persen_diam_maks"]:
+        masalah.append(f"layar diam {g['persen_diam']}% dari durasi, maksimal {T['persen_diam_maks']}% (vt3 0%): gerak kurang")
+    if g["diam_terpanjang"] > T["diam_terpanjang_maks"]:
+        masalah.append(f"diam terpanjang {g['diam_terpanjang']} dtk, maksimal {T['diam_terpanjang_maks']} dtk: gerak kurang")
+    if g["beda_3dtk"] < T["beda_3dtk_min"]:
+        masalah.append(f"beda gambar tiap 3 dtk {g['beda_3dtk']}, minimal {T['beda_3dtk_min']}: komposisi jarang berganti (gerak kamera/adegan)")
     tl = folder / "timeline.json"
     if tl.exists():
         dt = json.loads(tl.read_text(encoding="utf-8"))["durasi"]

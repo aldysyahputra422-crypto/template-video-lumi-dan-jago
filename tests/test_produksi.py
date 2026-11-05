@@ -36,8 +36,13 @@ def test_qa_menilai_video(tmp_path):
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "color=c=black:s=720x1280:r=30:d=4", "-i", str(tmp_path / "campur.wav"),
                     "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", "-shortest", str(tmp_path / "video.mp4")], check=True)
     h = qa.periksa(tmp_path)
-    assert h["lulus"], h["masalah"]
+    assert not h["lulus"] and any("gerak" in m for m in h["masalah"]), h   # layar diam = membosankan, ditolak
     assert h["resolusi"] == [720, 1280] and abs(h["durasi"] - 4.0) < 0.2
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "life=s=720x1280:r=30:mold=10:ratio=0.3", "-t", "4", "-i", str(tmp_path / "campur.wav"),
+                    "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", "-shortest", str(tmp_path / "video.mp4")], check=True)
+    h = qa.periksa(tmp_path)
+    assert h["lulus"], h["masalah"]
+    assert {"gerak_rata", "persen_diam", "diam_terpanjang", "beda_3dtk"} <= set(h["gerak"])
 
 
 def _ep(tmp_path):
