@@ -139,6 +139,9 @@ def periksa(n: dict, kartu: dict | None) -> dict:
             statis[i] = False
     if sum(1 for k in ks if k.get("sisipan")) < 2:
         P(None, "SISIPAN kurang dari 2; benda atau kegiatan yang disebut (scroll HP, jam, tagihan) lebih hidup bila divisualkan harfiah")
+    tanpa_tag = [k["no"] for k in ks if not k.get("tag")]
+    if tanpa_tag:
+        P(None, f"ketukan {tanpa_tag} tanpa tag ekspresi suara; tag terbukti sangat berpengaruh di ElevenLabs (uji pemilik), beri satu per kalimat")
     # 4 alat yang disimpan
     if not any(k["kartu"] for k in ks):
         G(None, "tidak ada KARTU (alat maksimal 3 langkah yang membuat penonton menyimpan video)")

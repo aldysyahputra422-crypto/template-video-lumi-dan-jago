@@ -132,3 +132,8 @@ def test_ucap_yang_tidak_bisa_diucapkan_ditolak(kalimat):
     t = TEKS.replace("UCAP: [deadpan] Otakmu barusan bohong.", f"UCAP: {kalimat}")
     t = t.replace("@bohong", "@" + kalimat.split()[0].lower())
     assert any("diucapkan" in g["pesan"] for g in _lint(t)["galat"])
+
+
+def test_kalimat_tanpa_tag_ekspresi_diperingatkan():
+    t = TEKS.replace("UCAP: [deadpan] Otakmu barusan bohong.", "UCAP: Otakmu barusan bohong.")
+    assert any("tag ekspresi" in p["pesan"] for p in _lint(t)["peringatan"])
