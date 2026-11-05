@@ -10,6 +10,7 @@ from pathlib import Path
 import numpy as np
 import soundfile as sf
 
+from scripts import sfx as pustaka
 from scripts.selaras import cari_suara
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -56,11 +57,16 @@ def jalankan(folder: Path, musik: Path | None = MUSIK) -> Path:
     mix = np.zeros(n, dtype=np.float32)
     suara = _baca(cari_suara(folder))[:n]
     mix[: len(suara)] += suara
+    if not (pustaka.SINTETIS / "whoosh.wav").exists():
+        pustaka.buat_sintetis()
+    cache: dict[str, np.ndarray] = {}
     for s in tl.get("sfx", []):
-        p = ROOT / f"aset/audio/{s['nama']}.mp3"
-        if not p.exists():
+        p = pustaka.cari(s["nama"])
+        if p is None:
             continue
-        x = _baca(p) * 10 ** (SFX_DB / 20)
+        if s["nama"] not in cache:
+            cache[s["nama"]] = _baca(p) * 10 ** ((SFX_DB + pustaka.gain(s["nama"])) / 20)
+        x = cache[s["nama"]]
         i = int(s["t"] * SR)
         k = max(0, min(len(x), n - i))
         mix[i:i + k] += x[:k]

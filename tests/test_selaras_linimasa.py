@@ -87,3 +87,17 @@ def test_linimasa_sisipan_punya_waktu(tmp_path):
     t_nonton = next(w["a"] for K in kj["ketukan"] for w in K["kata"] if w["w"] == "nonton")
     assert s["sisipan"]["t"] == t_nonton and s["sisipan"]["selesai"] == s["selesai"]
     assert any(x["nama"] == "whoosh" and abs(x["t"] - t_nonton) < 0.01 for x in L["sfx"])
+
+
+def test_sfx_otomatis_mengikuti_kejadian_visual(tmp_path):
+    n = _naskah(tmp_path)
+    L = linimasa.susun(n, selaras.selaraskan(n, _transkrip_palsu(n)), None)
+    nama = [s["nama"] for s in L["sfx"]]
+    hp = next(x for x in L["ketukan"] if (x["sisipan"] or {}).get("nama") == "hp_scroll")
+    swipe = [s["t"] for s in L["sfx"] if s["nama"] == "swipe"]
+    assert len(swipe) >= 2 and all(hp["sisipan"]["t"] <= t <= hp["selesai"] for t in swipe)   # tiap usapan jempol
+    assert "stinger" in nama                                  # EKSPRESI kaget
+    assert "langkah" in nama                                  # AKSI lari di hook
+    assert "ketik" in nama                                    # SISIPAN layar_laptop ketik
+    t = sorted(s["t"] for s in L["sfx"])
+    assert all(b - a >= 0.08 for a, b in zip(t, t[1:]))       # tidak bertumpuk

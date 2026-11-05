@@ -12,6 +12,32 @@ import yaml
 from scripts.selaras import normal
 
 AWAL, EKOR = 0.12, 1.3
+JARAK_SFX = 0.08
+
+# SFX otomatis per kejadian visual: (nama sfx, jeda dari isyarat, ulangan, selang). Tidak perlu ditulis di naskah.
+SFX_SISIPAN = {"hp_scroll": ("swipe", .1, 6, .55), "chat": ("notif", .1, 5, .45), "jam_cepat": ("tik_cepat", .2, 1, 0),
+               "kalender_sobek": ("sobek", .1, 6, .38), "tagihan": ("printer", 0, 1, 0), "akar": ("tumbuh", 0, 1, 0),
+               "tangan_ambil": ("jumput", .55, 4, 1.6), "tangan_beri": ("pop", .9, 1, 0), "tangan_tulis": ("gores", 0, 1, 0)}
+SFX_AKSI = {"lari": ("langkah", 0, 3, .2), "jalan": ("langkah", 0, 2, .5), "lompat": ("boing", 0, 1, 0), "terduduk": ("brak", .3, 1, 0)}
+SFX_EKSPRESI = {"kaget": "stinger", "takut": "detak"}
+SFX_PROPS = {"centang": "benar", "silang": "salah", "bintang": "kilau", "tanda_seru": "pop", "tanda_tanya": "pop"}
+
+
+def _ulang(sfx: list, aturan, t0: float, batas: float) -> None:
+    nama, jeda, n, selang = aturan
+    for i in range(n):
+        t = t0 + jeda + i * selang
+        if t < batas:
+            sfx.append({"nama": nama, "t": round(t, 3)})
+
+
+def rapikan_sfx(sfx: list) -> list:
+    """Urutkan dan buang SFX yang terlalu rapat (< JARAK_SFX dari yang sebelumnya) supaya tidak bertumpuk."""
+    hasil = []
+    for s in sorted(sfx, key=lambda s: s["t"]):
+        if not hasil or s["t"] - hasil[-1]["t"] >= JARAK_SFX:
+            hasil.append(s)
+    return hasil
 
 
 def _t(kata: list[dict], cue: str | None, bawaan: float) -> float:
@@ -85,13 +111,28 @@ def susun(n: dict, kj: dict, kartu: dict | None) -> dict:
         if k.get("sisipan"):
             sis = dict(k["sisipan"], t=_t(kata, k["sisipan"]["kata"], m0 + 0.05), selesai=m1)
             sfx.append({"nama": "whoosh", "t": sis["t"]})
+            if sis["nama"] in SFX_SISIPAN:
+                _ulang(sfx, SFX_SISIPAN[sis["nama"]], sis["t"], m1)
+            if sis["nama"] == "layar_laptop" and sis.get("isi") == "ketik":
+                _ulang(sfx, ("ketik", .25, 1, 0), sis["t"], m1)
+        for a in aksi:
+            if a["aksi"] in SFX_AKSI:
+                _ulang(sfx, SFX_AKSI[a["aksi"]], a["t"], m1)
+        for e in ekspresi:
+            if e["ekspresi"] in SFX_EKSPRESI:
+                sfx.append({"nama": SFX_EKSPRESI[e["ekspresi"]], "t": e["t"]})
+        for p in props:
+            if p["nama"] in SFX_PROPS:
+                sfx.append({"nama": SFX_PROPS[p["nama"]], "t": p["t"]})
+            if p["gerak"] == "jatuh":
+                sfx.append({"nama": "brak", "t": round(p["t"] + .45, 3)})
         if k["kamera"] and k["kamera"]["jenis"] == "goyang":
             sfx.append({"nama": "brak", "t": round(m0 + 0.1, 3)})
         out.append({"no": k["no"], "mulai": m0, "selesai": m1, "latar": k["latar"], "pemeran": awal_pemeran, "aksi": aksi, "ekspresi": ekspresi,
                     "props": props, "teks": teks, "data": [dict(d) for d in data_aktif], "kartu": kt, "ata": ata, "kamera": k["kamera"], "fakta": k["fakta"], "sisipan": sis})
     kata = [dict(w, ketukan=K["no"]) for K in KJ for w in K["kata"]]
     return {"id": n["id"], "judul": n["judul"], "fps": 30, "durasi": round(akhir + 0.3, 3), "ketukan": out, "kata": kata,
-            "sfx": sorted(sfx, key=lambda s: s["t"])}
+            "sfx": rapikan_sfx(sfx)}
 
 
 def main(argv: list[str]) -> int:
