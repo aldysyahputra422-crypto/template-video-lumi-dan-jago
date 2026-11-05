@@ -25,7 +25,7 @@ def buat(folder: Path, topik: str = "") -> str:
     contoh = CONTOH.read_text(encoding="utf-8")
     contoh = contoh[contoh.index("##VIDEO"):]
     daftar = lambda d: "\n".join(f"- `{n}`: {v}" for n, v in d.items())
-    tags = "\n".join(f"- [{n}] ({'emosi ' + v['emosi'] if v['jenis'] == 'suara' else 'pengubah'}){'' if v['terverifikasi'] == 'dokumentasi' else ' belum terverifikasi'}" for n, v in tag["tag"].items())
+    tags = "\n".join(f"- [{n}] ({'emosi ' + v['emosi'] if v['jenis'] == 'suara' else 'pengubah'}){' (teruji pemilik)' if v['terverifikasi'] == 'pemilik' else '' if v['terverifikasi'] == 'dokumentasi' else ' belum terverifikasi'}" for n, v in tag["tag"].items())
     return f"""# Tugas: tulis naskah video pendek "{folder.name}" untuk maskot Ata
 
 Kamu penulis naskah video vertikal 40 sampai 55 detik untuk akun personal branding maskot. Penontonnya pelajar dan mahasiswa Indonesia.

@@ -3,6 +3,7 @@
 #
 # terverifikasi:
 #   dokumentasi = tag tertulis di dokumentasi resmi ElevenLabs (best-practices, diperiksa 2026-11-05).
+#   pemilik     = sudah diuji pemilik dengan suara Ata di ElevenLabs dan terbukti berpengaruh (paling kuat).
 #   belum       = BELUM terbukti. Dokumentasi hanya bilang v3 boleh menerima tag deskriptif bebas dan hasilnya
 #                 bergantung suara. Pemilik menguji setelah berlangganan, lalu mengubah nilai ini.
 # Berkas ini TIDAK mengklaim tag berfungsi untuk bahasa Indonesia (dokumentasi tidak menyebut dukungan bahasa).
@@ -33,7 +34,7 @@ tag:
     emosi: semangat
     intensitas: 4
     elevenlabs: "[curious]"
-    terverifikasi: dokumentasi
+    terverifikasi: pemilik   # diuji pemilik 2026-11-05 (contekan-testing-effect): sangat berpengaruh
   ominous:
     jenis: suara
     emosi: misterius
@@ -60,7 +61,7 @@ tag:
     emosi: semangat
     intensitas: 7
     elevenlabs: "[excited]"
-    terverifikasi: dokumentasi
+    terverifikasi: pemilik   # diuji pemilik 2026-11-05 (contekan-testing-effect): sangat berpengaruh
   shouting:
     jenis: suara
     emosi: marah
@@ -86,7 +87,7 @@ tag:
     emosi: marah
     intensitas: 5
     elevenlabs: "[annoyed]"
-    terverifikasi: dokumentasi
+    terverifikasi: pemilik   # diuji pemilik 2026-11-05 (contekan-testing-effect): sangat berpengaruh
   sighs:
     jenis: suara
     emosi: tertekan
@@ -131,13 +132,13 @@ tag:
     emosi: kaget
     intensitas: 6
     elevenlabs: "[surprised]"
-    terverifikasi: dokumentasi
+    terverifikasi: pemilik   # diuji pemilik 2026-11-05 (contekan-testing-effect): sangat berpengaruh
   whispers:
     jenis: suara
     emosi: misterius
     intensitas: 6
     elevenlabs: "[whispers]"
-    terverifikasi: dokumentasi
+    terverifikasi: pemilik   # diuji pemilik 2026-11-05 (contekan-testing-effect): sangat berpengaruh
   warm:
     jenis: suara
     emosi: hangat
@@ -150,27 +151,27 @@ tag:
     emosi: semangat
     intensitas: 5
     elevenlabs: "[happy]"
-    terverifikasi: dokumentasi
+    terverifikasi: pemilik   # diuji pemilik 2026-11-05 (contekan-testing-effect): sangat berpengaruh
   confident:
     jenis: suara
     emosi: semangat
     intensitas: 5
     elevenlabs: "[confident]"
-    terverifikasi: belum   # dipakai pemilik 2026-11-05 (contekan-testing-effect); tandai setelah didengar
+    terverifikasi: pemilik   # diuji pemilik 2026-11-05 (contekan-testing-effect): sangat berpengaruh
     cadangan: "[happy]"
   serious:
     jenis: suara
     emosi: datar
     intensitas: 3
     elevenlabs: "[serious]"
-    terverifikasi: belum   # dipakai pemilik 2026-11-05 (contekan-testing-effect); tandai setelah didengar
+    terverifikasi: pemilik   # diuji pemilik 2026-11-05 (contekan-testing-effect): sangat berpengaruh
     cadangan: "[deadpan]"
   laughs:
     jenis: suara
     emosi: semangat
     intensitas: 6
     elevenlabs: "[laughs]"
-    terverifikasi: dokumentasi
+    terverifikasi: pemilik   # diuji pemilik 2026-11-05 (contekan-testing-effect): sangat berpengaruh
   sarcastic:
     jenis: suara
     emosi: datar
