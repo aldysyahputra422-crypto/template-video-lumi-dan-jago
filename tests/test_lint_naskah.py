@@ -137,3 +137,15 @@ def test_ucap_yang_tidak_bisa_diucapkan_ditolak(kalimat):
 def test_kalimat_tanpa_tag_ekspresi_diperingatkan():
     t = TEKS.replace("UCAP: [deadpan] Otakmu barusan bohong.", "UCAP: Otakmu barusan bohong.")
     assert any("tag ekspresi" in p["pesan"] for p in _lint(t)["peringatan"])
+
+
+def test_saran_keluar_menyebut_aktor_yang_bukan_tokoh_ketukan():
+    n = nf.urai(TEKS).naskah
+    k = n["ketukan"][-1]
+    k["ata"] = {"pose": "tertawa", "tempat": "kanan", "masuk": "pop"}
+    k["aktor"] = [{"id": "kamu", "peran": "pelajar", "posisi": "tengah", "ekspresi": "senang"}, {"id": "x", "peran": "guru", "posisi": "kanan", "ekspresi": "datar"}]
+    k["aktor"] = k["aktor"][:1]
+    sebelum = n["ketukan"][-2]
+    sebelum["aktor"] = sebelum["aktor"] + [{"id": "x", "peran": "guru", "posisi": "kanan", "ekspresi": "datar"}]
+    g = [x["pesan"] for x in ln.periksa(n, KARTU)["galat"] if "Ata dipaksa" in x["pesan"]]
+    assert g and "KELUAR: x" in g[0]

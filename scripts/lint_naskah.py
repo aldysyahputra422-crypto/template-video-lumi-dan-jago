@@ -176,7 +176,9 @@ def periksa(n: dict, kartu: dict | None) -> dict:
         aktif |= {a["id"] for a in k["aktor"]}
         aktif -= set(k["keluar"])
         if k["ata"] and (k.get("sisipan") or k["kartu"] or k["data"] or len(aktif) >= 2):
-            G(k, f"Ata dipaksa tampil di adegan ramai (ketukan {k['no']}: {len(aktif)} aktor{', SISIPAN' if k.get('sisipan') else ''}{', KARTU' if k['kartu'] else ''}{', DATA' if k['data'] else ''}). Pindahkan ATA ke ketukan lapang (maksimal 1 aktor, tanpa SISIPAN/KARTU/DATA)")
+            tetap = {a["id"] for a in k["aktor"]} & aktif or {sorted(aktif)[0]} if aktif else set()
+            saran = f" atau tambahkan 'KELUAR: {'; '.join(sorted(aktif - tetap))}' di ketukan ini" if len(aktif) >= 2 else ""
+            G(k, f"Ata dipaksa tampil di adegan ramai (ketukan {k['no']}: {len(aktif)} aktor di panggung: {', '.join(sorted(aktif)) or '-'}{', SISIPAN' if k.get('sisipan') else ''}{', KARTU' if k['kartu'] else ''}{', DATA' if k['data'] else ''}). Pindahkan ATA ke ketukan lapang (maksimal 1 aktor, tanpa SISIPAN/KARTU/DATA){saran}")
     ata = sum(1 for k in ks if k["ata"])
     if ata == 0:
         P(None, "Ata tidak muncul sama sekali; beri satu atau dua momen lapang (penamaan atau penutup)")

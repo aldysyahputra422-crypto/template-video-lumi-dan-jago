@@ -128,3 +128,11 @@ def test_suasana_dibawa_sampai_diganti():
     ks = nf.urai(t).naskah["ketukan"]
     assert ks[0]["suasana"] == "normal" and ks[1]["suasana"] == "tegang" and ks[2]["suasana"] == "tegang"
     assert any("suasana tidak dikenal" in str(g) for g in nf.urai(_ubah("##KETUKAN 02\n", "##KETUKAN 02\nSUASANA: galau\n")).galat)
+
+
+def test_garis_miring_salin_markdown_dibuang():
+    """Teks yang disalin dari ChatGPT sering membawa '\\' di akhir baris dan '\\##' di awal."""
+    kotor = "\n".join(("\\" + b if b.startswith("##") else b) + "\\" for b in TEKS.splitlines())
+    h = nf.urai(kotor)
+    assert h.galat == [], [str(g) for g in h.galat]
+    assert h.naskah["ketukan"][0]["ucap"] == nf.urai(TEKS).naskah["ketukan"][0]["ucap"]

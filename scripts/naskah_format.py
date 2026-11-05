@@ -52,6 +52,8 @@ def token(teks: str) -> list[str]:
 
 
 def _bersih(s: str) -> str:
+    s = re.sub(r"\\+$", "", s.strip()).strip()          # '\' di akhir baris (salin markdown ChatGPT)
+    s = re.sub(r"^\\+(?=#)", "", s)                     # '\##KETUKAN' → '##KETUKAN'
     s = re.sub(r"^(?:[>\-*•]\s+)+", "", s.strip())
     return s.replace("**", "").replace("__", "").replace("`", "").strip()
 
