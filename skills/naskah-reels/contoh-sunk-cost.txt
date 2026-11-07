@@ -125,4 +125,10 @@ KAMERA: lebar
 ##KETUKAN 21
 UCAP: [serious] Yang masih bisa kamu selamatkan hanyalah waktu yang tersisa.
 SISIPAN: jam_cepat @waktu
+##KETUKAN 22
+UCAP: [warm] Kirim ini ke temanmu yang masih membangun jembatannya.
+LATAR: kota_malam
+AKTOR: k=kamu tengah senang
+AKSI: k menunjuk @temanmu
+KAMERA: dekat k
 ##AKHIR

@@ -31,7 +31,7 @@ mengejutkan (perang dunia, eksperimen 1970-an).
    orang berkuasa). Bila penonton tidak bisa mengenali dirinya dalam 3 detik, buang konsepnya.
 6. **Beri skor** (tabel di bawah), urutkan, serahkan 3 teratas sebagai kartu topik.
 
-### Skor (0 sampai 2 per kriteria, maksimal 12)
+### Skor (0 sampai 2 per kriteria, maksimal 14)
 | kriteria | 2 | 1 | 0 |
 |---|---|---|---|
 | universal | hampir semua orang pernah mengalaminya | sebagian kelompok | khusus profesi |
@@ -40,8 +40,9 @@ mengejutkan (perang dunia, eksperimen 1970-an).
 | kebenaran gelap | ironis, sedikit menyakitkan, terasa seperti kearifan | menarik saja | terasa seperti tips |
 | bukti | direplikasi atau meta-analisis, atau peristiwa terdokumentasi | ada tapi diperdebatkan (pakai tanpa angka) | lemah atau gagal replikasi |
 | aman | tanpa politik praktis, agama, tuduhan ke orang hidup | perlu dibungkus alegori | berisiko |
+| dikirim | penonton langsung teringat orang atau pihak tertentu untuk dikirimi ("ini bos gue", "ini pejabat", "ini temen yang suka ghosting"), konten menyindir sistem atau pihak lain | menyentuh banyak orang tapi hanya menyindir diri sendiri | tidak ada alasan mengirimnya ke siapa pun |
 
-Ambil yang skornya ≥9. Pemetaan boleh menyentuh pajak, kekuasaan, atau media, tetapi lewat alegori dan tanpa menunjuk tokoh atau
+Ambil yang skornya ≥10. Data akun nyata (video menara, planning fallacy): 1.374 penonton, penonton bertahan, tapi nol kiriman, nol komentar, nol follow, karena topiknya hanya menyindir diri sendiri. Konten yang menyindir pihak lain atau sistem lebih sering dikirim. Pemetaan boleh menyentuh pajak, kekuasaan, atau media, tetapi lewat alegori dan tanpa menunjuk tokoh atau
 partai sungguhan.
 
 ## Bank konsep awal (verifikasi lagi sebelum menulis angka)
@@ -86,7 +87,8 @@ PUTARAN: <1 kalimat>
 PEMBALIK: <X tidak sedang A. X hanya B.>
 PEMETAAN: <contoh umum> / <contoh tidak nyaman>
 PENUTUP: <draf antitesis 2 kalimat>
-SKOR: <n>/12 (universal, ikut tertipu, digambar, gelap, bukti, aman)
+DIKIRIM KE: <siapa yang akan dikirimi penonton, 1 frasa>
+SKOR: <n>/14 (universal, ikut tertipu, digambar, gelap, bukti, aman, dikirim)
 PERLU DICEK: <fakta atau angka yang harus diverifikasi sebelum naskah>
 ```
 Lalu teruskan kartu yang dipilih pengguna ke skill `naskah-reels`.

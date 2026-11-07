@@ -7,6 +7,7 @@ editing terukur), dengan isi dan tokoh sendiri. Maskot Ata **hanya untuk foto pr
 Profil lint bawaan `filosofi` (`config/gaya.yaml`). Alur: skill `topik-reels` → `naskah-reels` (blok naskah + lembar ElevenLabs siap salin)
 → `olah-reels`; sumber di `skills/`, dikemas `python -m scripts.kemas_skill` (DNA per kalimat: `skills/naskah-reels/benchmark.md`).
 Aturan Ata di bawah hanya berlaku bila pemilik memakai profil `ata` lagi.
+**Keputusan pemilik 2026-11-07:** ajakan (kirim, simpan, follow) BOLEH dipakai agar FYP dan ramai; aturan yang menyulitkan FYP diabaikan (profil `filosofi`: `ajakan_boleh`). Ajakan diletakkan di penutup, bukan di tengah. ElevenLabs tidak bisa diatur cepat: `scripts/tempo.py` mempercepat suara lambat secara lokal.
 
 ## Aturan dari pemilik
 - **Akun IG baru = murni personal branding maskot, TANPA CTA**: tidak ada ajakan daftar, harga, klaim prestasi, kartu CTA, atau "komen kata kunci". Satu-satunya jembatan ke merek adalah post Collab dengan @mentoringsobatambis. Karena post Collab tampil juga di profil resmi, topik harus aman untuk merek: tanpa politik, agama, tuduhan, atau orang sungguhan.

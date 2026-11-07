@@ -45,11 +45,18 @@ itu dan mulai dari langkah 5; bila belum ada topik, jalankan metode `topik-reels
      yang berpidato di panggung, kepala-kepala penonton di depan menatapnya (kekuasaan di balik layar). Untuk tema kekuasaan, pakai
      alegori tanpa tokoh atau partai sungguhan.
 9. **Tag suara**: satu tag ElevenLabs di depan setiap kalimat UCAP.
-10. **Caption**: baris pertama = penutup paralel; lalu sumber (Penulis, Tahun, Judul).
+10. **Ajakan (diizinkan pemilik)**: satu ketukan terakhir, SESUDAH penutup paralel, berisi ajakan kirim yang menyebut tipe orangnya
+    ("Kirim ini ke temanmu yang selalu bilang lima menit lagi."). Ajakan generik ("share ya") lemah; yang menyebut orang tertentu
+    membuat penonton langsung teringat seseorang. Boleh ditambah ajakan simpan atau follow bila relevan. Jangan taruh ajakan di
+    tengah video: retensi turun dan lint memberi peringatan bila ajakan di 80% pertama.
+11. **Periksa tempo**: sasaran 2,7 sampai 3,45 kata per detik, durasi suara 60 sampai 75 detik. ElevenLabs tidak bisa diatur cepat dan tag
+    seperti [whispers], [quietly], [ominous] memperlambat bacaan; pakai tag itu hemat. Mesin olah-reels mempercepat suara lambat
+    otomatis (maksimal 1,35 kali, nada tetap), tapi suara yang memang cepat dan jernih tetap lebih bagus.
+12. **Caption**: baris pertama = penutup paralel; lalu sumber (Penulis, Tahun, Judul).
 
 ## Gaya bahasa
 Narator tunggal tenang, kalimat pendek, kosakata sehari-hari. Istilah asing disebut sekali lalu diterjemahkan. Angka konkret di puncak
-cerita. Tanpa sapaan "guys", tanpa ajakan di tengah, tanpa tanda pisah panjang. UCAP ditulis seperti diucapkan: tanpa kurung, singkatan,
+cerita. Tanpa sapaan "guys", tanpa tanda pisah panjang. UCAP ditulis seperti diucapkan: tanpa kurung, singkatan,
 atau garis miring; nama peneliti cukup di caption.
 
 ## Etika

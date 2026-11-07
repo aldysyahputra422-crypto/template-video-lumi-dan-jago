@@ -131,8 +131,12 @@ def periksa(n: dict, kartu: dict | None) -> dict:
         if TAK_TERUCAP.search(k["ucap"]):
             G(k, f"UCAP harus bisa langsung diucapkan: \"{TAK_TERUCAP.search(k['ucap']).group(0)}\" ditemukan. Tulis seperti diucapkan (mis. 'Larsen dan rekan-rekannya, tahun 2009', '39 persen'), tanpa kurung, singkatan, garis miring, atau garis bawah")
         if AJAKAN.search(k["ucap"]):
-            G(k, f"ajakan yang terasa jualan: \"{AJAKAN.search(k['ucap']).group(0)}\". Tunjukkan alatnya saja, jangan suruh simpan, bagikan, atau follow")
-        if k["kartu"] and AJAKAN.search(k["kartu"]["judul"]):
+            if _profil().get("ajakan_boleh"):   # keputusan pemilik: ajakan boleh; di tengah video menurunkan retensi, jadi diletakkan di penutup
+                if k["no"] <= int(len(ks) * .8):
+                    P(k, f"ajakan \"{AJAKAN.search(k['ucap']).group(0)}\" di ketukan {k['no']} (tengah video): pindahkan ke penutup (80% terakhir) supaya retensi tidak turun")
+            else:
+                G(k, f"ajakan yang terasa jualan: \"{AJAKAN.search(k['ucap']).group(0)}\". Tunjukkan alatnya saja, jangan suruh simpan, bagikan, atau follow")
+        if k["kartu"] and not _profil().get("ajakan_boleh") and AJAKAN.search(k["kartu"]["judul"]):
             G(k, f"judul KARTU berisi ajakan: \"{k['kartu']['judul']}\". Pakai judul netral, mis. 'Triknya'")
         if TERLARANG.search(k["ucap"]):
             G(k, f"kata kasar atau terlarang: {TERLARANG.search(k['ucap']).group(0)}")

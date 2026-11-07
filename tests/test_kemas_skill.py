@@ -67,3 +67,15 @@ def test_skill_memuat_totalitas_visual(tmp_path):
     assert "motion_blur" in olah and "kepalaPenonton" in olah and "tanganBoneka" in olah
     html = o.read("olah-reels/mesin/render/mesin.html").decode()
     assert "function tanganBoneka" in html and "lapisLatar" in html
+
+
+def test_paket_membawa_tempo_dan_ajakan(tmp_path):
+    hasil = ks.kemas(tmp_path)
+    o = zipfile.ZipFile(hasil["olah-reels"])
+    assert "olah-reels/mesin/scripts/tempo.py" in o.namelist()
+    gaya = yaml.safe_load(o.read("olah-reels/mesin/config/gaya.yaml"))
+    assert gaya["naskah"]["profil_isi"]["filosofi"]["ajakan_boleh"] is True and gaya["suara"]["faktor_maks"] == 1.35
+    md = zipfile.ZipFile(hasil["naskah-reels"]).read("naskah-reels/SKILL.md").decode()
+    assert "Ajakan (diizinkan pemilik)" in md and "Periksa tempo" in md
+    tp = zipfile.ZipFile(hasil["topik-reels"]).read("topik-reels/SKILL.md").decode()
+    assert "| dikirim |" in tp and "/14" in tp

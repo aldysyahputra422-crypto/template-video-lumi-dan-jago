@@ -201,3 +201,15 @@ def test_bidikan_ketat_latar_dan_penamaan(monkeypatch):
     dipentaskan = _naskah_bidikan(["a", "b", "c", "podium"], penamaan=4)
     dipentaskan["ketukan"][3]["aktor"] = [{"id": "a", "peran": "raja", "posisi": "tengah", "ekspresi": "bangga", "ukuran": "kecil", "naik": 480}]
     assert not any("metafora" in p for p in pesan(dipentaskan))
+
+
+def test_ajakan_boleh_di_penutup_tapi_dicatat_bila_di_tengah(monkeypatch):
+    """Keputusan pemilik: ajakan boleh dipakai agar FYP dan ramai. Profil ajakan_boleh: galat jadi peringatan bila di tengah video."""
+    monkeypatch.setattr(ln, "_profil", lambda: {"wajib_kartu": False, "maskot": None, "ajakan_boleh": True})
+    n = _naskah_bidikan(["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"])
+    n["ketukan"][1]["ucap"] = "Simpan video ini sekarang."
+    n["ketukan"][9]["ucap"] = "Kirim ke temanmu, bagikan sekarang."
+    r = ln.periksa(n, None)
+    assert not any("ajakan" in g["pesan"] for g in r["galat"])
+    pesan = [p["pesan"] for p in r["peringatan"] if "ajakan" in p["pesan"]]
+    assert len(pesan) == 1 and "ketukan 2" in pesan[0] and "penutup" in pesan[0]

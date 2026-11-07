@@ -51,8 +51,14 @@ naskah:
   profil: filosofi
   profil_isi:
     ata: {wajib_kartu: true, maskot: Ata}
-    filosofi: {wajib_kartu: false, maskot: null, kartu: false, latar_bawaan: false, bidikan_ketat: true}   # ATA/KARTU lama dilewati; latar wajib dari ##ASET
+    filosofi: {wajib_kartu: false, maskot: null, kartu: false, latar_bawaan: false, bidikan_ketat: true, ajakan_boleh: true}   # ATA/KARTU lama dilewati; latar wajib dari ##ASET
 
 # Mode kualitas (masukan pemilik: boleh menunggu lama demi hasil). motion_blur: render 60 fps lalu dicampur ke 30 fps.
 render:
   motion_blur: true
+
+# Tempo suara (scripts/tempo.py): ElevenLabs tidak bisa diatur cepat, jadi suara dipercepat lokal bila di bawah sasaran. Referensi 2,7 sampai 3,45 kata/dtk.
+suara:
+  tempo_sasaran: 2.7
+  faktor_maks: 1.35
+  faktor_min: 1.06

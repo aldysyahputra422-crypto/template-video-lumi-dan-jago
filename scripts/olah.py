@@ -11,7 +11,7 @@ from pathlib import Path
 
 import yaml
 
-from scripts import campur, caption, cek_aset, lembar, lint_naskah, linimasa, naskah_format, prompt_visual, qa, render, selaras
+from scripts import tempo, campur, caption, cek_aset, lembar, lint_naskah, linimasa, naskah_format, prompt_visual, qa, render, selaras
 
 
 def _baru(a: Path, b: Path) -> bool:
@@ -60,6 +60,7 @@ def maju(folder: Path, transkrip_fn=None, fps: int = 30) -> dict:
                     "instruksi": f"Naskah memakai {len(n['aset'])} aset baru (daftar: {f}/aset-dibutuhkan.md). Claude menggambarnya di {f}/aset.js mengikuti docs/gaya-visual.md, menjalankan python -m scripts.cek_aset {f}, memeriksa aset-cek.png, lalu /olah lagi."}
     if not selaras.cari_suara(f):
         return {"kode": 5, "berhenti_di": "suara", "instruksi": f"Generate {f}/lembar-elevenlabs.md di ElevenLabs (voice Ata, Eleven v3), simpan sebagai {f}/suara.mp3, lalu /olah lagi."}
+    tmp = tempo.sesuaikan(f)   # suara lambat dipercepat lokal (nada tetap) sebelum disejajarkan
     if selaras.main([str(f)], transkrip_fn=transkrip_fn) != 0:
         return {"kode": 5, "berhenti_di": "suara", "instruksi": "Suara tidak cocok dengan naskah (lihat kata.json). Pastikan seluruh blok lembar ikut di-generate, lalu ganti suara.mp3."}
     try:
@@ -71,7 +72,7 @@ def maju(folder: Path, transkrip_fn=None, fps: int = 30) -> dict:
     h = qa.periksa(f)
     if h["lulus"]:
         caption.main([str(f)])
-    return {"kode": 0 if h["lulus"] else 1, "berhenti_di": "selesai" if h["lulus"] else "qa", "qa": h,
+    return {"kode": 0 if h["lulus"] else 1, "berhenti_di": "selesai" if h["lulus"] else "qa", "qa": h, "tempo": tmp,
             "instruksi": f"Tonton {f}/video.mp4 (Approval 2); caption di {f}/caption.txt (Collab @mentoringsobatambis diatur saat unggah). Angka QA: {h.get('lufs')} LUFS, puncak {h.get('puncak_dbfs')} dBFS, {h.get('durasi')} dtk."}
 
 
