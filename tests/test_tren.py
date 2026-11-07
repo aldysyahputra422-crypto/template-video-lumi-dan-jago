@@ -22,3 +22,13 @@ def test_kumpulkan_tahan_bila_satu_sumber_gagal():
     h = tren.kumpulkan(ambil=ambil)
     assert h["indonesia"]["google_trends"][0]["judul"] == "minyak sawit"
     assert h["tiongkok"]["bilibili_populer"] == [] and "diblokir" in h["catatan"][0]
+
+
+NEWS = """<rss><channel><item><title>Detik-detik Evakuasi Prajurit TNI di Heli Karhutla - detikNews</title></item>
+<item><title>Pemerintah buka seleksi CPNS pada November - ANTARA News Sultra</title></item></channel></rss>"""
+
+
+def test_parse_google_news_memisah_sumber():
+    h = tren.parse_news(NEWS)
+    assert h[0] == {"judul": "Detik-detik Evakuasi Prajurit TNI di Heli Karhutla", "sumber": "detikNews"}
+    assert h[1]["sumber"] == "ANTARA News Sultra"

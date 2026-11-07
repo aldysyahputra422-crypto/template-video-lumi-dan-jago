@@ -14,7 +14,19 @@ effect, pecah belah, ilusi "aku aman"). Konsep itu tidak diajarkan langsung. Ia 
 diberi namanya sesudah merasa ikut tertipu. Empat dari enam memakai alegori kerajaan atau hewan; dua memakai kisah nyata yang
 mengejutkan (perang dunia, eksperimen 1970-an).
 
-### Langkah 0: baca tren dulu (Indonesia dan Tiongkok)
+### Langkah 0: mulai dari kejadian nyata, baru cari teorinya
+Urutan yang terbukti di akun referensi: **pengalaman atau kejadian nyata yang sedang dirasakan orang → mekanisme di baliknya → konsep
+bernama**. Contoh: pajak yang terselip di harga dan bantuan yang dipamerkan (kejadian), lalu nama konsepnya salience bias. Jadi mulai dari
+berita dan keluhan yang sedang ramai, bukan dari daftar konsep. Contoh arah: kebakaran hutan yang selalu disalahkan pada terik matahari
+(banyak penyebab, satu kambing hitam), pegawai yang bekerja keras tapi atasan yang dipuji (siapa yang dihitung jasanya), harga yang naik
+pelan-pelan.
+**Politik dan jenuh:** berita Indonesia didominasi politik, dan orang jenuh melihatnya langsung. Yang masih menarik adalah *rasa* yang
+sama dibungkus alegori. Aturannya: pakai **mekanismenya, bukan orangnya**. Tanpa nama tokoh, partai, atau lembaga sungguhan; ceritakan
+sebagai kerajaan, desa, atau perusahaan fiktif; pelajarannya berlaku untuk siapa pun. Ini juga menjaga akun aman untuk post Collab merek.
+Kejadian nyata dipakai sebagai *pemicu pilihan topik*, bukan sebagai isi yang disebut di video.
+
+Pengumpulan sinyal (langkah di bawah memakai `python -m scripts.tren`: berita utama Indonesia, Google Trends, dan Bilibili Tiongkok).
+### Pengumpulan sinyal tren (Indonesia dan Tiongkok)
 Pasar video pendek kedua negara relatif mirip, dan format "cerita yang bikin mikir" sendiri banyak dipakai di keduanya (kesan saya,
 belum terukur). Sebelum memilih konsep, kumpulkan sinyal tren:
 1. **Indonesia**: Google Trends Indonesia (`https://trends.google.com/trending/rss?geo=ID`), trending YouTube atau X bila bisa dibuka,

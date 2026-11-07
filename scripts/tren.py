@@ -11,6 +11,7 @@ import sys
 
 GOOGLE = "https://trends.google.com/trending/rss?geo=ID"
 BILIBILI = "https://api.bilibili.com/x/web-interface/popular?ps=30"
+NEWS_ID = "https://news.google.com/rss?hl=id&gl=ID&ceid=ID:id"
 
 
 def _curl(url: str) -> str:
@@ -27,14 +28,25 @@ def parse_google(xml: str) -> list[dict]:
     return out
 
 
+def parse_news(xml: str) -> list[dict]:
+    """Judul berita utama Indonesia (Google News RSS): 'Judul - Sumber' dipisah. Kejadian nyata yang sedang terjadi, bahan langkah 0."""
+    out = []
+    for item in xml.split("<item>")[1:]:
+        m = re.search(r"<title>(.*?)</title>", item, re.S)
+        if m:
+            judul, _, sumber = re.sub(r"<.*?>", "", m.group(1)).strip().rpartition(" - ")
+            out.append({"judul": judul or sumber, "sumber": sumber if judul else ""})
+    return out
+
+
 def parse_bilibili(raw: str) -> list[dict]:
     d = json.loads(raw)
     return [{"judul": v["title"], "sinyal": f"{v['stat']['view']} tayangan", "kategori": v.get("tname", "")} for v in d.get("data", {}).get("list", [])]
 
 
 def kumpulkan(ambil=_curl) -> dict:
-    hasil = {"indonesia": {"google_trends": []}, "tiongkok": {"bilibili_populer": []}, "catatan": []}
-    for kunci, grup, url, parse in (("google_trends", "indonesia", GOOGLE, parse_google), ("bilibili_populer", "tiongkok", BILIBILI, parse_bilibili)):
+    hasil = {"indonesia": {"berita": [], "google_trends": []}, "tiongkok": {"bilibili_populer": []}, "catatan": []}
+    for kunci, grup, url, parse in (("berita", "indonesia", NEWS_ID, parse_news), ("google_trends", "indonesia", GOOGLE, parse_google), ("bilibili_populer", "tiongkok", BILIBILI, parse_bilibili)):
         try:
             hasil[grup][kunci] = parse(ambil(url))
         except Exception as e:  # noqa: BLE001
