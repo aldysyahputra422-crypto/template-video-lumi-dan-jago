@@ -87,3 +87,10 @@ def test_topik_memakai_skill_gratis_dan_katalog_terkunci():
     kat = yaml.safe_load((ks.ROOT / "katalog/skill.yaml").read_text(encoding="utf-8"))
     e = next(x for x in kat if x["id"] == "marketingskills")
     assert e["butuh_key"] is None and e["biaya"] == "gratis" and re.fullmatch(r"[0-9a-f]{40}", e["pasang"]["pin"])
+
+
+def test_panduan_tidak_basi():
+    tp = (ks.ROOT / "skills/topik-reels/SKILL.md").read_text(encoding="utf-8")
+    assert "Grok" in tp and "petunjuk, bukan fakta" in tp and "diblokir" in tp
+    ol = (ks.ROOT / "skills/olah-reels/SKILL.md").read_text(encoding="utf-8")
+    assert "Speed" not in ol and "mesin yang mempercepat" in ol

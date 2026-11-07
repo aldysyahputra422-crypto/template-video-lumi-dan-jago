@@ -26,6 +26,21 @@ sebagai kerajaan, desa, atau perusahaan fiktif; pelajarannya berlaku untuk siapa
 Kejadian nyata dipakai sebagai *pemicu pilihan topik*, bukan sebagai isi yang disebut di video.
 
 Pengumpulan sinyal (langkah di bawah memakai `python -m scripts.tren`: berita utama Indonesia, Google Trends, dan Bilibili Tiongkok).
+### Langkah 0b: sinyal dari X lewat Grok (opsional, dikerjakan pemilik)
+Claude tidak bisa membaca X (wajib login). Grok bisa. Alurnya: **pemilik menyalin prompt di bawah ke Grok, menempel hasilnya ke chat ini,
+lalu Claude memetakan, memverifikasi, dan memilih konsep.** Untuk Tiongkok jangan memakai X (diblokir di sana): pakai Bilibili lewat
+`scripts.tren`.
+```text
+Kamu membantu riset topik konten edukasi psikologi populer di Indonesia. Dari percakapan di X (bahasa Indonesia) dalam 48 jam terakhir, cari 10 keluhan atau isu yang sedang ramai dan dirasakan orang biasa: harga, kerja, sekolah, uang, birokrasi, hubungan, kejujuran, keadilan. Abaikan isu yang hanya soal partai, tokoh, atau pertandingan.
+Untuk tiap isu tulis satu baris dengan format:
+ISU (maksimal 12 kata, tanpa nama orang) | RASA YANG DOMINAN (marah/cemas/iri/pasrah/lucu) | KENAPA RAMAI (satu kalimat) | SEBERAPA RAMAI (tinggi/sedang) | 2 TAUTAN POSTINGAN SEBAGAI BUKTI
+Jangan mengarang. Kalau kamu tidak yakin sesuatu benar-benar ramai, tulis "tidak yakin". Pisahkan fakta dari tebakanmu.
+```
+Saat menerima hasil Grok: (1) anggap **petunjuk, bukan fakta**; tautan X tidak bisa dibuka Claude. (2) Silangkan isu terbesar dengan berita
+publik (`scripts.tren` atau pencarian berita); yang tidak muncul di sumber publik ditandai belum terverifikasi. (3) Isu yang menyangkut
+lembaga atau orang nyata dengan penyebab yang belum jelas **dilewati**, jangan dijadikan topik. (4) Pilih isu yang pengalamannya dirasakan
+semua orang, petakan ke mekanisme dan konsep, verifikasi konsep ke jurnal, beri skor, serahkan 2 sampai 3 kartu topik.
+
 ### Pengumpulan sinyal tren (Indonesia dan Tiongkok)
 Pasar video pendek kedua negara relatif mirip, dan format "cerita yang bikin mikir" sendiri banyak dipakai di keduanya (kesan saya,
 belum terukur). Sebelum memilih konsep, kumpulkan sinyal tren:

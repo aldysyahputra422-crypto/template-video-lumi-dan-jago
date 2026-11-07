@@ -28,7 +28,7 @@ Butuh Python 3.11+, Node 18+, dan ffmpeg (macOS: `brew install ffmpeg`; Windows:
 | 6 | format atau standar naskah dilanggar | kirim isi `koreksi-chatgpt.md` ke penulis naskah (atau perbaiki baris yang disebut), simpan ulang, jalankan lagi |
 | 4 | naskah lolos: tunggu persetujuan | tunjukkan ringkasan ke pengguna; bila setuju ubah `"disetujui": true` di `naskah.json`, jalankan lagi |
 | 8 | naskah memakai aset baru (`##ASET`) | baca `aset-dibutuhkan.md` dan `docs/gaya-visual.md`, gambar semua aset di `video/<nama>/aset.js` (SVG, gaya terkunci, isi sesuai cerita), jalankan `.venv/bin/python -m scripts.cek_aset video/<nama>`, lihat `aset-cek.png`, perbaiki sampai lolos dan bagus, jalankan lagi |
-| 5 | butuh suara | (suara lambat dipercepat otomatis oleh `scripts/tempo.py`, maksimal 1,35 kali, nada tetap; hasilnya `suara.wav`, asli di `suara-asli.*`) pengguna menyalin `lembar-elevenlabs.txt` ke ElevenLabs (Eleven v3, satu suara narator, Speed ±1,15 supaya ±2,8 kata/dtk), menyimpan hasilnya sebagai `video/<nama>/suara.mp3`; jalankan lagi |
+| 5 | butuh suara | (suara lambat dipercepat otomatis oleh `scripts/tempo.py`, maksimal 1,35 kali, nada tetap; hasilnya `suara.wav`, asli di `suara-asli.*`) pengguna menyalin `lembar-elevenlabs.txt` ke ElevenLabs (Eleven v3, satu suara narator; kecepatan tidak perlu diatur, mesin yang mempercepat), menyimpan hasilnya sebagai `video/<nama>/suara.mp3`; jalankan lagi |
 | 0 | video jadi dan lulus QA | serahkan `video.mp4` dan `caption.txt` dengan angka QA (durasi, LUFS, gerak) |
 | 1 | gagal teknis atau QA | baca `masalah`; perbaiki mesin atau aset, bukan naskah |
 
