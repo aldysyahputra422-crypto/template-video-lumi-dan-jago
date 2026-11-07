@@ -25,6 +25,7 @@ KAMERA: lebar
 ##KETUKAN 03
 UCAP: [serious] Tahun pertama, ratusan pekerja menancapkan tiang.
 KELUAR: r
+AKSI: p jalan ke kanan @pekerja
 PROPS: jembatan kanan membesar @tiang
 TEKS: TAHUN 1 @pertama
 KAMERA: geser
@@ -32,12 +33,14 @@ KAMERA: geser
 UCAP: [sad] Tahun kedua, ombak merobohkan separuhnya.
 SUASANA: tegang
 LATAR: laut_badai
+SISIPAN: jam_cepat @ombak
 PROPS: jembatan tengah hilang @merobohkan
 KAMERA: goyang
 ##KETUKAN 05
 UCAP: [whispers] Seorang penasihat berbisik, pulau itu tidak berpenghuni, Paduka.
 LATAR: aula_istana
 AKTOR: n=kakek kanan takut; r=raja kiri datar besar
+AKSI: n mengangguk @penasihat; r menunjuk @pulau
 EKSPRESI: n takut @berbisik
 KAMERA: dekat n
 ##KETUKAN 06
@@ -58,11 +61,14 @@ KAMERA: lebar
 UCAP: [whispers] Sedikit lagi. Setelah selesai, semua pengorbanan ini akan terbayar.
 LATAR: aula_istana
 AKTOR: r=raja tengah bangga
+AKSI: r sorak @terbayar
 EKSPRESI: r bangga @terbayar
 KAMERA: dekat r
 ##KETUKAN 10
 UCAP: [serious] Tahun kelima, jembatan itu akhirnya selesai.
 LATAR: istana_pantai
+AKTOR: r=raja kiri bangga besar
+AKSI: r sorak @selesai
 PROPS: jembatan kanan membesar @selesai
 TEKS: TAHUN 5 @kelima
 KAMERA: dorong
@@ -71,6 +77,7 @@ UCAP: [surprised] Dan bagian paling ngeri?
 SUASANA: misterius
 LATAR: aula_istana
 AKTOR: r=raja tengah bingung kecil
+AKSI: r terduduk @ngeri
 KAMERA: dekat r
 ##KETUKAN 12
 UCAP: [serious] Di hari peresmian, tidak ada satu orang pun yang menyeberang ke pulau itu.
@@ -102,16 +109,19 @@ SISIPAN: timbangan @berkorban
 ##KETUKAN 17
 UCAP: [serious] Dan manusia juga begitu.
 LATAR: kota_malam
-AKTOR: k=kamu tengah bingung
+AKTOR: k=kamu jauh_kiri bingung
+AKSI: k jalan ke tengah @manusia
 KAMERA: dorong
 ##KETUKAN 18
 UCAP: [annoyed] Kita bertahan di jurusan yang kita benci, karena sudah tiga semester.
+AKSI: k menggeleng @benci
 PROPS: buku tangan:k muncul @jurusan
 EKSPRESI: k capek @benci
 KAMERA: dekat k
 ##KETUKAN 19
 UCAP: [sad] Kita bertahan di hubungan yang menyakitkan, karena sudah lima tahun.
 SUASANA: sedih
+AKSI: k terduduk @menyakitkan
 PROPS: hati kepala:k muncul @hubungan
 EKSPRESI: k sedih @menyakitkan
 KAMERA: geser

@@ -213,3 +213,21 @@ def test_ajakan_boleh_di_penutup_tapi_dicatat_bila_di_tengah(monkeypatch):
     assert not any("ajakan" in g["pesan"] for g in r["galat"])
     pesan = [p["pesan"] for p in r["peringatan"] if "ajakan" in p["pesan"]]
     assert len(pesan) == 1 and "ketukan 2" in pesan[0] and "penutup" in pesan[0]
+
+
+def _gerak(naskah, urut_aksi):
+    """urut_aksi: per ketukan 'gerak', 'sisipan', atau 'diam' (hanya ekspresi/props)."""
+    for k, j in zip(naskah["ketukan"], urut_aksi):
+        k["aksi"] = [{"id": "a", "aksi": "jalan", "ke": "kiri", "kata": None}] if j == "gerak" else []
+        k["sisipan"] = {"nama": "timbangan"} if j == "sisipan" else None
+        k["ekspresi"] = [{"id": "a", "ekspresi": "senang", "kata": None}] if j == "diam" else []
+    return naskah
+
+
+def test_gerak_wajib_maks_dua_ketukan_diam_berturut(monkeypatch):
+    """Pelajaran video 'uang-keranjang' (gerak 2,87, skip tinggi): ketukan tanpa AKSI gerak atau sisipan membuat video seperti slide."""
+    monkeypatch.setattr(ln, "_profil", lambda: {"wajib_kartu": False, "maskot": None, "bidikan_ketat": True})
+    pesan = lambda n: [g["pesan"] for g in ln.periksa(n, None)["galat"] if "gerak" in g["pesan"] and "berturut" in g["pesan"]]
+    dasar = ["a", "b", "c", "d", "e", "f", "g", "h"]
+    assert pesan(_gerak(_naskah_bidikan(dasar), ["gerak", "diam", "diam", "diam", "gerak", "gerak", "sisipan", "gerak"]))
+    assert not pesan(_gerak(_naskah_bidikan(dasar), ["gerak", "diam", "diam", "gerak", "diam", "diam", "sisipan", "gerak"]))

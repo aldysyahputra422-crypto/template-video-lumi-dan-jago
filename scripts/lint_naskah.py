@@ -228,6 +228,16 @@ def periksa(n: dict, kartu: dict | None) -> dict:
                 run += 1
             if run == 5:
                 G(k, f"ketukan {awal['no']} sampai {k['no']} di latar yang sama tanpa sisipan: maksimal 4; ganti LATAR atau sisipkan SISIPAN")
+        # gerak wajib: maksimal 2 ketukan berturut-turut tanpa AKSI gerak (selain diam/bicara) atau SISIPAN. Tokoh yang hanya berdiri dan
+        # berekspresi membuat video seperti slide (pelajaran video uang-keranjang: gerak 2,87; setelah tiap ketukan diberi aksi dan sisipan: 6,5).
+        gerak = lambda k: bool(k.get("sisipan")) or any(x.get("aksi") not in ("diam", "bicara") for x in k.get("aksi", []))
+        diam = 0
+        for k in ks:
+            diam = 0 if gerak(k) else diam + 1
+            if diam == 3:
+                G(k, f"ketukan {k['no'] - 2} sampai {k['no']} berturut-turut tanpa gerak: beri AKSI gerak (jalan ke posisi, sorak, menunjuk, terduduk, menggeleng) atau SISIPAN; maksimal 2 ketukan diam berturut-turut")
+        if sum(1 for k in ks if k.get("sisipan")) < max(3, len(ks) // 6):
+            P(None, f"hanya {sum(1 for k in ks if k.get('sisipan'))} sisipan; referensi memotong ke benda atau layar penuh tiap ±6 detik (minimal {max(3, len(ks) // 6)} untuk {len(ks)} ketukan)")
         for k in ks:
             dipentaskan = k.get("latar") not in (None, "kosong") and k.get("aktor")   # metafora berupa dunia yang dipentaskan (boneka, podium)
             if re.search(r"dikenal sebagai|disebut|inilah yang", k["ucap"], re.I) and not (k.get("sisipan") or k.get("props") or k.get("data") or dipentaskan):

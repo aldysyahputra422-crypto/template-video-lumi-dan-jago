@@ -35,7 +35,17 @@ itu dan mulai dari langkah 5; bila belum ada topik, jalankan metode `topik-reels
    sama tanpa SISIPAN; ketukan penamaan konsep wajib punya SISIPAN atau PROPS sebagai metafora. **Setiap latar wajib dideklarasikan di ##ASET**
    (dunia khusus per video, seperti akun referensi); hanya `kosong` yang bawaan. Tokoh penonton di bagian pemetaan memakai peran `kamu`
    (tokoh kuning). Kerumunan: `xJUMLAH`.
-8. **Totalitas visual (wajib)**: tulis ##ASET seolah memberi brief ke ilustrator yang mahal.
+8. **Gerak per ketukan (wajib, diperiksa lint)**: tokoh yang hanya berdiri dan berekspresi membuat video terasa seperti slide dan
+   penonton pergi (video "uang-keranjang": gerak 2,87 sampai tiap ketukan diberi aksi dan sisipan, lalu 6,5).
+   - Setiap ketukan punya AKSI gerak (`jalan ke <posisi>`, `sorak`, `menunjuk`, `terduduk`, `menggeleng`, `garuk_kepala`, `mengangguk`) atau
+     SISIPAN. Maksimal 2 ketukan berturut-turut tanpa gerak. Ekspresi dan props saja tidak dihitung.
+   - Potong ke benda atau layar penuh (SISIPAN) tiap ±6 detik: minimal 1 sisipan per 6 ketukan, dan tidak kurang dari 3. Bawaan:
+     `tangan_beri`, `tangan_ambil`, `tangan_tulis`, `hp_scroll`, `chat`, `jam_cepat`, `kalender_sobek`, `tagihan`, `akar`. Sisipan khusus
+     cerita dideklarasikan di ##ASET (papan harga yang angkanya berubah, tumpukan koin yang bertambah, buku catatan).
+   - Bingkai: dominan `dekat`, `dorong`, `sedang`; `lebar` paling banyak seperempat ketukan. Tokoh harus memenuhi sekitar separuh tinggi layar.
+   - Hook: ketukan 1 sudah bergerak besar (tangan, jalan, sorak, atau sisipan) di detik pertama.
+   - Penutup memanggil kembali benda dari hook (callback visual), misalnya sisipan yang sama dipakai lagi.
+9. **Totalitas visual (wajib)**: tulis ##ASET seolah memberi brief ke ilustrator yang mahal.
    - **Arketipe utuh**: tokoh dikenali dari siluet, kostum, atribut, postur, dan cara jalan, bukan sekadar warna baju. Ilmuwan = rambut
      putih mekar, kumis tebal, jas lab, kapur, tangan di belakang, jalan pelan. Kakek = bungkuk, tongkat, langkah pelan. Pakai peran
      arketipe bawaan bila cocok (daftar di bawah); bila tidak, tulis deskripsi selengkap itu di ##ASET. Desain arketipe generik, jangan
@@ -47,16 +57,16 @@ itu dan mulai dari langkah 5; bila belum ada topik, jalankan metode `topik-reels
    - **Metafora besar**: konsep abstrak dipentaskan sebagai gambar fisik. Contoh pola: tangan raksasa dari atas memainkan boneka kecil
      yang berpidato di panggung, kepala-kepala penonton di depan menatapnya (kekuasaan di balik layar). Untuk tema kekuasaan, pakai
      alegori tanpa tokoh atau partai sungguhan.
-9. **Tag suara**: satu tag ElevenLabs di depan setiap kalimat UCAP.
-10. **Ajakan (diizinkan pemilik)**: satu ketukan terakhir, SESUDAH penutup paralel, berisi ajakan kirim yang menyebut tipe orangnya
+10. **Tag suara**: satu tag ElevenLabs di depan setiap kalimat UCAP.
+11. **Ajakan (diizinkan pemilik)**: satu ketukan terakhir, SESUDAH penutup paralel, berisi ajakan kirim yang menyebut tipe orangnya
     ("Kirim ini ke temanmu yang selalu bilang lima menit lagi."). Ajakan generik ("share ya") lemah; yang menyebut orang tertentu
     membuat penonton langsung teringat seseorang. Boleh ditambah ajakan simpan atau follow bila relevan. Jangan taruh ajakan di
     tengah video: retensi turun dan lint memberi peringatan bila ajakan di 80% pertama.
-11. **Periksa tempo**: sasaran 2,7 sampai 3,45 kata per detik, durasi suara 60 sampai 75 detik. ElevenLabs tidak bisa diatur cepat dan tag
+12. **Periksa tempo**: sasaran 2,7 sampai 3,45 kata per detik, durasi suara 60 sampai 75 detik. ElevenLabs tidak bisa diatur cepat dan tag
     seperti [whispers], [quietly], [ominous] memperlambat bacaan; pakai tag itu hemat. Mesin olah-reels mempercepat suara lambat
     otomatis (maksimal 1,35 kali, nada tetap), tapi suara yang memang cepat dan jernih tetap lebih bagus.
-12. **Uji sebelum mengirim**: (a) siapa yang akan dikirimi penonton? Ketukan ajakan harus menyebut tipe orang itu. (b) Pola "X tidak sedang A, X hanya B" cukup satu kali sebagai pembalik; penutup memakai bentuk lain supaya tidak terdengar berulang. (c) Bila skill `humanizer` atau `stop-slop` terpasang, jalankan sebagai langkah terakhir pada UCAP, lalu pastikan lembar ElevenLabs tetap sama persis dengan UCAP.
-13. **Caption**: baris pertama = penutup paralel; lalu sumber (Penulis, Tahun, Judul).
+13. **Uji sebelum mengirim**: (a) siapa yang akan dikirimi penonton? Ketukan ajakan harus menyebut tipe orang itu. (b) Pola "X tidak sedang A, X hanya B" cukup satu kali sebagai pembalik; penutup memakai bentuk lain supaya tidak terdengar berulang. (c) Bila skill `humanizer` atau `stop-slop` terpasang, jalankan sebagai langkah terakhir pada UCAP, lalu pastikan lembar ElevenLabs tetap sama persis dengan UCAP.
+14. **Caption**: baris pertama = penutup paralel; lalu sumber (Penulis, Tahun, Judul).
 
 ## Gaya bahasa
 Narator tunggal tenang, kalimat pendek, kosakata sehari-hari. Istilah asing disebut sekali lalu diterjemahkan. Angka konkret di puncak

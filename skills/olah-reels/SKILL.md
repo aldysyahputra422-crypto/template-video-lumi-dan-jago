@@ -65,6 +65,13 @@ Butuh Python 3.11+, Node 18+, dan ffmpeg (macOS: `brew install ffmpeg`; Windows:
 - **Kamera satu bidikan** diatur mesin: jalur kontinu lintas kalimat dan pindah dunia lewat gerak kamera (sambung atau tembus). Aset
   cukup menyediakan dunia yang lebar (gambar sampai x -600..1320 untuk lapisan jauh/depan) supaya kamera bebas menjelajah.
 
+## Periksa gerak sebelum render penuh
+Render penuh memakan waktu; untuk memeriksa gerak pakai putaran cepat: render 10 fps tanpa motion blur (sekitar 1 menit per video) lalu
+`python -m scripts.qa <folder>` dan `python -m scripts.profil_gerak <folder>` (skor gerak per ketukan; ketukan <12 tanpa sisipan perlu AKSI
+atau sisipan). Target mengikuti gerbang: gerak ≥6, diam ≤10%, diam terpanjang ≤1,5 dtk, beda 3 dtk ≥24. Setelah lolos, render penuh.
+Pelajaran: gerak rendah berarti penonton pergi; jangan menyalahkan alat ukur. Penyebab nyata biasanya tokoh kecil di bingkai lebar, ketukan
+tanpa AKSI, dan tidak ada sisipan.
+
 ## Aturan
 - Jangan memanggil API berbayar (ElevenLabs, generator gambar) tanpa izin pengguna di sesi itu; suara dibuat pengguna.
 - Semua visual digambar sendiri dengan SVG di `aset.js`; jangan memakai gambar dari internet.

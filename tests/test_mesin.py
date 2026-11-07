@@ -148,3 +148,9 @@ def test_totalitas_visual_ada_di_mesin():
     kos = yaml.safe_load((ROOT / "config/kosakata.yaml").read_text(encoding="utf-8"))
     for peran in ["ilmuwan", "profesor", "hakim", "detektif", "kakek", "nenek", "konglomerat", "pejabat"]:
         assert peran in kos["peran"] and f"  {peran}: {{" in teks
+
+
+def test_kamera_satu_bidikan_memakai_titik_awal_dan_akhir_ketukan():
+    """Pelajaran dari video 'uang-keranjang' (gerak 2,87): titik kunci di tengah ketukan menghapus gerak di dalam ketukan."""
+    teks = (ROOT / "render/mesin.html").read_text(encoding="utf-8")
+    assert "kunciKamera(KT[n], .1)" in teks and "kunciKamera(KT[n], .9)" in teks and "kunciKamera(KT[n], .5)" not in teks
