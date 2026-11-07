@@ -14,6 +14,22 @@ effect, pecah belah, ilusi "aku aman"). Konsep itu tidak diajarkan langsung. Ia 
 diberi namanya sesudah merasa ikut tertipu. Empat dari enam memakai alegori kerajaan atau hewan; dua memakai kisah nyata yang
 mengejutkan (perang dunia, eksperimen 1970-an).
 
+### Langkah 0: baca tren dulu (Indonesia dan Tiongkok)
+Pasar video pendek kedua negara relatif mirip, dan format "cerita yang bikin mikir" sendiri banyak dipakai di keduanya (kesan saya,
+belum terukur). Sebelum memilih konsep, kumpulkan sinyal tren:
+1. **Indonesia**: Google Trends Indonesia (`https://trends.google.com/trending/rss?geo=ID`), trending YouTube atau X bila bisa dibuka,
+   dan topik yang ramai di komentar akun sejenis.
+2. **Tiongkok**: Bilibili Populer (`https://api.bilibili.com/x/web-interface/popular`), dan daftar populer Douyin, Xiaohongshu, atau
+   Weibo hanya lewat halaman publik tanpa login. Di Claude Code, `python -m scripts.tren` mengambil Google Trends dan Bilibili sekaligus.
+   Penerjemahan judul Tiongkok dilakukan sendiri; jangan menyalin video atau naskah mereka.
+3. **Saring jadi tema, bukan topik.** Tren mentah mayoritas olahraga dan berita. Tarik: apa yang diributkan orang (harga naik,
+   kerja, sekolah, uang, hubungan, kuasa, kejujuran) dan emosinya (marah, cemas, iri, lega). Lalu tanyakan: konsep bernama apa yang
+   menjelaskan fenomena itu? Itulah kandidatmu, dibungkus kendaraan cerita. Contoh: ramai soal harga yang naik pelan-pelan → konsep
+   boiling frog atau anchoring, kendaraan fabel pasar.
+4. **Tren bukan bukti.** Tren memberi waktu yang tepat, bukan jaminan. Tetap lewat saring status ilmiah dan skor di bawah. Hindari
+   kejadian yang melibatkan orang sungguhan atau politik praktis; pakai alegori. Tren cepat basi: pilih yang masih naik, buat dalam
+   1 sampai 3 hari.
+
 ### Langkah
 1. **Kumpulkan 10 sampai 15 kandidat konsep** dari bank di bawah, dari buku sains populer (Thinking Fast and Slow, Predictably
    Irrational, The Art of Thinking Clearly, Nudge, Influence), atau dari daftar bias kognitif dan sesat pikir. Bila ada alat pencarian
