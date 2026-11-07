@@ -85,3 +85,15 @@
 # open-generative-ai (berbayar/API key); edge-tts (proxy tanpa WebSocket); lemo-opuscar, onetake (gaya sudah dikunci ke
 # video 03); ecc (1.068 skill membebani konteks); karpathy-skills (tanpa lisensi); youmind (prompt Opus, naskah kita
 # ditulis ChatGPT); caveman, ponytail, canvas-design, skill-creator, agent-reach (tidak dipakai alur repo ini).
+- id: marketingskills
+  sumber: https://github.com/coreyhaines31/marketingskills
+  fungsi: paket skill pemasaran; dipakai hanya marketing-psychology (daftar model mental dan bias), content-strategy, marketing-ideas, social
+  alasan_dipakai: topik adalah jantung konten; marketing-psychology memberi bank bias dan model mental siap pakai untuk topik-reels, content-strategy dan social untuk memilih sudut yang layak dikirim
+  lisensi: MIT
+  biaya: gratis
+  butuh_key: null
+  ukuran: kecil
+  otomatis: true
+  wajib: false
+  catatan: pin disalin persis dari katalog Sobat Ambis (tidak diganti); hanya 4 folder agar konteks ringan
+  pasang: {jenis: git_subskill, url: "https://github.com/coreyhaines31/marketingskills", paths: [skills/marketing-psychology, skills/content-strategy, skills/marketing-ideas, skills/social], skills: [marketing-psychology, content-strategy, marketing-ideas, social], pin: "88c79f6528a9347420e57ceb1fff9a60de651768"}

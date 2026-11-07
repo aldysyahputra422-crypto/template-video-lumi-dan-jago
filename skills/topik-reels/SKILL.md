@@ -30,6 +30,17 @@ belum terukur). Sebelum memilih konsep, kumpulkan sinyal tren:
    kejadian yang melibatkan orang sungguhan atau politik praktis; pakai alegori. Tren cepat basi: pilih yang masih naik, buat dalam
    1 sampai 3 hari.
 
+### Bahan tambahan dari skill gratis (bila terpasang di Claude Code)
+Repo `marketingskills` (MIT, gratis, tanpa API key, terkunci ke versi di katalog) dipasang otomatis oleh hook SessionStart. Empat skill
+berikut membantu langkah 0 dan skor. Bukan wajib; di claude.ai yang tidak punya skill itu, lewati.
+- **marketing-psychology**: daftar sekitar 70 model mental dan bias bernama (bahasa Inggris). Pakai sebagai bank konsep tambahan; baca
+  bagian "Understanding Buyers & Human Psychology" dan "Behavioral Economics". Konsepnya tetap lewat saring status ilmiah di bawah.
+- **content-strategy**, bagian "Shareable content": konten yang dibagikan membawa wawasan baru atau sudut berlawanan dengan dugaan umum,
+  membuat orang merasa sesuatu, dan **dibagikan supaya pengirimnya tampak pintar atau untuk menolong orang lain**; juga "konsep yang
+  dirasakan semua orang tapi belum punya nama" (itu persis slot penamaan kita). Pakai sebagai penguji kriteria "dikirim".
+- **social**: naskah video pendek dan hook untuk Reels dan Shorts; bandingkan hook kandidat dengan panduannya.
+- **marketing-ideas**: cadangan bila kehabisan sudut.
+
 ### Langkah
 1. **Kumpulkan 10 sampai 15 kandidat konsep** dari bank di bawah, dari buku sains populer (Thinking Fast and Slow, Predictably
    Irrational, The Art of Thinking Clearly, Nudge, Influence), atau dari daftar bias kognitif dan sesat pikir. Bila ada alat pencarian
@@ -90,6 +101,14 @@ effect, pecah belah (sumur tikus), ilusi "kamu aman" (ular di sumur).
 | Streisand effect | fenomena terdokumentasi, bukan eksperimen | raja yang melarang sebuah lagu |
 | Peltzman effect (rasa aman membuat ceroboh) | diperdebatkan, pakai tanpa angka | ksatria berbaju zirah yang makin nekat |
 | Parkinson's law | pengamatan, bukan eksperimen | pekerjaan yang membengkak sesuai waktu yang diberikan |
+| Cobra effect (insentif yang memperparah masalah) | konsepnya kuat; kisah kobra di Delhi diperdebatkan sejarawan, tikus Hanoi 1902 terdokumentasi (Vann 2003) | pakai Hanoi; sudah dipakai di akun, jangan ulang |
+| Peak-end rule | kuat (Kahneman dkk. 1993) | pasien kolonoskopi yang menderita lebih lama tapi mengingatnya lebih baik |
+| Hyperbolic discounting | kuat | tukang yang memilih upah hari ini daripada dua kali lipat bulan depan |
+| Mental accounting | kuat (Thaler) | pedagang yang menghabiskan uang hadiah tapi menimbun uang gaji |
+| Curse of knowledge | kuat (Newton 1990, studi mengetuk lagu) | tabib tua yang tak sabar pada muridnya |
+| Goal-gradient effect | ada (Kivetz dkk. 2006) | pelari yang makin cepat saat garis akhir terlihat |
+| Paradox of choice | diperdebatkan (meta-analisis efek rata-rata kecil); pakai tanpa angka | pasar dengan terlalu banyak kios |
+| Mimetic desire | teori Girard, bukan eksperimen; pakai tanpa angka | satu desa mendadak berebut sepatu yang sama |
 | Semmelweis reflex | peristiwa sejarah terdokumentasi | dokter yang ditertawakan karena menyuruh cuci tangan |
 
 ## Keluaran: kartu topik (satu per topik, 3 teratas)

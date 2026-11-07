@@ -79,3 +79,11 @@ def test_paket_membawa_tempo_dan_ajakan(tmp_path):
     assert "Ajakan (diizinkan pemilik)" in md and "Periksa tempo" in md
     tp = zipfile.ZipFile(hasil["topik-reels"]).read("topik-reels/SKILL.md").decode()
     assert "| dikirim |" in tp and "/14" in tp
+
+
+def test_topik_memakai_skill_gratis_dan_katalog_terkunci():
+    tp = (ks.ROOT / "skills/topik-reels/SKILL.md").read_text(encoding="utf-8")
+    assert "marketing-psychology" in tp and "Shareable content" in tp and "Cobra effect" in tp
+    kat = yaml.safe_load((ks.ROOT / "katalog/skill.yaml").read_text(encoding="utf-8"))
+    e = next(x for x in kat if x["id"] == "marketingskills")
+    assert e["butuh_key"] is None and e["biaya"] == "gratis" and re.fullmatch(r"[0-9a-f]{40}", e["pasang"]["pin"])
