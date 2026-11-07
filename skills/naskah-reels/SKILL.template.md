@@ -13,9 +13,11 @@ Keluaranmu adalah **naskah format blok** yang langsung bisa diolah skill `olah-r
 Alur lengkap: **topik-reels → naskah-reels → olah-reels**. Bila pengguna memberi kartu topik (dari skill `topik-reels`), pakai kartu
 itu dan mulai dari langkah 5; bila belum ada topik, jalankan metode `topik-reels` dulu (atau langkah 1 sampai 4 di bawah).
 
-1. **Pilih konsep yang punya nama** (bias kognitif, sesat pikir, efek psikologi sosial, hukum ekonomi perilaku). Utamakan yang ada di buku
-   sains populer atau makalah klasik dan sudah direplikasi. Hindari temuan yang gagal direplikasi (power pose, ego depletion, efek Mozart,
-   eksperimen penjara Stanford sebagai bukti).
+1. **Mulai dari kejadian nyata yang sedang dirasakan orang**, lalu mekanisme di baliknya, baru **konsep yang punya nama** (bias kognitif,
+   sesat pikir, efek psikologi sosial, hukum ekonomi perilaku). Utamakan yang ada di buku sains populer atau makalah klasik dan sudah
+   direplikasi. Hindari temuan yang gagal direplikasi (power pose, ego depletion, efek Mozart, eksperimen penjara Stanford sebagai bukti).
+   Kejadian politik dipakai lewat mekanisme dan alegori, tanpa tokoh, partai, atau lembaga sungguhan. Kejadian hanya pemicu pilihan topik,
+   tidak disebut di video.
 2. **Verifikasi** (bila ada alat pencarian atau konektor riset): siapa, tahun, angka. Angka di naskah hanya yang terverifikasi. Kisah fabel
    boleh fiktif, tapi kisah "nyata" harus nyata.
 3. **Pilih kendaraan cerita** yang mewujudkan konsep tanpa menyebut namanya: fabel atau alegori (kerajaan, hewan, desa, sumur, hutan) atau
@@ -24,7 +26,8 @@ itu dan mulai dari langkah 5; bila belum ada topik, jalankan metode `topik-reels
 5. **Isi kerangka DNA** di `benchmark.md` bagian C, slot demi slot (H1, H2, C1 sampai C9, P1 sampai P3, N1, N2, M1 sampai M5, T1, T2),
    dengan posisi persen seperti di tabel. Baca bagian B (cetak biru 6 video) untuk melihat setiap slot bekerja. Pilih satu dari tiga
    varian (penuh, kebenaran gelap, kisah nyata).
-6. **Panjang**: 175 sampai 215 kata, 22 sampai 28 kalimat, median 7 sampai 9 kata per kalimat, 3 sampai 8 kalimat pukulan (≤4 kata),
+6. **Panjang**: 175 sampai 215 kata (bila suara tidak dipercepat lokal, tempo ElevenLabs sekitar 2,0 kata per detik, jadi 211 kata menjadi 1:44;
+   tanpa mesin olah-reels tulis 130 sampai 160 kata untuk 65 sampai 80 detik), 22 sampai 28 kalimat, median 7 sampai 9 kata per kalimat, 3 sampai 8 kalimat pukulan (≤4 kata),
    satu kalimat tanya (putaran). Sekitar 1 dari 4 kalimat dibuka kata sambung (Dan, Tapi, Lalu, Jadi, Padahal). Satu kalimat per ketukan;
    kalimat pukulan boleh digabung dengan kalimat sebelumnya dalam satu ketukan.
 7. **Visual per ketukan** (format di bawah): setiap kalimat diberi isyarat visual; aset yang tidak ada di kosakata bawaan dideklarasikan di
@@ -52,7 +55,8 @@ itu dan mulai dari langkah 5; bila belum ada topik, jalankan metode `topik-reels
 11. **Periksa tempo**: sasaran 2,7 sampai 3,45 kata per detik, durasi suara 60 sampai 75 detik. ElevenLabs tidak bisa diatur cepat dan tag
     seperti [whispers], [quietly], [ominous] memperlambat bacaan; pakai tag itu hemat. Mesin olah-reels mempercepat suara lambat
     otomatis (maksimal 1,35 kali, nada tetap), tapi suara yang memang cepat dan jernih tetap lebih bagus.
-12. **Caption**: baris pertama = penutup paralel; lalu sumber (Penulis, Tahun, Judul).
+12. **Uji sebelum mengirim**: (a) siapa yang akan dikirimi penonton? Ketukan ajakan harus menyebut tipe orang itu. (b) Pola "X tidak sedang A, X hanya B" cukup satu kali sebagai pembalik; penutup memakai bentuk lain supaya tidak terdengar berulang. (c) Bila skill `humanizer` atau `stop-slop` terpasang, jalankan sebagai langkah terakhir pada UCAP, lalu pastikan lembar ElevenLabs tetap sama persis dengan UCAP.
+13. **Caption**: baris pertama = penutup paralel; lalu sumber (Penulis, Tahun, Judul).
 
 ## Gaya bahasa
 Narator tunggal tenang, kalimat pendek, kosakata sehari-hari. Istilah asing disebut sekali lalu diterjemahkan. Angka konkret di puncak
