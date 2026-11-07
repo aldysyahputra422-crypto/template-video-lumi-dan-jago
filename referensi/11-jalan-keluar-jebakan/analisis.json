@@ -1,0 +1,77 @@
+{
+ "berkas": "94ca769f-Gimana_kalau_yang_selama_ini_kita_anggap_jalan_kelu",
+ "teknis": {
+  "durasi": 87.26,
+  "lebar": 720,
+  "tinggi": 1280,
+  "fps": 30.0,
+  "ukuran_mb": 18.81,
+  "ada_audio": true,
+  "audio_hz": 44100
+ },
+ "loudness": {
+  "lufs": -14.1,
+  "rentang_lu": 2.0,
+  "puncak_dbfs": -0.1
+ },
+ "potongan_keras": {
+  "jumlah": 0,
+  "waktu": [],
+  "per_menit": 0.0
+ },
+ "suara": {
+  "jumlah_kata": 240,
+  "kata_per_detik": 2.82,
+  "rata2_durasi_kata": 0.29,
+  "jeda_terpanjang": 0.6,
+  "jeda_di_atas_0_45": 8
+ },
+ "hook": "Seorang petani melempar bang ke babi ke dalam sumur kering.",
+ "kalimat": [
+  {
+   "mulai": 0.0,
+   "selesai": 2.48,
+   "jumlah_kata": 10
+  },
+  {
+   "mulai": 3.08,
+   "selesai": 7.84,
+   "jumlah_kata": 12
+  },
+  {
+   "mulai": 8.42,
+   "selesai": 8.88,
+   "jumlah_kata": 2
+  },
+  {
+   "mulai": 9.34,
+   "selesai": 14.04,
+   "jumlah_kata": 14
+  },
+  {
+   "mulai": 14.54,
+   "selesai": 19.44,
+   "jumlah_kata": 14
+  },
+  {
+   "mulai": 19.94,
+   "selesai": 30.08,
+   "jumlah_kata": 28
+  },
+  {
+   "mulai": 30.66,
+   "selesai": 36.72,
+   "jumlah_kata": 17
+  },
+  {
+   "mulai": 37.2,
+   "selesai": 69.98,
+   "jumlah_kata": 96
+  },
+  {
+   "mulai": 70.5,
+   "selesai": 85.14,
+   "jumlah_kata": 47
+  }
+ ]
+}

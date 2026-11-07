@@ -10,6 +10,12 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+# Perintah format di AWAL dan AKHIR prompt: ChatGPT pernah menjawab teks ucapan saja (2026-11-05).
+FORMAT_WAJIB = """## FORMAT JAWABAN (WAJIB, dibaca program)
+Jawab HANYA dengan naskah format blok: baris pertama `##VIDEO <id> | <judul>`, lalu `##SUMBER <id kartu riset>`, lalu setiap
+`##KETUKAN` berisi `UCAP:` dan isyarat visualnya (`LATAR:`, `AKTOR:`, `AKSI:`, `EKSPRESI:`, `PROPS:`, `SISIPAN:`, `KAMERA:` dst),
+dan baris terakhir `##AKHIR`. JANGAN menjawab dengan teks ucapan saja, lembar suara, tabel, atau JSON: jawaban tanpa baris
+`LATAR:` dan `AKTOR:` dianggap salah dan ditolak program."""
 CONTOH = ROOT / "contoh/kedai-5whys/tempelan.txt"
 
 
@@ -28,7 +34,9 @@ def buat(folder: Path, topik: str = "") -> str:
     tags = "\n".join(f"- [{n}] ({'emosi ' + v['emosi'] if v['jenis'] == 'suara' else 'pengubah'}){' (teruji pemilik)' if v['terverifikasi'] == 'pemilik' else '' if v['terverifikasi'] == 'dokumentasi' else ' belum terverifikasi'}" for n, v in tag["tag"].items())
     return f"""# Tugas: tulis naskah video pendek "{folder.name}" untuk maskot Ata
 
-Kamu penulis naskah video vertikal 40 sampai 55 detik untuk akun personal branding maskot. Penontonnya pelajar dan mahasiswa Indonesia.
+{FORMAT_WAJIB}
+
+Kamu penulis naskah video vertikal 45 sampai 80 detik untuk akun personal branding maskot. Penontonnya anak muda Indonesia.
 Tujuan: video yang DISIMPAN penonton karena berguna, tapi tidak membosankan. Bahasa sehari-hari, kalimat pendek.
 {f"{chr(10)}TOPIK DARI PEMILIK: {topik}{chr(10)}" if topik else ""}
 ## 1. Tokoh: Ata
@@ -45,13 +53,19 @@ Ata adalah narator (satu suara). Di layar, Ata hanya muncul di momen tertentu (h
 ```
 Angka nyata di naskah HARUS dari kartu ini (boleh dibulatkan wajar, mis. 33,9 jadi 34). Jangan menambah angka atau klaim riset lain.
 
-## 3. Pilar topik dan uji perhatian
-Pilar: skill yang TIDAK diajarkan di sekolah atau kampus (berpikir, belajar, bicara, menjual, memecahkan masalah) dan komponen lomba (business plan, BMC, riset pasar, presentasi juri).
+## 3. Topik dan uji perhatian
+Topik BEBAS: psikologi, cara berpikir dan bias, sejarah, eksperimen terkenal, ekonomi sehari-hari, sains, belajar, karier, lomba. Syaratnya aman untuk merek
+(tanpa politik, agama, tuduhan, orang sungguhan yang masih hidup sebagai sasaran) dan konsepnya mapan atau berbasis riset.
+Dunia cerita juga bebas dan sebaiknya KHUSUS untuk topik itu: fabel hewan, kejadian sejarah, eksperimen, tempat apa pun. Benda, tokoh, dan latar yang
+belum ada di kosakata cukup dideklarasikan di ##ASET; ilustrator menggambarnya dengan gaya yang sama.
 Sudut harus lolos uji perhatian, kalau tidak, pilih sudut lain:
 - klaim yang menyalahi dugaan atau provokatif di kalimat pertama (mis. "menyontek itu bagus", lalu dibelokkan ke versi yang legal),
 - ada kegagalan atau taruhan yang dekat dengan penonton (bisnis sepi, presentasi dibantai juri, nilai jeblok),
 - isinya tidak bisa ditebak dari judul. Hindari nasihat generik ("rajin belajar", "percaya diri").
 Patokan alur (pola video referensi terbaik): hook paradoks → cerita kegagalan yang memburuk, dengan PETUNJUK yang ditanam diam-diam (terlihat di layar atau disebut sambil lalu) → PUTARAN: satu pertanyaan atau temuan sederhana membalik arti kejadian sebelumnya, dan petunjuk tadi ternyata jawabannya → satu kalimat pembalik ("Mereka bukan menolak kopinya. Mereka tidak pernah melihatnya buka.") → nama konsep SESUDAH putaran → bukti jurnal termasuk kritik atau batasnya → trik legal → pemetaan ke dunia penonton (tugas, lomba) → callback.
+Pola yang terbukti di akun edukasi animasi terbesar (alegori atau sejarah): hook satu situasi bertaruhan → cerita memburuk dengan detail hidup →
+satu kalimat putaran yang membalik arti cerita → nama konsep dan definisi satu kalimat → pemetaan ke hidup penonton dengan dua contoh sehari-hari
+(tokoh `kamu` berwarna kuning) → kalimat penutup paralel yang mudah diingat. Pakai kalimatmu sendiri, jangan menyalin frasa khas akun lain.
 JANGAN memperagakan teorinya terang-terangan sebelum putaran (mis. bertanya "kenapa" lima kali berturut untuk menjelaskan 5 Whys): penonton yang paham sudah menebak duluan. Penonton harus ikut tertipu seperti tokohnya, lalu sadar bersama.
 
 ## 4. Standar naskah (diperiksa program; naskah yang melanggar ditolak)
@@ -61,7 +75,7 @@ JANGAN memperagakan teorinya terang-terangan sebelum putaran (mis. bertanya "ken
 4. Angka nyata dari kartu riset dengan kontras jelas. Tandai ketukan yang memuat angka riset dengan `FAKTA: ya` (ketukan ber-DATA otomatis fakta).
 5. Alat yang berguna: tepat satu `KARTU` berisi maksimal 3 langkah konkret yang bisa dipakai hari ini. JANGAN menyuruh penonton menyimpan, membagikan, follow, atau komen (terasa jualan); cukup tunjukkan alatnya. Judul KARTU netral, mis. "Triknya".
 6. Penutup = callback ke lelucon atau hook awal, bukan moral umum. Pola "bukan X, tapi Y" maksimal sekali.
-7. Durasi 40 sampai 55 detik (±2,6 kata per detik). Satu ketukan = satu kalimat pendek (maksimal 16 kata) supaya visual berganti tiap 2 sampai 5 detik.
+7. Durasi 45 sampai 80 detik (±2,8 kata per detik, sekitar 130 sampai 220 kata). Satu ketukan = satu kalimat pendek (maksimal 16 kata) supaya visual berganti tiap 2 sampai 5 detik.
    Ganti komposisi minimal tiap 2 ketukan (KAMERA dekat/geser/dorong, aktor pindah `ke <posisi>`, LATAR/AKTOR baru, atau SISIPAN). Program menolak 3 ketukan berturut yang komposisinya sama.
 8. Hook diam ditolak: detik pertama wajib gerak besar, yaitu SISIPAN atau aktor masuk/pindah (`AKSI: id lari ke tengah @kata`, jalan ke, lompat), bukan aktor berdiri.
 9. Visualkan secara harfiah benda atau kegiatan yang diucapkan dengan SISIPAN (minimal 2 per video). Contoh: "malah nonton video kucing" → `SISIPAN: hp_scroll kucing @nonton` (HP naik, jempol menggulir feed kucing);
@@ -70,6 +84,7 @@ JANGAN memperagakan teorinya terang-terangan sebelum putaran (mis. bertanya "ken
 11. Nama konsep tidak boleh disebut sebelum 40% naskah; 4 ketukan berturut dengan kata pembuka sama ditolak (pola mudah ditebak).
 12. Pakai SUASANA untuk membangun rasa: misterius saat penonton dibuat curiga, tegang menjelang putaran, ceria sesudah trik, horor hanya bila ceritanya menakutkan. Ganti paling banyak tiap 2 ketukan. SFX dipasang otomatis oleh mesin dari isyarat visual, jangan ditulis.
 13. Cutaway tangan (`SISIPAN: tangan_ambil <props>`, `tangan_beri <props>`, `tangan_tulis`) untuk aksi tangan yang diucapkan; tokoh yang mewakili penonton ("kamu") memakai peran `kamu`.
+Jangan menyebut nama peneliti di UCAP (cukup "peneliti", "penelitian tahun 2001", atau "63 penelitian"); nama masuk caption otomatis.
 UCAP adalah teks yang langsung dibacakan suara: tulis seperti diucapkan ("Larsen dan rekan-rekannya, tahun 2009", "39 persen"), tanpa kurung, singkatan (dkk., et al.), garis miring, atau garis bawah.
 Tanpa tanda pisah panjang. Tanpa kata kasar. Tanpa politik, agama, tuduhan, atau orang sungguhan. Tanpa ajakan daftar, harga, atau "follow".
 
@@ -80,10 +95,14 @@ Isyarat bisa dipicu tepat di satu kata dengan `@kata` (kata itu harus ada di UCA
 ```
 ##VIDEO <id> | <judul>
 ##SUMBER <id kartu riset>
+##ASET                                (opsional: aset baru yang tidak ada di kosakata, satu per baris, nama huruf kecil_garis_bawah)
+LATAR sumur_tua: sumur bata dilihat dari dalam, gelap, cahaya bulan dari atas
+AKTOR tikus: tikus putih kecil, mata merah muda, ekor panjang
+PROPS keju: potongan keju kuning berlubang
 ##KETUKAN 01
 UCAP: [tag] kalimat yang diucapkan
 LATAR: <latar>                        (wajib di ketukan pertama; ganti bila tempat berubah, aktor lama hilang)
-AKTOR: id=peran posisi ekspresi; id2=peran posisi ekspresi
+AKTOR: id=peran posisi ekspresi; id2=peran posisi ekspresi   (kerumunan: tambahkan xJUMLAH, mis. tk=tikus tengah takut x20)
 AKSI: id aksi [ke posisi] [@kata]; ...
 EKSPRESI: id ekspresi [@kata]; ...
 PROPS: benda tempat [gerak] [@kata]; ...   (tempat: kiri|tengah|kanan|atas|jauh_kiri|jauh_kanan|tangan:id|kepala:id)
@@ -101,7 +120,7 @@ FAKTA: ya
 ##AKHIR
 ```
 
-### Kosakata (di luar daftar ditolak program)
+### Kosakata bawaan (nama lain WAJIB dideklarasikan di ##ASET, kalau tidak ditolak program)
 LATAR:
 {daftar(k['latar'])}
 PERAN aktor (pilih yang cocok dengan gender dan profesi tokoh: tokoh perempuan memakai siswi/mahasiswi/ibu, dokter memakai dokter, petani memakai petani; dua tokoh sejenis boleh, mesin membedakan warnanya):
@@ -117,7 +136,7 @@ SUASANA:
 SISIPAN:
 {chr(10).join(f"- `{n}`: {v['arti']}" + (" (isi: nama props mana pun)" if v['isi'] == 'props' else f" (isi: {' | '.join(v['isi'])})" if v['isi'] else '') for n, v in k['sisipan'].items())}
 POSE ATA: {', '.join(ata['pose'])} (pemetaan: {', '.join(f'{m}={p}' for m, p in ata['pemetaan_momen'].items())})
-TAG SUARA (di depan kalimat UCAP, boleh lebih dari satu: [tense, slowly]):
+TAG SUARA (WAJIB satu di depan SETIAP kalimat UCAP, boleh lebih dari satu: [tense, slowly]; utamakan yang teruji pemilik):
 {tags}
 
 ### Contoh naskah lengkap yang lolos standar
@@ -127,8 +146,10 @@ TAG SUARA (di depan kalimat UCAP, boleh lebih dari satu: [tense, slowly]):
 
 ## 6. Sebelum mengirim, periksa sendiri
 Hook maksimal 10 kata dan tidak diam; tiap 2 ketukan komposisi berganti; minimal 2 SISIPAN; setiap @kata ada di UCAP-nya; setiap ketukan punya minimal satu isyarat visual; angka riset sama dengan kartu;
-satu KARTU maksimal 3 langkah; penutup callback; semua nama dari kosakata. Kirim hanya blok dari ##VIDEO sampai ##AKHIR.
+satu KARTU maksimal 3 langkah; penutup callback; semua nama dari kosakata.
 Bila nanti kuberi daftar galat, perbaiki hanya baris yang disebut dan kirim ulang seluruh naskah.
+
+{FORMAT_WAJIB}
 """
 
 

@@ -101,3 +101,29 @@ def test_ujung_ke_ujung_render_video(tmp_path):
     q = json.loads((f / "qa.json").read_text())
     assert q["lulus"], q["masalah"]
     assert (f / "video.mp4").exists()
+
+
+def test_olah_menolak_ucap_yang_beda_dari_rekaman(tmp_path):
+    f = _ep(tmp_path)
+    n = nf.urai((f / "tempelan.txt").read_text(encoding="utf-8")).naskah
+    kal = [k["ucap_el"] for k in n["ketukan"]]
+    kal[0] = kal[0].replace("tiga hari", "dua hari")
+    (f / "rekaman-pemilik.txt").write_text("\n\n".join(kal) + "\n", encoding="utf-8")
+    h = olah.maju(f)
+    assert h["kode"] == 6 and "rekaman" in h["instruksi"] and "ketukan 1" in (f / "koreksi-chatgpt.md").read_text(encoding="utf-8")
+
+
+def test_olah_berhenti_untuk_aset_baru_sesudah_persetujuan(tmp_path, monkeypatch):
+    monkeypatch.setattr(olah.lint_naskah, "periksa", lambda n, k: {"galat": [], "peringatan": [], "perkiraan_durasi": 50})   # fixture minimal
+    F = ROOT / "tests/fixtures/aset_uji"
+    f = tmp_path / "aset"
+    f.mkdir()
+    shutil.copy(F / "tempelan.txt", f / "tempelan.txt")
+    assert olah.maju(f)["kode"] == 4                                   # persetujuan naskah dulu
+    n = json.loads((f / "naskah.json").read_text(encoding="utf-8"))
+    n["disetujui"] = True
+    (f / "naskah.json").write_text(json.dumps(n), encoding="utf-8")
+    h = olah.maju(f)
+    assert h["kode"] == 8 and h["berhenti_di"] == "aset" and (f / "aset-dibutuhkan.md").exists()
+    shutil.copy(F / "aset.js", f / "aset.js")
+    assert olah.maju(f)["kode"] == 5                                   # aset lengkap: lanjut ke suara

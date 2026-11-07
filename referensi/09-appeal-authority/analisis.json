@@ -1,0 +1,53 @@
+{
+ "berkas": "b1249619-Omong_kosong_tidak_perlu_bukti_cukup_gelar_dan_pang",
+ "teknis": {
+  "durasi": 65.92,
+  "lebar": 720,
+  "tinggi": 1280,
+  "fps": 30.0,
+  "ukuran_mb": 9.64,
+  "ada_audio": true,
+  "audio_hz": 44100
+ },
+ "loudness": {
+  "lufs": -14.2,
+  "rentang_lu": 1.2,
+  "puncak_dbfs": -0.1
+ },
+ "potongan_keras": {
+  "jumlah": 5,
+  "waktu": [
+   20.33,
+   34.5,
+   35.77,
+   37.43,
+   59.33
+  ],
+  "per_menit": 4.6
+ },
+ "suara": {
+  "jumlah_kata": 173,
+  "kata_per_detik": 2.7,
+  "rata2_durasi_kata": 0.31,
+  "jeda_terpanjang": 0.48,
+  "jeda_di_atas_0_45": 2
+ },
+ "hook": "Seorang aktor berpura -pura jadi profesor, lalu berceramah di",
+ "kalimat": [
+  {
+   "mulai": 0.0,
+   "selesai": 13.0,
+   "jumlah_kata": 35
+  },
+  {
+   "mulai": 13.48,
+   "selesai": 53.3,
+   "jumlah_kata": 108
+  },
+  {
+   "mulai": 53.78,
+   "selesai": 64.1,
+   "jumlah_kata": 30
+  }
+ ]
+}

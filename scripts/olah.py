@@ -1,7 +1,7 @@
 """/olah: jalankan seluruh produksi satu video dan berhenti di titik yang butuh pemilik.
 
 python -m scripts.olah <folder>   → satu baris JSON {kode, berhenti_di, instruksi, ...}
-Kode: 0 video jadi dan lulus QA, 1 gagal teknis, 4 Approval 1 (naskah), 5 butuh suara / suara tidak cocok, 6 butuh tempelan atau koreksi.
+Kode: 0 video jadi dan lulus QA, 1 gagal teknis, 4 Approval 1 (naskah), 5 butuh suara / suara tidak cocok, 6 butuh tempelan atau koreksi, 8 butuh aset baru (aset.js).
 Urutan: tempelan → naskah.json → lint standar → Approval 1 + lembar ElevenLabs → suara.mp3 → selaras → linimasa → campur → render → QA.
 """
 import json
@@ -11,7 +11,7 @@ from pathlib import Path
 
 import yaml
 
-from scripts import campur, lembar, lint_naskah, linimasa, naskah_format, qa, render, selaras
+from scripts import tempo, campur, caption, cek_aset, lembar, lint_naskah, linimasa, naskah_format, prompt_visual, qa, render, selaras
 
 
 def _baru(a: Path, b: Path) -> bool:
@@ -27,6 +27,8 @@ def maju(folder: Path, transkrip_fn=None, fps: int = 30) -> dict:
         kode, keluar, _ = naskah_format.proses(f)
         if kode == 7:
             return {"kode": 6, "berhenti_di": "tempelan", "instruksi": "tempelan.txt berubah sesudah naskah disetujui. Kembalikan tempelan, atau set disetujui: false dulu lalu jalankan dengan --timpa."}
+        if kode == 0:   # baris era lama yang dilewati profil aktif (ATA, KARTU) ditunjukkan di Approval 1
+            (f / "catatan-naskah.txt").write_text("\n".join(x for x in keluar if "dilewati" in x), encoding="utf-8")
         if kode != 0:
             return {"kode": 6, "berhenti_di": "koreksi", "galat": keluar[:12], "instruksi": f"Tempel isi {f}/koreksi-chatgpt.md ke ChatGPT, simpan jawabannya sebagai tempelan.txt, lalu /olah lagi."}
     n = json.loads(naskah.read_text(encoding="utf-8"))
@@ -39,12 +41,26 @@ def maju(folder: Path, transkrip_fn=None, fps: int = 30) -> dict:
         if not n.get("disetujui"):
             naskah.unlink()   # naskah yang gagal standar tidak boleh menunggu persetujuan
         return {"kode": 6, "berhenti_di": "koreksi", "galat": [str(g) for g in gal], "instruksi": f"Naskah melanggar standar. Tempel isi {f}/koreksi-chatgpt.md ke ChatGPT, simpan jawabannya sebagai tempelan.txt, lalu /olah lagi."}
+    if (f / "rekaman-pemilik.txt").exists():   # suara sudah direkam: UCAP wajib sama persis dengan rekaman
+        beda = prompt_visual.bandingkan(f, [k["ucap_el"] for k in n["ketukan"]])
+        if beda:
+            (f / "koreksi-chatgpt.md").write_text(naskah_format.pesan_koreksi([naskah_format.Galat(None, b) for b in beda]), encoding="utf-8")
+            if not n.get("disetujui"):
+                naskah.unlink()
+            return {"kode": 6, "berhenti_di": "koreksi", "galat": beda[:12], "instruksi": f"UCAP berbeda dari rekaman pemilik. Tempel isi {f}/koreksi-chatgpt.md ke ChatGPT, simpan jawabannya sebagai tempelan.txt, lalu /olah lagi."}
     lembar.tulis(f)
     if not n.get("disetujui"):
         return {"kode": 4, "berhenti_di": "approval_1", "perkiraan_durasi": lint["perkiraan_durasi"], "peringatan": [p["pesan"] for p in lint["peringatan"]],
+                "dilewati": [x for x in ((f / "catatan-naskah.txt").read_text(encoding="utf-8").splitlines() if (f / "catatan-naskah.txt").exists() else []) if x],
                 "instruksi": f"Baca {f}/naskah.json. Bila setuju, ubah \"disetujui\" menjadi true, lalu generate {f}/lembar-elevenlabs.md di ElevenLabs dan simpan sebagai suara.mp3."}
+    if n.get("aset"):   # isi bebas per video: aset baru digambar Claude di aset.js sesudah naskah disetujui
+        ca = cek_aset.periksa(f, lembar=False)
+        if ca["galat"]:
+            return {"kode": 8, "berhenti_di": "aset", "galat": ca["galat"][:12],
+                    "instruksi": f"Naskah memakai {len(n['aset'])} aset baru (daftar: {f}/aset-dibutuhkan.md). Claude menggambarnya di {f}/aset.js mengikuti docs/gaya-visual.md, menjalankan python -m scripts.cek_aset {f}, memeriksa aset-cek.png, lalu /olah lagi."}
     if not selaras.cari_suara(f):
         return {"kode": 5, "berhenti_di": "suara", "instruksi": f"Generate {f}/lembar-elevenlabs.md di ElevenLabs (voice Ata, Eleven v3), simpan sebagai {f}/suara.mp3, lalu /olah lagi."}
+    tmp = tempo.sesuaikan(f)   # suara lambat dipercepat lokal (nada tetap) sebelum disejajarkan
     if selaras.main([str(f)], transkrip_fn=transkrip_fn) != 0:
         return {"kode": 5, "berhenti_di": "suara", "instruksi": "Suara tidak cocok dengan naskah (lihat kata.json). Pastikan seluruh blok lembar ikut di-generate, lalu ganti suara.mp3."}
     try:
@@ -54,8 +70,10 @@ def maju(folder: Path, transkrip_fn=None, fps: int = 30) -> dict:
     except Exception as e:  # noqa: BLE001
         return {"kode": 1, "berhenti_di": "render", "alasan": str(e)[:400], "instruksi": "Render gagal; lihat alasan."}
     h = qa.periksa(f)
-    return {"kode": 0 if h["lulus"] else 1, "berhenti_di": "selesai" if h["lulus"] else "qa", "qa": h,
-            "instruksi": f"Tonton {f}/video.mp4 (Approval 2). Angka QA: {h.get('lufs')} LUFS, puncak {h.get('puncak_dbfs')} dBFS, {h.get('durasi')} dtk."}
+    if h["lulus"]:
+        caption.main([str(f)])
+    return {"kode": 0 if h["lulus"] else 1, "berhenti_di": "selesai" if h["lulus"] else "qa", "qa": h, "tempo": tmp,
+            "instruksi": f"Tonton {f}/video.mp4 (Approval 2); caption di {f}/caption.txt (Collab @mentoringsobatambis diatur saat unggah). Angka QA: {h.get('lufs')} LUFS, puncak {h.get('puncak_dbfs')} dBFS, {h.get('durasi')} dtk."}
 
 
 def main(argv: list[str]) -> int:

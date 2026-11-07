@@ -44,7 +44,11 @@ def test_data_harus_cocok_kartu():
     assert any("65" in g["pesan"] for g in r["galat"])
 
 
-def test_wajib_kartu_simpan():
+PROFIL_ATA = {"wajib_kartu": True, "maskot": "Ata"}
+
+
+def test_wajib_kartu_simpan(monkeypatch):
+    monkeypatch.setattr(ln, "_profil", lambda: PROFIL_ATA)
     t = TEKS.replace("KARTU: Triknya | Tulis tebakanmu @tulis | Cek tugas mirip, beneran selesai berapa hari @cek | Pakai angka yang lebih besar (1,6x) @pakai\n", "")
     assert any("KARTU" in g["pesan"] for g in _lint(t)["galat"])
 
@@ -70,7 +74,8 @@ def test_sumber_wajib_bila_ada_fakta():
     assert any("SUMBER" in g["pesan"] for g in _lint(t)["galat"])
 
 
-def test_peringatan_callback_dan_pola_klise():
+def test_peringatan_callback_dan_pola_klise(monkeypatch):
+    monkeypatch.setattr(ln, "_profil", lambda: PROFIL_ATA)
     t = TEKS.replace("UCAP: [laughs] Biar file-mu cukup satu nama, final.", "UCAP: [laughs] Rencana bukan harapan, tapi pengalaman.")
     t = t.replace("TEKS: final.docx @final\nPROPS: centang atas muncul @final\nEKSPRESI: kamu bangga @final", "EKSPRESI: kamu bangga @rencana")
     r = _lint(t)
@@ -132,3 +137,97 @@ def test_ucap_yang_tidak_bisa_diucapkan_ditolak(kalimat):
     t = TEKS.replace("UCAP: [deadpan] Otakmu barusan bohong.", f"UCAP: {kalimat}")
     t = t.replace("@bohong", "@" + kalimat.split()[0].lower())
     assert any("diucapkan" in g["pesan"] for g in _lint(t)["galat"])
+
+
+def test_kalimat_tanpa_tag_ekspresi_diperingatkan():
+    t = TEKS.replace("UCAP: [deadpan] Otakmu barusan bohong.", "UCAP: Otakmu barusan bohong.")
+    assert any("tag ekspresi" in p["pesan"] for p in _lint(t)["peringatan"])
+
+
+def test_saran_keluar_menyebut_aktor_yang_bukan_tokoh_ketukan():
+    n = nf.urai(TEKS).naskah
+    k = n["ketukan"][-1]
+    k["ata"] = {"pose": "tertawa", "tempat": "kanan", "masuk": "pop"}
+    k["aktor"] = [{"id": "kamu", "peran": "pelajar", "posisi": "tengah", "ekspresi": "senang"}, {"id": "x", "peran": "guru", "posisi": "kanan", "ekspresi": "datar"}]
+    k["aktor"] = k["aktor"][:1]
+    sebelum = n["ketukan"][-2]
+    sebelum["aktor"] = sebelum["aktor"] + [{"id": "x", "peran": "guru", "posisi": "kanan", "ekspresi": "datar"}]
+    g = [x["pesan"] for x in ln.periksa(n, KARTU)["galat"] if "Ata dipaksa" in x["pesan"]]
+    assert g and "KELUAR: x" in g[0]
+
+
+def test_profil_filosofi_tanpa_kartu_dan_tanpa_ata(monkeypatch):
+    """Profil 'filosofi' (formula mindwander): tidak wajib KARTU trik dan tidak meminta Ata."""
+    t = re.sub(r"^KARTU:.*\n", "", TEKS, flags=re.M)
+    t = re.sub(r"^ATA:.*\n", "", t, flags=re.M)
+    monkeypatch.setattr(ln, "_profil", lambda: PROFIL_ATA)
+    assert any("KARTU" in g["pesan"] for g in _lint(t)["galat"])                    # profil ata (lama)
+    monkeypatch.setattr(nf, "profil", lambda: {"wajib_kartu": False, "maskot": None, "latar_bawaan": True})   # filosofi; fixture memakai latar bawaan
+    monkeypatch.setattr(ln, "_profil", lambda: {"wajib_kartu": False, "maskot": None})
+    r = _lint(t)
+    assert not any("KARTU" in g["pesan"] for g in r["galat"]) and not any("Ata" in p["pesan"] for p in r["peringatan"])
+
+
+def test_sisipan_dihitung_sebagai_visual():
+    n = nf.urai(TEKS).naskah
+    k = n["ketukan"][4]
+    for f in ("aksi", "ekspresi", "props", "teks", "data"):
+        k[f] = []
+    k["kartu"] = k["ata"] = k["kamera"] = None
+    k["aktor"] = []
+    k["sisipan"] = {"nama": "jam_cepat", "isi": None, "kata": None}
+    assert not any(f"ketukan {k['no']} tanpa isyarat visual" in g["pesan"] for g in ln.periksa(n, KARTU)["galat"])
+
+
+def _naskah_bidikan(latar_per_ketukan, sisipan=(), penamaan=None, isi_penamaan=False):
+    ks = []
+    for i, lt in enumerate(latar_per_ketukan, 1):
+        ucap = "Dalam psikologi, ini dikenal sebagai jebakan." if i == penamaan else f"Kalimat cerita nomor {i} berjalan terus."
+        ks.append({"no": i, "baris": i, "ucap": ucap, "latar": lt, "aktor": [], "aksi": [], "ekspresi": [], "props": [{"nama": "emas"}] if (i == penamaan and isi_penamaan) else [],
+                   "teks": [], "data": [], "kartu": None, "ata": None, "kamera": {"jenis": "lebar"}, "keluar": [], "fakta": False,
+                   "sisipan": {"nama": "timbangan"} if i in sisipan else None, "suasana": "normal", "tag": ["serious"]})
+    return {"id": "uji", "judul": "Uji", "ketukan": ks}
+
+
+def test_bidikan_ketat_latar_dan_penamaan(monkeypatch):
+    monkeypatch.setattr(ln, "_profil", lambda: {"wajib_kartu": False, "maskot": None, "bidikan_ketat": True})
+    pesan = lambda n: [g["pesan"] for g in ln.periksa(n, None)["galat"]]
+    terlalu_lama = pesan(_naskah_bidikan(["a"] * 6 + ["b", "c"]))
+    assert any("latar yang sama" in p for p in terlalu_lama)
+    assert not any("latar yang sama" in p for p in pesan(_naskah_bidikan(["a"] * 6 + ["b", "c"], sisipan={4})))
+    assert any("minimal 3 latar" in p for p in pesan(_naskah_bidikan(["a", "a", "b", "b"])))
+    assert any("metafora" in p for p in pesan(_naskah_bidikan(["a", "b", "c", "kosong"], penamaan=4)))
+    assert not any("metafora" in p for p in pesan(_naskah_bidikan(["a", "b", "c", "kosong"], penamaan=4, isi_penamaan=True)))
+    dipentaskan = _naskah_bidikan(["a", "b", "c", "podium"], penamaan=4)
+    dipentaskan["ketukan"][3]["aktor"] = [{"id": "a", "peran": "raja", "posisi": "tengah", "ekspresi": "bangga", "ukuran": "kecil", "naik": 480}]
+    assert not any("metafora" in p for p in pesan(dipentaskan))
+
+
+def test_ajakan_boleh_di_penutup_tapi_dicatat_bila_di_tengah(monkeypatch):
+    """Keputusan pemilik: ajakan boleh dipakai agar FYP dan ramai. Profil ajakan_boleh: galat jadi peringatan bila di tengah video."""
+    monkeypatch.setattr(ln, "_profil", lambda: {"wajib_kartu": False, "maskot": None, "ajakan_boleh": True})
+    n = _naskah_bidikan(["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"])
+    n["ketukan"][1]["ucap"] = "Simpan video ini sekarang."
+    n["ketukan"][9]["ucap"] = "Kirim ke temanmu, bagikan sekarang."
+    r = ln.periksa(n, None)
+    assert not any("ajakan" in g["pesan"] for g in r["galat"])
+    pesan = [p["pesan"] for p in r["peringatan"] if "ajakan" in p["pesan"]]
+    assert len(pesan) == 1 and "ketukan 2" in pesan[0] and "penutup" in pesan[0]
+
+
+def _gerak(naskah, urut_aksi):
+    """urut_aksi: per ketukan 'gerak', 'sisipan', atau 'diam' (hanya ekspresi/props)."""
+    for k, j in zip(naskah["ketukan"], urut_aksi):
+        k["aksi"] = [{"id": "a", "aksi": "jalan", "ke": "kiri", "kata": None}] if j == "gerak" else []
+        k["sisipan"] = {"nama": "timbangan"} if j == "sisipan" else None
+        k["ekspresi"] = [{"id": "a", "ekspresi": "senang", "kata": None}] if j == "diam" else []
+    return naskah
+
+
+def test_gerak_wajib_maks_dua_ketukan_diam_berturut(monkeypatch):
+    """Pelajaran video 'uang-keranjang' (gerak 2,87, skip tinggi): ketukan tanpa AKSI gerak atau sisipan membuat video seperti slide."""
+    monkeypatch.setattr(ln, "_profil", lambda: {"wajib_kartu": False, "maskot": None, "bidikan_ketat": True})
+    pesan = lambda n: [g["pesan"] for g in ln.periksa(n, None)["galat"] if "gerak" in g["pesan"] and "berturut" in g["pesan"]]
+    dasar = ["a", "b", "c", "d", "e", "f", "g", "h"]
+    assert pesan(_gerak(_naskah_bidikan(dasar), ["gerak", "diam", "diam", "diam", "gerak", "gerak", "sisipan", "gerak"]))
+    assert not pesan(_gerak(_naskah_bidikan(dasar), ["gerak", "diam", "diam", "gerak", "diam", "diam", "sisipan", "gerak"]))

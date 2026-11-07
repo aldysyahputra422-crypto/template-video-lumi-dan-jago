@@ -1,0 +1,19 @@
+##VIDEO aset_uji | Uji aset per video
+##ASET
+LATAR sumur_tua: sumur bata dari dalam
+AKTOR tikus: tikus putih kecil
+PROPS keju: keju kuning
+##KETUKAN 01
+UCAP: Ratusan tikus hidup tenang di dalam sumur tua.
+LATAR: sumur_tua
+AKTOR: tk=tikus tengah datar x12; p=pelajar kiri senang
+AKSI: tk jalan ke kanan @tenang
+PROPS: keju kanan muncul @sumur
+KAMERA: lebar
+##KETUKAN 02
+UCAP: Lalu seekor ular jatuh dari atas sumur itu.
+AKSI: p lompat @jatuh
+##KETUKAN 03
+UCAP: Semua tikus panik dan berlari ke segala arah.
+AKSI: tk lari ke kiri @berlari
+##AKHIR

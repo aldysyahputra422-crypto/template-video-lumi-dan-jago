@@ -9,6 +9,7 @@ from pathlib import Path
 
 import yaml
 
+from scripts import naskah_format as _nf
 from scripts.naskah_format import token
 
 KATA_PER_DETIK = 2.6
@@ -54,6 +55,15 @@ def _kata_ke_angka(kata: list[str]) -> float:
             total += ((grup + kini) or 1) * (1000 if x == "ribu" else 1_000_000)
             grup = kini = 0
     return total + grup + kini
+
+
+def _profil() -> dict:
+    """Profil naskah aktif (config/gaya.yaml → naskah): 'ata' (trik di KARTU, maskot Ata) atau 'filosofi' (formula mindwander)."""
+    return _nf.profil()
+
+
+def _gaya() -> dict:
+    return yaml.safe_load((Path(__file__).resolve().parents[1] / "config/gaya.yaml").read_text(encoding="utf-8"))
 
 
 HENTI = {"yang", "dari", "kamu", "itu", "ini", "dan", "atau", "dengan", "untuk", "pada", "karena", "tapi", "juga", "masih", "sudah", "akan"}
@@ -104,24 +114,29 @@ def periksa(n: dict, kartu: dict | None) -> dict:
     # 1 hook
     if kata[0] > HOOK_MAKS_KATA:
         G(ks[0], f"hook {kata[0]} kata (±{kata[0] / KATA_PER_DETIK:.1f} dtk); maksimal {HOOK_MAKS_KATA} kata supaya selesai dalam 3 detik")
-    if not (SAPAAN.search(ks[0]["ucap"]) or KONTRADIKSI.search(ks[0]["ucap"])):
+    if _profil().get("maskot") and not (SAPAAN.search(ks[0]["ucap"]) or KONTRADIKSI.search(ks[0]["ucap"])):
         P(ks[0], "hook tidak menyapa penonton (kamu/-mu) dan tidak membalik dugaan")
     # 2 durasi
-    if not 30 <= durasi <= 70:
-        G(None, f"perkiraan durasi {durasi} dtk di luar 30 sampai 70 dtk")
-    elif not 40 <= durasi <= 55:
-        P(None, f"perkiraan durasi {durasi} dtk; sasaran 40 sampai 55 dtk")
+    D = _gaya()["durasi"]
+    if not D["batas_min"] <= durasi <= D["batas_maks"]:
+        G(None, f"perkiraan durasi {durasi} dtk di luar {D['batas_min']} sampai {D['batas_maks']} dtk")
+    elif not D["sasaran_min"] <= durasi <= D["sasaran_maks"]:
+        P(None, f"perkiraan durasi {durasi} dtk; sasaran {D['sasaran_min']} sampai {D['sasaran_maks']} dtk (video referensi)")
     # 3 visual tiap ketukan, panjang ketukan
     for k, nk in zip(ks, kata):
-        if not any(k[f] for f in ("aksi", "ekspresi", "props", "teks", "data", "kartu", "ata", "kamera", "aktor")):
+        if not any(k.get(f) for f in ("aksi", "ekspresi", "props", "teks", "data", "kartu", "ata", "kamera", "aktor", "sisipan")):
             G(k, f"ketukan {k['no']} tanpa isyarat visual (AKSI/EKSPRESI/PROPS/TEKS/DATA/KARTU/ATA/KAMERA)")
         if nk > 16:
             P(k, f"ketukan {k['no']} {nk} kata; pecah supaya visual berganti tiap 2 sampai 5 detik")
         if TAK_TERUCAP.search(k["ucap"]):
             G(k, f"UCAP harus bisa langsung diucapkan: \"{TAK_TERUCAP.search(k['ucap']).group(0)}\" ditemukan. Tulis seperti diucapkan (mis. 'Larsen dan rekan-rekannya, tahun 2009', '39 persen'), tanpa kurung, singkatan, garis miring, atau garis bawah")
         if AJAKAN.search(k["ucap"]):
-            G(k, f"ajakan yang terasa jualan: \"{AJAKAN.search(k['ucap']).group(0)}\". Tunjukkan alatnya saja, jangan suruh simpan, bagikan, atau follow")
-        if k["kartu"] and AJAKAN.search(k["kartu"]["judul"]):
+            if _profil().get("ajakan_boleh"):   # keputusan pemilik: ajakan boleh; di tengah video menurunkan retensi, jadi diletakkan di penutup
+                if k["no"] <= int(len(ks) * .8):
+                    P(k, f"ajakan \"{AJAKAN.search(k['ucap']).group(0)}\" di ketukan {k['no']} (tengah video): pindahkan ke penutup (80% terakhir) supaya retensi tidak turun")
+            else:
+                G(k, f"ajakan yang terasa jualan: \"{AJAKAN.search(k['ucap']).group(0)}\". Tunjukkan alatnya saja, jangan suruh simpan, bagikan, atau follow")
+        if k["kartu"] and not _profil().get("ajakan_boleh") and AJAKAN.search(k["kartu"]["judul"]):
             G(k, f"judul KARTU berisi ajakan: \"{k['kartu']['judul']}\". Pakai judul netral, mis. 'Triknya'")
         if TERLARANG.search(k["ucap"]):
             G(k, f"kata kasar atau terlarang: {TERLARANG.search(k['ucap']).group(0)}")
@@ -139,8 +154,11 @@ def periksa(n: dict, kartu: dict | None) -> dict:
             statis[i] = False
     if sum(1 for k in ks if k.get("sisipan")) < 2:
         P(None, "SISIPAN kurang dari 2; benda atau kegiatan yang disebut (scroll HP, jam, tagihan) lebih hidup bila divisualkan harfiah")
+    tanpa_tag = [k["no"] for k in ks if not k.get("tag")]
+    if tanpa_tag:
+        P(None, f"ketukan {tanpa_tag} tanpa tag ekspresi suara; tag terbukti sangat berpengaruh di ElevenLabs (uji pemilik), beri satu per kalimat")
     # 4 alat yang disimpan
-    if not any(k["kartu"] for k in ks):
+    if _profil().get("wajib_kartu", True) and not any(k["kartu"] for k in ks):
         G(None, "tidak ada KARTU (alat maksimal 3 langkah yang membuat penonton menyimpan video)")
     # 5 fakta dan sumber
     fakta = [k for k in ks if k["fakta"]]
@@ -163,7 +181,8 @@ def periksa(n: dict, kartu: dict | None) -> dict:
     if klise > 1:
         P(None, f"pola 'bukan X, tapi Y' muncul {klise} kali; maksimal sekali")
     isi = lambda k: {t for t in token(k["ucap"]) if len(t) >= 4 and t not in HENTI}
-    if not isi(ks[-1]) & set().union(*(isi(k) for k in ks[: max(3, len(ks) // 2)])):
+    penutup = isi(ks[-1]) | (isi(ks[-2]) if len(ks) > 1 and not _profil().get("maskot") else set())   # profil filosofi: penutup paralel 2 ketukan
+    if not penutup & set().union(*(isi(k) for k in ks[: max(3, len(ks) // 2)])):
         P(ks[-1], "penutup tidak melakukan callback ke hook atau cerita awal (tidak ada kata kunci yang sama dengan separuh pertama)")
     # 7 Ata hanya di adegan lapang: tidak dipaksa tampil di atas adegan yang sudah ramai
     aktif: set[str] = set()
@@ -173,9 +192,11 @@ def periksa(n: dict, kartu: dict | None) -> dict:
         aktif |= {a["id"] for a in k["aktor"]}
         aktif -= set(k["keluar"])
         if k["ata"] and (k.get("sisipan") or k["kartu"] or k["data"] or len(aktif) >= 2):
-            G(k, f"Ata dipaksa tampil di adegan ramai (ketukan {k['no']}: {len(aktif)} aktor{', SISIPAN' if k.get('sisipan') else ''}{', KARTU' if k['kartu'] else ''}{', DATA' if k['data'] else ''}). Pindahkan ATA ke ketukan lapang (maksimal 1 aktor, tanpa SISIPAN/KARTU/DATA)")
+            tetap = {a["id"] for a in k["aktor"]} & aktif or {sorted(aktif)[0]} if aktif else set()
+            saran = f" atau tambahkan 'KELUAR: {'; '.join(sorted(aktif - tetap))}' di ketukan ini" if len(aktif) >= 2 else ""
+            G(k, f"Ata dipaksa tampil di adegan ramai (ketukan {k['no']}: {len(aktif)} aktor di panggung: {', '.join(sorted(aktif)) or '-'}{', SISIPAN' if k.get('sisipan') else ''}{', KARTU' if k['kartu'] else ''}{', DATA' if k['data'] else ''}). Pindahkan ATA ke ketukan lapang (maksimal 1 aktor, tanpa SISIPAN/KARTU/DATA){saran}")
     ata = sum(1 for k in ks if k["ata"])
-    if ata == 0:
+    if ata == 0 and _profil().get("maskot"):
         P(None, "Ata tidak muncul sama sekali; beri satu atau dua momen lapang (penamaan atau penutup)")
     elif ata > 3:
         G(None, f"Ata muncul {ata} kali; maksimal 3, cerita yang jadi bintang")
@@ -195,6 +216,32 @@ def periksa(n: dict, kartu: dict | None) -> dict:
         pertama = next((i for i, k in enumerate(ks) if any(x in k["ucap"].lower() for x in nama)), None)
         if pertama is not None and pertama < 0.4 * len(ks):
             G(ks[pertama], f"nama konsep muncul terlalu awal (ketukan {ks[pertama]['no']} dari {len(ks)}); sebut sesudah cerita berbalik, seperti video referensi")
+    if _profil().get("bidikan_ketat"):   # bahasa bidikan referensi: dunia berganti tiap 3 sampai 5 kalimat, penamaan bergambar
+        latar = {k.get("latar") for k in ks if k.get("latar") and k.get("latar") != "kosong"}
+        if len(latar) < 3:
+            G(None, f"minimal 3 latar berbeda per video (ada {len(latar)}): referensi berganti dunia tiap 3 sampai 5 kalimat; tambah LATAR di ##ASET")
+        run, awal = 0, None
+        for k in ks:
+            if k.get("sisipan") or k.get("latar") != (awal or {}).get("latar"):
+                run, awal = (0 if k.get("sisipan") else 1), k
+            else:
+                run += 1
+            if run == 5:
+                G(k, f"ketukan {awal['no']} sampai {k['no']} di latar yang sama tanpa sisipan: maksimal 4; ganti LATAR atau sisipkan SISIPAN")
+        # gerak wajib: maksimal 2 ketukan berturut-turut tanpa AKSI gerak (selain diam/bicara) atau SISIPAN. Tokoh yang hanya berdiri dan
+        # berekspresi membuat video seperti slide (pelajaran video uang-keranjang: gerak 2,87; setelah tiap ketukan diberi aksi dan sisipan: 6,5).
+        gerak = lambda k: bool(k.get("sisipan")) or any(x.get("aksi") not in ("diam", "bicara") for x in k.get("aksi", []))
+        diam = 0
+        for k in ks:
+            diam = 0 if gerak(k) else diam + 1
+            if diam == 3:
+                G(k, f"ketukan {k['no'] - 2} sampai {k['no']} berturut-turut tanpa gerak: beri AKSI gerak (jalan ke posisi, sorak, menunjuk, terduduk, menggeleng) atau SISIPAN; maksimal 2 ketukan diam berturut-turut")
+        if sum(1 for k in ks if k.get("sisipan")) < max(3, len(ks) // 6):
+            P(None, f"hanya {sum(1 for k in ks if k.get('sisipan'))} sisipan; referensi memotong ke benda atau layar penuh tiap ±6 detik (minimal {max(3, len(ks) // 6)} untuk {len(ks)} ketukan)")
+        for k in ks:
+            dipentaskan = k.get("latar") not in (None, "kosong") and k.get("aktor")   # metafora berupa dunia yang dipentaskan (boneka, podium)
+            if re.search(r"dikenal sebagai|disebut|inilah yang", k["ucap"], re.I) and not (k.get("sisipan") or k.get("props") or k.get("data") or dipentaskan):
+                G(k, f"ketukan {k['no']} (penamaan konsep) butuh gambar metafora: SISIPAN, PROPS, atau tokoh yang dipentaskan di dunia khusus; bukan hanya TEKS di latar kosong")
     return {"galat": galat, "peringatan": peringatan, "perkiraan_durasi": durasi, "jumlah_ketukan": len(ks), "kata": sum(kata)}
 
 

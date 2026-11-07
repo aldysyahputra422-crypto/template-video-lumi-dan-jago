@@ -1,0 +1,93 @@
+{
+ "berkas": "3519b688-Bukan_sekedar_kisah_tikus_dan_ularAda_yang_paham.MP",
+ "teknis": {
+  "durasi": 63.67,
+  "lebar": 720,
+  "tinggi": 1280,
+  "fps": 30.0,
+  "ukuran_mb": 12.19,
+  "ada_audio": true,
+  "audio_hz": 44100
+ },
+ "loudness": {
+  "lufs": -14.2,
+  "rentang_lu": 1.9,
+  "puncak_dbfs": -0.3
+ },
+ "potongan_keras": {
+  "jumlah": 5,
+  "waktu": [
+   8.5,
+   17.5,
+   33.6,
+   40.43,
+   45.43
+  ],
+  "per_menit": 4.7
+ },
+ "suara": {
+  "jumlah_kata": 176,
+  "kata_per_detik": 2.86,
+  "rata2_durasi_kata": 0.27,
+  "jeda_terpanjang": 0.64,
+  "jeda_di_atas_0_45": 10
+ },
+ "hook": "Sekor ular besar jatuh ke dalam sumur tua yang penuh tikus.",
+ "kalimat": [
+  {
+   "mulai": 0.0,
+   "selesai": 2.94,
+   "jumlah_kata": 11
+  },
+  {
+   "mulai": 3.42,
+   "selesai": 5.4,
+   "jumlah_kata": 6
+  },
+  {
+   "mulai": 5.86,
+   "selesai": 16.2,
+   "jumlah_kata": 32
+  },
+  {
+   "mulai": 16.68,
+   "selesai": 18.42,
+   "jumlah_kata": 6
+  },
+  {
+   "mulai": 18.88,
+   "selesai": 22.38,
+   "jumlah_kata": 14
+  },
+  {
+   "mulai": 22.88,
+   "selesai": 30.9,
+   "jumlah_kata": 25
+  },
+  {
+   "mulai": 31.36,
+   "selesai": 38.62,
+   "jumlah_kata": 23
+  },
+  {
+   "mulai": 39.1,
+   "selesai": 49.46,
+   "jumlah_kata": 31
+  },
+  {
+   "mulai": 50.06,
+   "selesai": 55.96,
+   "jumlah_kata": 16
+  },
+  {
+   "mulai": 56.6,
+   "selesai": 59.86,
+   "jumlah_kata": 8
+  },
+  {
+   "mulai": 60.34,
+   "selesai": 61.52,
+   "jumlah_kata": 4
+  }
+ ]
+}

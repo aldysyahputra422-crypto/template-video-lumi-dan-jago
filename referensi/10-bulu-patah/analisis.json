@@ -1,0 +1,39 @@
+{
+ "berkas": "aba9d077-Tidak_ada_yang_menghitung_bulumu_yang_patah._Mereka",
+ "teknis": {
+  "durasi": 74.72,
+  "lebar": 720,
+  "tinggi": 1280,
+  "fps": 30.0,
+  "ukuran_mb": 11.37,
+  "ada_audio": true,
+  "audio_hz": 44100
+ },
+ "loudness": {
+  "lufs": -14.2,
+  "rentang_lu": 1.3,
+  "puncak_dbfs": 0.0
+ },
+ "potongan_keras": {
+  "jumlah": 1,
+  "waktu": [
+   41.13
+  ],
+  "per_menit": 0.8
+ },
+ "suara": {
+  "jumlah_kata": 252,
+  "kata_per_detik": 3.45,
+  "rata2_durasi_kata": 0.26,
+  "jeda_terpanjang": 0.32,
+  "jeda_di_atas_0_45": 0
+ },
+ "hook": "Sikormera punya ekor paling indah di hutan, tapi tidak ada satu pun",
+ "kalimat": [
+  {
+   "mulai": 0.0,
+   "selesai": 72.98,
+   "jumlah_kata": 252
+  }
+ ]
+}

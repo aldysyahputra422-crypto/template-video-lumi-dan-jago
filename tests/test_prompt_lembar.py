@@ -61,3 +61,31 @@ def test_lembar_satu_suara_hanya_ucapan(tmp_path):
 def test_contoh_prompt_adalah_patokan_root_cause(tmp_path):
     contoh = pn.buat(_folder(tmp_path)).split("```text\n", 1)[1].split("```", 1)[0]
     assert "akar masalah" in contoh and "kedai" in contoh and "jam_cepat" in contoh
+
+
+def test_perintah_format_di_awal_dan_akhir_prompt(tmp_path):
+    """ChatGPT pernah menjawab teks ucapan saja: perintah format blok wajib di awal DAN akhir prompt."""
+    p = pn.buat(_folder(tmp_path))
+    awal, akhir = p[:1500], p[-1500:]
+    for bagian in (awal, akhir):
+        assert "##VIDEO" in bagian and "##AKHIR" in bagian and "LATAR:" in bagian
+    assert "nama peneliti" in p
+
+
+def test_prompt_visual_mengunci_kalimat_rekaman(tmp_path):
+    from scripts import prompt_visual as pv
+    f = _folder(tmp_path)
+    (f / "rekaman-pemilik.txt").write_text("[curious]\nKamu lancar di kamar.\n\n[happy]\nNadia latihan presentasi.\n", encoding="utf-8")
+    p = pv.buat(f)
+    assert "UCAP: [curious] Kamu lancar di kamar." in p and "UCAP: [happy] Nadia latihan presentasi." in p
+    assert p[:1500].count("##VIDEO") and "##AKHIR" in p[-1500:]
+    assert "JANGAN mengubah" in p
+
+
+def test_tempelan_harus_sama_dengan_rekaman(tmp_path):
+    from scripts import prompt_visual as pv
+    f = _folder(tmp_path)
+    (f / "rekaman-pemilik.txt").write_text("[curious]\nKamu lancar di kamar.\n\n[happy]\nNadia latihan presentasi.\n", encoding="utf-8")
+    beda = pv.bandingkan(f, ["[curious] Kamu lancar di kamar.", "[happy] Nadia latihan presentasi di rumah."])
+    assert len(beda) == 1 and "2" in beda[0]
+    assert pv.bandingkan(f, ["[curious] Kamu lancar di kamar.", "[happy] Nadia latihan presentasi."]) == []

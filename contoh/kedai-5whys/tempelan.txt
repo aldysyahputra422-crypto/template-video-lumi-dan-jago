@@ -11,6 +11,7 @@ TEKS: 0 PEMBELI @Nol
 KAMERA: dorong
 
 ##KETUKAN 02
+SUASANA: sedih
 UCAP: [sighs] Raka yakin masalahnya nama. Diganti. Tetap sepi.
 KELUAR: w1; w2; w3
 AKTOR: raka=mahasiswa kiri senang
@@ -20,12 +21,13 @@ EKSPRESI: raka sedih @sepi
 KAMERA: lebar
 
 ##KETUKAN 03
-UCAP: Masalahnya harga. Promo beli satu gratis satu. Tetap sepi.
+UCAP: [annoyed] Masalahnya harga. Promo beli satu gratis satu. Tetap sepi.
 PROPS: koin kanan berputar @gratis
 EKSPRESI: raka capek @sepi
 KAMERA: dekat raka
 
 ##KETUKAN 04
+SUASANA: tegang
 UCAP: [tense] Masalahnya suasana. Lampu warna-warni. Tagihan listrik naik.
 PROPS: lampu atas melayang @Lampu
 SISIPAN: tagihan @Tagihan
@@ -33,7 +35,8 @@ AKSI: raka panik @suasana
 KAMERA: goyang
 
 ##KETUKAN 05
-UCAP: Sampai adiknya, Sasa, bertanya satu hal.
+SUASANA: misterius
+UCAP: [serious] Sampai adiknya, Sasa, bertanya satu hal.
 AKTOR: sasa=anak jauh_kiri bingung
 AKSI: sasa lari ke kiri @adiknya
 KAMERA: lebar
@@ -50,7 +53,7 @@ SISIPAN: jam_cepat @tujuh
 EKSPRESI: raka kaget @sepuluh
 
 ##KETUKAN 08
-UCAP: Mereka bukan menolak kopinya. Mereka tidak pernah melihatnya buka.
+UCAP: [serious] Mereka bukan menolak kopinya. Mereka tidak pernah melihatnya buka.
 KELUAR: raka; sasa
 AKTOR: w1=pelajar jauh_kiri datar; w2=mahasiswa jauh_kanan datar
 AKSI: w1 jalan ke jauh_kanan @Mereka; w2 jalan ke jauh_kiri @menolak
@@ -58,19 +61,20 @@ PROPS: meja tengah muncul @kopinya; jam atas muncul @melihatnya
 KAMERA: lebar
 
 ##KETUKAN 09
-UCAP: Raka sibuk memperbaiki yang terlihat. Penyebabnya ada di jam dinding.
+SUASANA: normal
+UCAP: [confident] Raka sibuk memperbaiki yang terlihat. Penyebabnya ada di jam dinding.
 LATAR: kosong
 AKTOR: raka=mahasiswa tengah malu
 PROPS: jam kiri berputar @jam
 ATA: menatap kanan pop
 
 ##KETUKAN 10
-UCAP: Dalam manajemen, ini disebut akar masalah.
+UCAP: [curious] Dalam manajemen, ini disebut akar masalah.
 SISIPAN: akar @akar
 TEKS: AKAR MASALAH @akar
 
 ##KETUKAN 11
-UCAP: Toyota punya alatnya, tanya kenapa lima kali.
+UCAP: [confident] Toyota punya alatnya, tanya kenapa lima kali.
 LATAR: kantor
 AKTOR: ohno=petugas tengah bangga
 AKSI: ohno menunjuk @lima
@@ -85,25 +89,26 @@ TEKS: 2016 @2016
 FAKTA: ya
 
 ##KETUKAN 13
-UCAP: Satu rantai kenapa bisa berhenti di jawaban yang paling nyaman.
+UCAP: [serious] Satu rantai kenapa bisa berhenti di jawaban yang paling nyaman.
 AKSI: p1 menggeleng @nyaman
 PROPS: silang kanan muncul @berhenti
 KAMERA: dekat p1
 
 ##KETUKAN 14
-UCAP: Triknya, tanya di tiga jalur.
+SUASANA: ceria
+UCAP: [happy] Triknya, tanya di tiga jalur.
 LATAR: kampus
 AKTOR: raka=mahasiswa kiri senang
 KARTU: Tiga jalur kenapa | Kenapa terjadi? @terjadi | Kenapa orangnya begitu? @orangnya | Kenapa sistemnya membiarkan? @sistemnya
 FAKTA: ya
 
 ##KETUKAN 15
-UCAP: Kenapa terjadi, kenapa orangnya begitu, kenapa sistemnya membiarkan.
+UCAP: [confident] Kenapa terjadi, kenapa orangnya begitu, kenapa sistemnya membiarkan.
 AKSI: raka berpikir @orangnya
 KAMERA: dekat raka
 
 ##KETUKAN 16
-UCAP: Proposal lombamu ditolak? Sebelum ganti desain, cek jam bukanya.
+UCAP: [excited] Proposal lombamu ditolak? Sebelum ganti desain, cek jam bukanya.
 PROPS: dokumen tangan:raka muncul @Proposal; silang atas muncul @ditolak; jam kanan muncul @jam
 KAMERA: lebar
 

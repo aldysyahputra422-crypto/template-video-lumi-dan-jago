@@ -1,0 +1,68 @@
+{
+ "berkas": "50dbee1f-Pesawat_yang_paling_perlu_kita_pelajari_justru_yang",
+ "teknis": {
+  "durasi": 69.59,
+  "lebar": 720,
+  "tinggi": 1280,
+  "fps": 30.0,
+  "ukuran_mb": 11.44,
+  "ada_audio": true,
+  "audio_hz": 44100
+ },
+ "loudness": {
+  "lufs": -14.2,
+  "rentang_lu": 1.3,
+  "puncak_dbfs": 0.4
+ },
+ "potongan_keras": {
+  "jumlah": 15,
+  "waktu": [
+   6.2,
+   10.0,
+   13.77,
+   14.23,
+   14.33,
+   14.83,
+   17.1,
+   21.83,
+   29.87,
+   32.67,
+   37.07,
+   39.13,
+   44.4,
+   44.67,
+   57.0
+  ],
+  "per_menit": 12.9
+ },
+ "suara": {
+  "jumlah_kata": 211,
+  "kata_per_detik": 3.11,
+  "rata2_durasi_kata": 0.27,
+  "jeda_terpanjang": 0.46,
+  "jeda_di_atas_0_45": 3
+ },
+ "hook": "Militer ingin melindungi bagian pesawat yang paling banyak tertembak.",
+ "kalimat": [
+  {
+   "mulai": 0.0,
+   "selesai": 17.16,
+   "jumlah_kata": 52
+  },
+  {
+   "mulai": 17.62,
+   "selesai": 52.86,
+   "jumlah_kata": 111
+  },
+  {
+   "mulai": 53.32,
+   "selesai": 59.66,
+   "jumlah_kata": 23
+  },
+  {
+   "mulai": 60.12,
+   "selesai": 67.78,
+   "jumlah_kata": 25
+  }
+ ]
+}

@@ -68,7 +68,8 @@ def susun(n: dict, kj: dict, kartu: dict | None) -> dict:
             pemeran = {}
         latar_lalu = k["latar"]
         for a in k["aktor"]:
-            pemeran[a["id"]] = {"peran": a["peran"], "posisi": a["posisi"], "ekspresi": a["ekspresi"]}
+            pemeran[a["id"]] = {"peran": a["peran"], "posisi": a["posisi"], "ekspresi": a["ekspresi"], "jumlah": a.get("jumlah", 1),
+                                "ukuran": a.get("ukuran"), "naik": a.get("naik", 0)}
         for i_keluar in k["keluar"]:
             pemeran.pop(i_keluar, None)
         awal_pemeran = {i_: dict(v) for i_, v in pemeran.items()}
@@ -140,7 +141,9 @@ def susun(n: dict, kj: dict, kartu: dict | None) -> dict:
         if musik:
             musik[-1]["selesai"] = k["mulai"]
         musik.append({"suasana": k["suasana"], "mulai": k["mulai"], "selesai": durasi})
+    akun = yaml.safe_load((Path(__file__).resolve().parents[1] / "config/tokoh.yaml").read_text(encoding="utf-8"))["akun"]
     return {"id": n["id"], "judul": n["judul"], "fps": 30, "durasi": durasi, "ketukan": out, "kata": kata, "musik": musik,
+            "watermark": akun.get("nama_akun", ""),
             "sfx": rapikan_sfx(sfx)}
 
 

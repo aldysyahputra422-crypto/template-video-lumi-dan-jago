@@ -2,11 +2,19 @@
 
 Bahasa kerja: Indonesia. Merek: Sobat Ambis (mentoring lomba dan les privat, https://sobatambis.netlify.app/); maskotnya **Ata, panda merah** (profil: `docs/profil-maskot.md`, terstruktur: `config/tokoh.yaml`, pose: `aset/maskot/panda/pose/`). Duo naga Lumi dan Jago diarsipkan (`docs/arsip/`). Repo ini mandiri dari repo `sobatambis-marketing`: kode dari sana hanya disalin bila dibutuhkan dan digeneralkan, repo itu tidak diubah.
 
+**Arah sejak 2026-11-05 (keputusan pemilik):** gaya dan DNA naskah mengikuti akun referensi mindwander 1:1 (struktur, tempo, frasa formula,
+editing terukur), dengan isi dan tokoh sendiri. Maskot Ata **hanya untuk foto profil**, tidak muncul di video; watermark tetap `@ata.ngulik`.
+Profil lint bawaan `filosofi` (`config/gaya.yaml`). Alur: skill `topik-reels` → `naskah-reels` (blok naskah + lembar ElevenLabs siap salin)
+→ `olah-reels`; sumber di `skills/`, dikemas `python -m scripts.kemas_skill` (DNA per kalimat: `skills/naskah-reels/benchmark.md`).
+Aturan Ata di bawah hanya berlaku bila pemilik memakai profil `ata` lagi.
+**Keputusan pemilik 2026-11-07:** ajakan (kirim, simpan, follow) BOLEH dipakai agar FYP dan ramai; aturan yang menyulitkan FYP diabaikan (profil `filosofi`: `ajakan_boleh`). Ajakan diletakkan di penutup, bukan di tengah. ElevenLabs tidak bisa diatur cepat: `scripts/tempo.py` mempercepat suara lambat secara lokal.
+
 ## Aturan dari pemilik
 - **Akun IG baru = murni personal branding maskot, TANPA CTA**: tidak ada ajakan daftar, harga, klaim prestasi, kartu CTA, atau "komen kata kunci". Satu-satunya jembatan ke merek adalah post Collab dengan @mentoringsobatambis. Karena post Collab tampil juga di profil resmi, topik harus aman untuk merek: tanpa politik, agama, tuduhan, atau orang sungguhan.
 - Aturan keras Ata (`config/tokoh.yaml`): hanya meledek situasi, berhenti bercanda bila topiknya menyangkut orang yang down, trik hanya yang legal, klaim riset wajib bersumber dan dicek.
 - Naskah: temuan jurnal internasional (yang sudah direplikasi) dibungkus cerita orang kedua atau alegori; standar di `.claude/skills/standar-naskah/SKILL.md`, diperiksa `scripts/lint_naskah.py`. Angka nyata HANYA dari `kartu-riset.yaml`. Sumber jurnal TIDAK ditampilkan di video (hanya di kartu riset, dan caption bila perlu). Ata muncul hanya di momen tertentu, satu suara per video.
 - Alur produksi: `/naskah <nama> "<topik>"` lalu `/olah <nama>` (lihat README). Visual: stickman di latar gelap sesuai tempat (`render/mesin.html`, kosakata `config/kosakata.yaml`; `tests/test_mesin.py` menjaga keduanya sama).
+- **Gaya dikunci, isi bebas** (pola mindwander): palet, cahaya, bentuk, editing terkunci (`docs/gaya-visual.md`, `config/gaya.yaml`); tokoh, latar, benda, sisipan boleh baru per video lewat `##ASET` lalu digambar Claude di `video/<nama>/aset.js` dan dicek `scripts/cek_aset.py`. Topik bebas selama aman untuk merek dan berbasis riset.
 - Semua visual dibuat Claude (latar, grafik, kartu); gaya animasi mengikuti `referensi/ringkasan.md`.
 - **Latar wajib sesuai tempat cerita** (kota ya kota, pasar ya pasar, sekolah ya sekolah, desa ya desa): langit, bangunan, benda, dan warna alaminya. Bidang krem/peach polos BUKAN latar adegan; hanya untuk kartu, judul, dan grafik data.
 - Jangan memanggil API ElevenLabs atau layanan berbayar lain tanpa izin pemilik di sesi itu. Suara dibuat pemilik sendiri; uji memakai fixture dan audio palsu.

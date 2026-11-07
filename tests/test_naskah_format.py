@@ -128,3 +128,87 @@ def test_suasana_dibawa_sampai_diganti():
     ks = nf.urai(t).naskah["ketukan"]
     assert ks[0]["suasana"] == "normal" and ks[1]["suasana"] == "tegang" and ks[2]["suasana"] == "tegang"
     assert any("suasana tidak dikenal" in str(g) for g in nf.urai(_ubah("##KETUKAN 02\n", "##KETUKAN 02\nSUASANA: galau\n")).galat)
+
+
+def test_garis_miring_salin_markdown_dibuang():
+    """Teks yang disalin dari ChatGPT sering membawa '\\' di akhir baris dan '\\##' di awal."""
+    kotor = "\n".join(("\\" + b if b.startswith("##") else b) + "\\" for b in TEKS.splitlines())
+    h = nf.urai(kotor)
+    assert h.galat == [], [str(g) for g in h.galat]
+    assert h.naskah["ketukan"][0]["ucap"] == nf.urai(TEKS).naskah["ketukan"][0]["ucap"]
+
+
+ASET = """##ASET
+LATAR sumur_tua: sumur bata melingkar dilihat dari dalam, gelap, cahaya bulan dari atas
+AKTOR tikus: tikus putih kecil, mata merah muda, ekor panjang
+PROPS keju: potongan keju kuning berlubang
+"""
+
+
+def test_aset_baru_dideklarasikan_lalu_boleh_dipakai():
+    t = TEKS.replace("##SUMBER buehler1994\n", "##SUMBER buehler1994\n" + ASET)
+    t = t.replace("LATAR: kamar\nAKTOR: kamu=pelajar jauh_kiri senang", "LATAR: sumur_tua\nAKTOR: kamu=pelajar jauh_kiri senang; tk=tikus kanan datar x12", 1)
+    t = t.replace("PROPS: laptop tengah muncul @bikin", "PROPS: keju tengah muncul @bikin")
+    h = nf.urai(t)
+    assert h.galat == [], [str(g) for g in h.galat]
+    n = h.naskah
+    assert {(a["jenis"], a["nama"]) for a in n["aset"]} == {("latar", "sumur_tua"), ("peran", "tikus"), ("props", "keju")}
+    assert n["ketukan"][0]["latar"] == "sumur_tua"
+    tk = next(a for a in n["ketukan"][0]["aktor"] if a["id"] == "tk")
+    assert tk["peran"] == "tikus" and tk["jumlah"] == 12
+
+
+def test_nama_tak_dikenal_tanpa_deklarasi_tetap_ditolak_dengan_saran_aset():
+    g = nf.urai(TEKS.replace("LATAR: kamar\n", "LATAR: sumur_tua\n", 1)).galat
+    assert any("latar tidak dikenal: sumur_tua" in str(x) and "##ASET" in str(x) for x in g)
+
+
+def test_deklarasi_aset_harus_rapi():
+    t = TEKS.replace("##SUMBER buehler1994\n", "##SUMBER buehler1994\n##ASET\nLATAR Sumur Tua: sumur\nMONSTER naga: naga\n")
+    g = [str(x) for x in nf.urai(t).galat]
+    assert any("nama aset" in x for x in g) and any("jenis aset" in x for x in g)
+
+
+def test_aset_boleh_di_akhir_naskah():
+    t = TEKS.replace("##AKHIR", ASET + "##AKHIR").replace("LATAR: kamar\n", "LATAR: sumur_tua\n", 1)
+    h = nf.urai(t)
+    assert h.galat == [], [str(g) for g in h.galat]
+
+
+def test_profil_tanpa_maskot_abaikan_ata_dan_kartu(monkeypatch):
+    """Profil filosofi: baris ATA dan KARTU dari naskah era lama dilewati dengan catatan, bukan ditolak."""
+    monkeypatch.setattr(nf, "profil", lambda: {"wajib_kartu": False, "maskot": None, "kartu": False})
+    monkeypatch.setattr(nf, "pose_ata", lambda: {})
+    h = nf.urai(TEKS)
+    assert not h.galat, h.galat
+    assert all(k["ata"] is None and k["kartu"] is None for k in h.naskah["ketukan"])
+    assert any("ATA" in c for c in h.catatan) and any("KARTU" in c for c in h.catatan)
+
+
+def test_profil_ata_tetap_periksa_pose(monkeypatch):
+    monkeypatch.setattr(nf, "profil", lambda: {"wajib_kartu": True, "maskot": "Ata"})
+    monkeypatch.setattr(nf, "pose_ata", lambda: {})
+    assert any("pose ata" in g.pesan for g in nf.urai(TEKS).galat)
+
+
+def test_profil_filosofi_wajib_latar_dari_aset(monkeypatch):
+    monkeypatch.setattr(nf, "profil", lambda: {"wajib_kartu": False, "maskot": None, "kartu": False, "latar_bawaan": False})
+    dasar = "##VIDEO uji | Uji\n##SUMBER x\n##KETUKAN 01\nUCAP: [serious] Seorang raja berdiri di menara.\nLATAR: {}\nAKTOR: r=raja tengah datar\n##AKHIR\n"
+    assert any("##ASET" in g.pesan for g in nf.urai(dasar.format("perpustakaan")).galat)
+    latar_galat = lambda teks: [g for g in nf.urai(teks).galat if "latar" in g.pesan]
+    assert not latar_galat(dasar.format("kosong"))
+    dengan = dasar.format("menara_batu").replace("##KETUKAN 01", "##ASET\nLATAR menara_batu: menara batu di bukit malam\n##KETUKAN 01")
+    assert not latar_galat(dengan)
+
+
+def test_aktor_ukuran_dan_tingkat(monkeypatch):
+    """Skala bermakna (ular raksasa, tikus mini) dan tingkat lantai (pembicara di panggung, penonton di bawah)."""
+    monkeypatch.setattr(nf, "profil", lambda: {"wajib_kartu": False, "maskot": None, "latar_bawaan": True})
+    teks = ("##VIDEO uji | Uji\n##SUMBER x\n##KETUKAN 01\nUCAP: [serious] Seekor raja berdiri di panggung tinggi sekali.\nLATAR: istana\n"
+            "AKTOR: r=raja tengah bangga raksasa panggung; w=warga kiri datar x6 kecil; m=warga kanan datar naik120\n##AKHIR\n")
+    h = nf.urai(teks)
+    ak = {a["id"]: a for a in (h.naskah or {"ketukan": [{"aktor": []}]})["ketukan"][0]["aktor"]} if h.naskah else {}
+    galat = [g.pesan for g in h.galat if "ukuran" in g.pesan or "AKTOR" in g.pesan]
+    assert not galat, galat
+    if ak:
+        assert ak["r"]["ukuran"] == "raksasa" and ak["r"]["naik"] == 260 and ak["w"]["ukuran"] == "kecil" and ak["m"]["naik"] == 120

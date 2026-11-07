@@ -17,6 +17,8 @@ from scripts import tag as tag_mod
 
 ROOT = Path(__file__).resolve().parents[1]
 SKEMA = json.loads((ROOT / "schemas/naskah.schema.json").read_text(encoding="utf-8"))
+UKURAN = {"mini": .45, "kecil": .7, "besar": 1.5, "raksasa": 2.6}   # skala tokoh bermakna (raksasa lawan mini)
+TINGKAT = {"panggung": 260, "tinggi": 480, "lantai": 0}            # naik dari lantai, piksel dunia
 LABEL = ("UCAP", "LATAR", "AKTOR", "AKSI", "EKSPRESI", "PROPS", "TEKS", "DATA", "KARTU", "ATA", "KAMERA", "KELUAR", "FAKTA", "SISIPAN", "SUASANA")
 TEMPAT = ("jauh_kiri", "kiri", "tengah", "kanan", "jauh_kanan", "atas")
 
@@ -27,8 +29,14 @@ def kosakata() -> dict:
 
 
 @functools.lru_cache(maxsize=None)
+def profil() -> dict:
+    """Profil naskah aktif (config/gaya.yaml → naskah): 'filosofi' (bawaan, tanpa maskot dan kartu) atau 'ata' (era lama)."""
+    n = yaml.safe_load((ROOT / "config/gaya.yaml").read_text(encoding="utf-8")).get("naskah", {})
+    return n.get("profil_isi", {}).get(n.get("profil", "ata"), {"wajib_kartu": True, "maskot": "Ata"})
+
+
 def pose_ata() -> list[str]:
-    return yaml.safe_load((ROOT / "config/tokoh.yaml").read_text(encoding="utf-8"))["tokoh"]["ata"]["pose"]
+    return yaml.safe_load((ROOT / "config/tokoh.yaml").read_text(encoding="utf-8")).get("tokoh", {}).get("ata", {}).get("pose", {})
 
 
 @dataclass
@@ -45,6 +53,7 @@ class Galat:
 class Hasil:
     naskah: dict | None
     galat: list[Galat] = field(default_factory=list)
+    catatan: list[str] = field(default_factory=list)
 
 
 def token(teks: str) -> list[str]:
@@ -52,6 +61,8 @@ def token(teks: str) -> list[str]:
 
 
 def _bersih(s: str) -> str:
+    s = re.sub(r"\\+$", "", s.strip()).strip()          # '\' di akhir baris (salin markdown ChatGPT)
+    s = re.sub(r"^\\+(?=#)", "", s)                     # '\##KETUKAN' → '##KETUKAN'
     s = re.sub(r"^(?:[>\-*•]\s+)+", "", s.strip())
     return s.replace("**", "").replace("__", "").replace("`", "").strip()
 
@@ -61,8 +72,48 @@ class _Urai:
         self.mentah = teks.splitlines()
         self.galat: list[Galat] = []
         self.k = kosakata()
+        self.profil = profil()
+        self.catatan: list[str] = []
         self.meta = {"id": None, "judul": None, "sumber": None}
         self.ketukan: list[dict] = []
+        self.aset: list[dict] = []
+        self.ext = {"latar": set(), "peran": set(), "props": set(), "sisipan": set()}   # aset per video (##ASET)
+
+    def ada(self, jenis: str, nama: str) -> bool:
+        return nama in self.k[jenis] or nama in self.ext[jenis]
+
+    def saran(self, jenis: str) -> str:
+        label = {"latar": "LATAR", "peran": "AKTOR", "props": "PROPS", "sisipan": "SISIPAN"}[jenis]
+        return f" Atau deklarasikan aset baru di ##ASET: '{label} nama: deskripsi singkat'"
+
+    def baca_aset(self):
+        """Lintasan pertama: deklarasi ##ASET (boleh di mana saja sebelum ##AKHIR) supaya namanya bisa dipakai di ketukan."""
+        di_aset = False
+        jenis_peta = {"LATAR": "latar", "AKTOR": "peran", "PERAN": "peran", "PROPS": "props", "SISIPAN": "sisipan"}
+        for no, mentah in enumerate(self.mentah, 1):
+            s = _bersih(mentah)
+            if re.match(r"^#{1,3}\s*ASET\b", s, re.I):
+                di_aset = True
+                continue
+            if s.startswith("#"):
+                di_aset = False
+            if not di_aset or not s:
+                continue
+            m = re.match(r"^([A-Za-z]+)\s+([^:]+?)\s*:\s*(.+)$", s)
+            if not m:
+                self.err(no, "baris ##ASET harus: JENIS nama: deskripsi (JENIS: LATAR, AKTOR, PROPS, SISIPAN)")
+                continue
+            jenis, nama, desk = jenis_peta.get(m.group(1).upper()), m.group(2).strip(), m.group(3).strip()
+            if not jenis:
+                self.err(no, f"jenis aset tidak dikenal: {m.group(1)} (pakai LATAR, AKTOR, PROPS, SISIPAN)")
+                continue
+            if not re.fullmatch(r"[a-z][a-z0-9_]{1,30}", nama):
+                self.err(no, f"nama aset harus huruf kecil dan garis bawah, mis. sumur_tua, bukan '{nama}'")
+                continue
+            if nama in self.k[jenis]:
+                continue   # sudah ada di kosakata bawaan
+            self.ext[jenis].add(nama)
+            self.aset.append({"jenis": jenis, "nama": nama, "deskripsi": desk})
 
     def err(self, no, pesan):
         self.galat.append(Galat(no, pesan, self.mentah[no - 1].strip() if no else ""))
@@ -80,17 +131,26 @@ class _Urai:
         return isi, kata
 
     def baca(self):
+        self.baca_aset()
         kt = None
         pemeran: set[str] = set()
         latar = None
         suasana = "normal"
         selesai = False
+        di_aset = False
         for no, mentah in enumerate(self.mentah, 1):
             s = _bersih(mentah)
             if not s or s.startswith("```") or selesai:
                 continue
             if re.match(r"^#{1,3}\s*AKHIR\b", s, re.I):
                 selesai = True
+                continue
+            if re.match(r"^#{1,3}\s*ASET\b", s, re.I):
+                di_aset = True          # isi ##ASET sudah dibaca baca_aset()
+                continue
+            if s.startswith("#"):
+                di_aset = False
+            elif di_aset:
                 continue
             m = re.match(r"^#{1,3}\s*VIDEO\s+(\S+)\s*[|:]\s*(.+)$", s, re.I)
             if m:
@@ -124,25 +184,43 @@ class _Urai:
                 if not kt["ucap"]:
                     self.err(no, "UCAP kosong")
             elif lab == "LATAR":
-                if isi not in self.k["latar"]:
-                    self.err(no, f"latar tidak dikenal: {isi}. Latar: {', '.join(self.k['latar'])}")
+                if self.profil.get("latar_bawaan", True) is False and isi != "kosong" and isi not in self.ext["latar"]:
+                    self.err(no, f"latar '{isi}' belum dideklarasikan: profil ini memakai dunia khusus per video, tulis LATAR {isi}: <deskripsi tempat> di ##ASET (atau pakai kosong)")
+                elif not self.ada("latar", isi):
+                    self.err(no, f"latar tidak dikenal: {isi}. Latar: {', '.join(self.k['latar'])}.{self.saran('latar')}")
                 latar = kt["latar"] = isi
                 pemeran = set()
             elif lab == "AKTOR":
                 for a in [x.strip() for x in isi.split(";") if x.strip()]:
-                    mm = re.match(r"^(\w+)\s*=\s*(\w+)(?:\s+(\w+))?(?:\s+(\w+))?$", a)
+                    mm = re.match(r"^(\w+)\s*=\s*(\w+)((?:\s+\w+){0,5})$", a)
                     if not mm:
-                        self.err(no, f"AKTOR harus: id=peran [posisi] [ekspresi], bukan '{a}'")
+                        self.err(no, f"AKTOR harus: id=peran [posisi] [ekspresi] [xJUMLAH] [ukuran] [tingkat], bukan '{a}'")
                         continue
-                    i, peran, pos, eks = mm.group(1), mm.group(2), mm.group(3) or "tengah", mm.group(4) or "datar"
-                    if peran not in self.k["peran"]:
-                        self.err(no, f"peran tidak dikenal: {peran}. Peran: {', '.join(self.k['peran'])}")
+                    i, peran, pos, eks, jumlah, ukuran, naik = mm.group(1), mm.group(2), "tengah", "datar", 1, None, 0
+                    for tok in mm.group(3).split():
+                        if re.fullmatch(r"x\d+", tok):
+                            jumlah = int(tok[1:])
+                        elif tok in UKURAN:
+                            ukuran = tok
+                        elif tok in TINGKAT:
+                            naik = TINGKAT[tok]
+                        elif re.fullmatch(r"naik\d{1,3}", tok):
+                            naik = min(700, int(tok[4:]))
+                        elif tok in self.k["posisi"]:
+                            pos = tok
+                        else:
+                            eks = tok
+                    if not 1 <= jumlah <= 40:
+                        self.err(no, f"kerumunan {i}: jumlah 1 sampai 40, bukan {jumlah}")
+                    if not self.ada("peran", peran):
+                        self.err(no, f"peran tidak dikenal: {peran}. Peran: {', '.join(self.k['peran'])}.{self.saran('peran')}")
                     if pos not in self.k["posisi"]:
                         self.err(no, f"posisi tidak dikenal: {pos}. Posisi: {', '.join(self.k['posisi'])}")
                     if eks not in self.k["ekspresi"]:
                         self.err(no, f"ekspresi tidak dikenal: {eks}. Ekspresi: {', '.join(self.k['ekspresi'])}")
                     pemeran.add(i)
-                    kt["aktor"].append({"id": i, "peran": peran, "posisi": pos, "ekspresi": eks})
+                    kt["aktor"].append({"id": i, "peran": peran, "posisi": pos, "ekspresi": eks, **({"jumlah": jumlah} if jumlah > 1 else {}),
+                                       **({"ukuran": ukuran} if ukuran else {}), **({"naik": naik} if naik else {})})
             elif lab == "AKSI":
                 for a in [x.strip() for x in isi.split(";") if x.strip()]:
                     a, kata = self.isyarat(no, a, kt)
@@ -177,8 +255,8 @@ class _Urai:
                     if len(b) < 2:
                         self.err(no, f"PROPS harus: nama tempat [gerak] [@kata], bukan '{a}'")
                         continue
-                    if b[0] not in self.k["props"]:
-                        self.err(no, f"props tidak dikenal: {b[0]}. Props: {', '.join(self.k['props'])}")
+                    if not self.ada("props", b[0]):
+                        self.err(no, f"props tidak dikenal: {b[0]}. Props: {', '.join(self.k['props'])}.{self.saran('props')}")
                     tp = b[1]
                     if ":" in tp:
                         jenis, sid = tp.split(":", 1)
@@ -204,6 +282,10 @@ class _Urai:
                         continue
                     kt["data"].append({"label": mm.group(1).strip().replace("_", " "), "nilai": float(mm.group(2).replace(",", ".")), "satuan": mm.group(3).strip(), "kata": kata})
                     kt["fakta"] = True
+            elif lab == "ATA" and not self.profil.get("maskot"):
+                self.catatan.append(f"baris {no}: ATA dilewati (profil tanpa maskot; maskot tidak tampil di video)")
+            elif lab == "KARTU" and self.profil.get("kartu", True) is False:
+                self.catatan.append(f"baris {no}: KARTU dilewati (profil ini tanpa kartu trik, sesuai gaya referensi)")
             elif lab == "KARTU":
                 bag = [x.strip() for x in isi.split("|")]
                 if len(bag) < 2:
@@ -243,10 +325,13 @@ class _Urai:
                 s_isi, kata = self.isyarat(no, isi, kt)
                 b = s_isi.split()
                 S = self.k["sisipan"]
-                if not b or b[0] not in S:
-                    self.err(no, f"sisipan tidak dikenal: {b[0] if b else ''}. Sisipan: {', '.join(S)}")
+                if b and b[0] in self.ext["sisipan"]:
+                    kt["sisipan"] = {"nama": b[0], "isi": b[1] if len(b) > 1 else None, "kata": kata}
                     continue
-                pilihan = list(self.k["props"]) if S[b[0]]["isi"] == "props" else S[b[0]]["isi"]
+                if not b or b[0] not in S:
+                    self.err(no, f"sisipan tidak dikenal: {b[0] if b else ''}. Sisipan: {', '.join(S)}.{self.saran('sisipan')}")
+                    continue
+                pilihan = list(self.k["props"]) + sorted(self.ext["props"]) if S[b[0]]["isi"] == "props" else S[b[0]]["isi"]
                 isi_s = b[1] if len(b) > 1 else (pilihan[0] if pilihan else None)
                 if len(b) > 1 and isi_s not in pilihan:
                     self.err(no, f"isi sisipan {b[0]} tidak dikenal: {isi_s}. Isi: {', '.join(pilihan) or '(tanpa isi)'}")
@@ -275,8 +360,8 @@ def urai(teks: str) -> Hasil:
     u.baca()
     u.galat.sort(key=lambda g: (g.baris is None, g.baris or 0))
     if u.galat:
-        return Hasil(None, u.galat)
-    return Hasil({"id": u.meta["id"], "judul": u.meta["judul"], "sumber": u.meta["sumber"], "disetujui": False, "ketukan": u.ketukan})
+        return Hasil(None, u.galat, u.catatan)
+    return Hasil({"id": u.meta["id"], "judul": u.meta["judul"], "sumber": u.meta["sumber"], "disetujui": False, "aset": u.aset, "ketukan": u.ketukan}, catatan=u.catatan)
 
 
 def pesan_koreksi(galat: list) -> str:
@@ -306,7 +391,7 @@ def proses(folder: Path, sumber: Path | None = None, timpa: bool = False) -> tup
         return 1, [str(g) for g in h.galat], h
     koreksi.unlink(missing_ok=True)
     tujuan.write_text(json.dumps(h.naskah, ensure_ascii=False, indent=1), encoding="utf-8")
-    return 0, [f"naskah.json dibuat ({len(h.naskah['ketukan'])} ketukan)"], h
+    return 0, [f"naskah.json dibuat ({len(h.naskah['ketukan'])} ketukan)"] + h.catatan, h
 
 
 def main(argv: list[str]) -> int:
